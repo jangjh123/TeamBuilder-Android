@@ -2,50 +2,36 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_main">
+    android:id="@+id/nav_main"
+    app:startDestination="@id/frag_on_boarding">
 
     <fragment
         android:id="@+id/frag_on_boarding"
-        android:name="com.example.teambuilder.ui.fragment.OnBoardingFragment"
-        tools:layout="@layout/fragment_on_boarding">
-        <action
-            android:id="@+id/action_frag_on_boarding_to_frag_team_build"
-            app:destination="@id/frag_team_build" />
-    </fragment>
+        android:name="com.example.teambuilder.ui.fragment.on_boarding.OnBoardingFragment"
+        tools:layout="@layout/fragment_on_boarding"/>
 
     <fragment
         android:id="@+id/frag_match"
         android:name="com.example.teambuilder.ui.fragment.MatchFragment"
-        tools:layout="@layout/fragment_match">
-        <action
-            android:id="@+id/action_frag_match_to_frag_team_build"
-            app:destination="@id/frag_team_build" />
-    </fragment>
+        tools:layout="@layout/fragment_match"/>
 
     <fragment
         android:id="@+id/frag_team_build"
         android:name="com.example.teambuilder.ui.fragment.TeamBuildFragment"
-        tools:layout="@layout/fragment_team_build">
-        <action
-            android:id="@+id/action_frag_team_build_to_frag_match"
-            app:destination="@id/frag_match" />
-    </fragment>
+        tools:layout="@layout/fragment_team_build"/>
 
     <fragment
         android:id="@+id/frag_match_history"
         android:name="com.example.teambuilder.ui.fragment.MatchHistoryFragment"
-        tools:layout="@layout/fragment_match_history">
-        <action
-            android:id="@+id/action_frag_match_history_to_frag_win_rate"
-            app:destination="@id/frag_win_rate" />
-    </fragment>
+        tools:layout="@layout/fragment_match_history"/>
 
     <fragment
         android:id="@+id/frag_win_rate"
         android:name="com.example.teambuilder.ui.fragment.WinRateFragment"
-        tools:layout="@layout/fragment_win_rate">
-        <action
-            android:id="@+id/action_frag_win_rate_to_frag_match_history"
-            app:destination="@id/frag_match_history" />
-    </fragment>
+        tools:layout="@layout/fragment_win_rate"/>
+    <action android:id="@+id/action_global_frag_win_rate" app:destination="@id/frag_win_rate" />
+    <action android:id="@+id/action_global_frag_match_history" app:destination="@id/frag_match_history" />
+    <action android:id="@+id/action_global_frag_match" app:destination="@id/frag_match" />
+    <action android:id="@+id/action_global_frag_team_build" app:destination="@id/frag_team_build" />
+    <action android:id="@+id/action_global_frag_on_boarding" app:destination="@id/frag_on_boarding" />
 </navigation>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextViewLight" parent="@android:style/Widget.TextView">
+        <item name="android:letterSpacing">-0.05</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="fontFamily">@font/noto_sans_light</item>
+    </style>
+
+    <style name="TextViewDefault" parent="@android:style/Widget.TextView">
+        <item name="android:letterSpacing">-0.05</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="fontFamily">@font/noto_sans_medium</item>
+    </style>
+
+    <style name="TextViewBold" parent="@android:style/Widget.TextView">
+        <item name="android:letterSpacing">-0.05</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="fontFamily">@font/noto_sans_bold</item>
+    </style>
+</resources>

@@ -1,22 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="fragment"
+            type="com.example.teambuilder.ui.fragment.team_build.TeamBuildFragment" />
 
     </data>
 
-    <FrameLayout
-        android:background="#00ff00"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".ui.fragment.TeamBuildFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
 
-    </FrameLayout>
+        <!--        Team Leader-->
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/TextViewBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="팀 리더 선택"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/btn_team_b_leader"
+            app:layout_constraintStart_toStartOf="@+id/btn_team_a_leader"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--        Random or peek-->
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_team_a_leader"
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="12dp"
+            android:onClick="@{fragment.setTeamALeader}"
+            app:cardElevation="8dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/btn_team_b_leader"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+            <TextView
+                style="@style/TextViewDefault"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="A 팀"
+                android:textColor="@color/gray"
+                android:textSize="16dp" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_team_b_leader"
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            android:onClick="@{fragment.setTeamBLeader}"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_team_a_leader"
+            app:layout_constraintTop_toTopOf="@+id/btn_team_a_leader">
+
+            <TextView
+                style="@style/TextViewDefault"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="B 팀"
+                android:textColor="@color/gray"
+                android:textSize="16dp" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/TextViewBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="팀원 선택 방식"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_team_a_leader" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/rg_member_select_way"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            app:cardCornerRadius="12dp"
+            android:layout_marginTop="20dp"
+            android:clickable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextViewDefault"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/point_color"
+                    android:gravity="center"
+                    android:text="무작위"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    style="@style/TextViewDefault"
+                    android:background="@color/white"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="직접 선택"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            style="@style/TextViewDefault"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="팀 확정"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

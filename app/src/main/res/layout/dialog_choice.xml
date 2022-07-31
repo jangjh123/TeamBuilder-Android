@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="dialog"
+            type="com.example.teambuilder.ui.component.ChoiceDialog" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        app:cardCornerRadius="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/TextViewDefault"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/main"
+                android:gravity="center"
+                android:text="타이틀"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_players"
+                android:layout_width="match_parent"
+                android:layout_height="450dp" />
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</layout>

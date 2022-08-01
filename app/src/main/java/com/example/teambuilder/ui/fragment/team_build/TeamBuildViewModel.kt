@@ -16,7 +16,7 @@ class TeamBuildViewModel @Inject constructor(
     val players: LiveData<List<Player>>
         get() = _players
 
-    fun foo() {
+    fun getPlayers() {
         repository.getAllPlayer {
             _players.postValue(it)
         }

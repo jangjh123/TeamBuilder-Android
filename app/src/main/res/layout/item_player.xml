@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_player"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_frame"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_margin="8dp"
+                android:src="@color/point_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_affiliation"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@color/main"
+                app:layout_constraintStart_toStartOf="@+id/iv_frame"
+                app:layout_constraintEnd_toEndOf="@+id/iv_frame"
+                app:layout_constraintTop_toTopOf="@+id/iv_frame"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_frame"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/TextViewBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
+                android:text="홍길동"
+                android:textColor="@color/black"
+                android:textSize="24dp"
+                app:layout_constraintStart_toEndOf="@+id/iv_frame"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_affiliation"
+                style="@style/TextViewDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="8dp"
+                android:text="경북산학"
+                android:textColor="@color/gray"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_frame"
+                tools:layout_editor_absoluteX="70dp" />
+
+            <TextView
+                android:visibility="invisible"
+                android:id="@+id/tv_super_player"
+                style="@style/TextViewBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:text="고수"
+                android:textColor="@color/main"
+                android:textSize="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

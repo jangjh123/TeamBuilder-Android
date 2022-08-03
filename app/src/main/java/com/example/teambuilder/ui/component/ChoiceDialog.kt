@@ -15,10 +15,15 @@ import com.example.teambuilder.databinding.DialogChoiceBinding
 class ChoiceDialog(
     private val players: List<Player>,
     private val title: String,
+    private val notAvailable: List<Player>?,
     private inline val onChosen: (Player) -> Unit
 ) : DialogFragment() {
 
     private lateinit var binding: DialogChoiceBinding
+    private val adapter = PlayerAdapter(onClickPlayer = {
+        onChosen(it)
+        dismiss()
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +34,9 @@ class ChoiceDialog(
             DataBindingUtil.inflate(inflater, R.layout.dialog_choice, container, false)
         isCancelable = false
         binding.root.background = ColorDrawable(Color.TRANSPARENT)
+        binding.dialog = this@ChoiceDialog
+        binding.adapter = adapter
+
         initView()
 
         return binding.root
@@ -45,6 +53,6 @@ class ChoiceDialog(
 
     private fun initView() {
         binding.tvTitle.text = title
-
+        adapter.submitList(players)
     }
 }

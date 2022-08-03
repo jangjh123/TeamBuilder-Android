@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.databinding.ItemPlayerBinding
 import com.example.teambuilder.util.GenericDiffUtil
+import kotlin.coroutines.coroutineContext
 
 class PlayerAdapter(private inline val onClickPlayer: (Player) -> Unit) :
     ListAdapter<Player, RecyclerView.ViewHolder>(GenericDiffUtil()) {
@@ -40,7 +42,9 @@ class PlayerAdapter(private inline val onClickPlayer: (Player) -> Unit) :
                 }
 
                 if (player.isSuperPlayer) {
-                    tvSuperPlayer.visibility = View.VISIBLE
+                    tvSuperPlayer.text = binding.root.context.getString(R.string.super_player)
+                } else {
+                    tvSuperPlayer.text = ""
                 }
             }
         }

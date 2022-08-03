@@ -1,9 +1,12 @@
 package com.example.teambuilder.ui
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -70,5 +73,15 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : F
 //    }
 
     protected open fun proceed() {
+    }
+
+    protected fun getColor(color: Int) =
+        ContextCompat.getColor(requireContext(), color)
+
+    protected fun playColorAnimation(view: View, startColor: Int, endColor: Int) {
+        ValueAnimator.ofObject(ArgbEvaluator(), startColor, endColor).apply {
+            duration = 200
+            addUpdateListener { animator -> view.setBackgroundColor(animator.animatedValue as Int) }
+        }.start()
     }
 }

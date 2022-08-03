@@ -7,36 +7,56 @@
         <variable
             name="dialog"
             type="com.example.teambuilder.ui.component.ChoiceDialog" />
+
+        <variable
+            name="adapter"
+            type="com.example.teambuilder.ui.component.PlayerAdapter" />
     </data>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
-        android:layout_height="500dp"
-        app:cardCornerRadius="12dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-
-            <TextView
-                android:id="@+id/tv_title"
-                style="@style/TextViewDefault"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/main"
-                android:gravity="center"
-                android:text="타이틀"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_players"
-                android:layout_width="match_parent"
-                android:layout_height="450dp" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
 
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/TextViewDefault"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/main"
+                    android:gravity="center"
+                    android:text="타이틀"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginHorizontal="10dp"
+                    android:id="@+id/rv_players"
+                    setAdapter="@{adapter}"
+                    setLayoutManager="@{1}"
+                    setLinearSnapHelper="@{true}"
+                    android:layout_width="match_parent"
+                    android:layout_height="450dp"
+                    android:overScrollMode="never" />
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

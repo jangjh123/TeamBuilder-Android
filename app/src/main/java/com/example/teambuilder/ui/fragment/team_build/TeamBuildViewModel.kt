@@ -16,9 +16,20 @@ class TeamBuildViewModel @Inject constructor(
     val players: LiveData<List<Player>>
         get() = _players
 
+    private lateinit var aLeader: Player
+    private lateinit var bLeader: Player
+
     fun getPlayers() {
         repository.getAllPlayer {
             _players.postValue(it)
         }
+    }
+
+    fun setALeader(player: Player) {
+        aLeader = player
+    }
+
+    fun setBLeader(player: Player) {
+        bLeader = player
     }
 }

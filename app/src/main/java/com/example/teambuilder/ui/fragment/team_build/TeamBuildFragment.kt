@@ -1,5 +1,7 @@
 package com.example.teambuilder.ui.fragment.team_build
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
@@ -9,6 +11,8 @@ import com.example.teambuilder.R
 import com.example.teambuilder.databinding.FragmentTeamBuildBinding
 import com.example.teambuilder.ui.BaseFragment
 import com.example.teambuilder.ui.component.ChoiceDialog
+import com.example.teambuilder.ui.component.MemberPickerFragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -50,6 +54,12 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
     }
 
     private val fadeIn5 = AlphaAnimation(0.1f, 1f).apply {
+        interpolator = AccelerateDecelerateInterpolator()
+        fillAfter = true
+        duration = 1000
+    }
+
+    private val fadeIn6 = AlphaAnimation(0f, 1f).apply {
         interpolator = AccelerateDecelerateInterpolator()
         fillAfter = true
         duration = 1000
@@ -176,11 +186,20 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     fun setTeamMembers(view: View) {
         if (isSetTeamMembersVisible) {
+            when {
+                isRandom -> {
 
+                }
+                isDirect -> {
+                    MemberPickerFragment().show(childFragmentManager, "member_picker")
+                }
+            }
         }
     }
+
 
     fun confirmTeams(view: View) {
 

@@ -17,7 +17,6 @@
         android:background="@color/white"
         tools:context=".ui.fragment.TeamBuildFragment">
 
-
         <!--        Team Leader-->
         <TextView
             android:id="@+id/textView3"
@@ -250,5 +249,6 @@
             android:textColor="@color/white"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

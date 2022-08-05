@@ -1,7 +1,6 @@
 package com.example.teambuilder.ui.fragment.team_build
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
@@ -12,7 +11,7 @@ import com.example.teambuilder.databinding.FragmentTeamBuildBinding
 import com.example.teambuilder.ui.BaseFragment
 import com.example.teambuilder.ui.component.ChoiceDialog
 import com.example.teambuilder.ui.component.MemberPickerFragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -79,28 +78,48 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
 
     fun selectALeader(view: View) {
         if (!viewModel.players.value.isNullOrEmpty()) {
-            ChoiceDialog(viewModel.players.value!!, "A팀 리더 선택", null) {
-                binding.tvALeader.apply {
-                    text = it.name
-                    setTextColor(getColor(R.color.point_color))
-                    viewModel.setALeader(it)
+            ChoiceDialog(viewModel.players.value!!, "A팀 리더 선택") {
+                if (it.isChosen) {
+                    Snackbar.make(binding.root, "이미 선택된 선수입니다.", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    binding.tvALeader.apply {
+                        text = it.name
+                        setTextColor(getColor(R.color.point_color))
+                        if (viewModel.teamALeader == null) {
+                            viewModel.setALeader(it)
+                        } else {
+                            viewModel.teamALeader!!.isChosen = false
+                            viewModel.setALeader(it)
+                        }
+                    }
+                    it.isChosen = true
+                    isSetALeader = true
+                    checkLeaderSettings()
                 }
-                isSetALeader = true
-                checkLeaderSettings()
             }.show(childFragmentManager, "set_a_leader")
         }
     }
 
     fun selectBLeader(view: View) {
         if (!viewModel.players.value.isNullOrEmpty()) {
-            ChoiceDialog(viewModel.players.value!!, "B팀 리더 선택", null) {
-                binding.tvBLeader.apply {
-                    text = it.name
-                    setTextColor(getColor(R.color.point_color))
-                    viewModel.setBLeader(it)
+            ChoiceDialog(viewModel.players.value!!, "B팀 리더 선택") {
+                if (it.isChosen) {
+                    Snackbar.make(binding.root, "이미 선택된 선수입니다.", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    binding.tvBLeader.apply {
+                        text = it.name
+                        setTextColor(getColor(R.color.point_color))
+                        if (viewModel.teamBLeader == null) {
+                            viewModel.setBLeader(it)
+                        } else {
+                            viewModel.teamBLeader!!.isChosen = false
+                            viewModel.setBLeader(it)
+                        }
+                    }
+                    it.isChosen = true
+                    isSetBLeader = true
+                    checkLeaderSettings()
                 }
-                isSetBLeader = true
-                checkLeaderSettings()
             }.show(childFragmentManager, "set_b_leader")
         }
     }

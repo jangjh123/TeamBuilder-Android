@@ -16,8 +16,8 @@ class TeamBuildViewModel @Inject constructor(
     val players: LiveData<List<Player>>
         get() = _players
 
-    private lateinit var aLeader: Player
-    private lateinit var bLeader: Player
+    var teamALeader: Player? = null
+    var teamBLeader: Player? = null
 
     fun getPlayers() {
         repository.getAllPlayer { list ->
@@ -28,10 +28,10 @@ class TeamBuildViewModel @Inject constructor(
     }
 
     fun setALeader(player: Player) {
-        aLeader = player
+        teamALeader = player
     }
 
     fun setBLeader(player: Player) {
-        bLeader = player
+        teamBLeader = player
     }
 }

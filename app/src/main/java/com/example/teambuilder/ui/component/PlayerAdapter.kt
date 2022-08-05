@@ -46,6 +46,14 @@ class PlayerAdapter(private inline val onClickPlayer: (Player) -> Unit) :
                 } else {
                     tvSuperPlayer.text = ""
                 }
+
+                if (player.isChosen) {
+                    layPlayer.alpha = 0.2f
+                    tvChosen.visibility = View.VISIBLE
+                } else {
+                    layPlayer.alpha = 1f
+                    tvChosen.visibility = View.GONE
+                }
             }
         }
     }

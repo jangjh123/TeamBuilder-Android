@@ -20,8 +20,7 @@ class TeamBuildRepository {
                             index = it.child("index").getValue<Int>()!!,
                             name = it.key!!,
                             affiliation = it.child("affiliation").value.toString(),
-                            isSuperPlayer = it.child("isSP").getValue<Boolean>()!!,
-                            false
+                            isSuperPlayer = it.child("isSP").getValue<Boolean>()!!
                         )
                     )
                 }

@@ -47,7 +47,7 @@ class PlayerAdapter(private inline val onClickPlayer: (Player) -> Unit) :
                     tvSuperPlayer.text = ""
                 }
 
-                if (player.isChosen) {
+                if (player.team != 0) {
                     layPlayer.alpha = 0.2f
                     tvChosen.visibility = View.VISIBLE
                 } else {

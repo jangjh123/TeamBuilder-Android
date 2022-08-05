@@ -79,7 +79,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
     fun selectALeader(view: View) {
         if (!viewModel.players.value.isNullOrEmpty()) {
             ChoiceDialog(viewModel.players.value!!, "A팀 리더 선택") {
-                if (it.isChosen) {
+                if (it.team != 0) {
                     Snackbar.make(binding.root, "이미 선택된 선수입니다.", Snackbar.LENGTH_SHORT).show()
                 } else {
                     binding.tvALeader.apply {
@@ -88,11 +88,11 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
                         if (viewModel.teamALeader == null) {
                             viewModel.setALeader(it)
                         } else {
-                            viewModel.teamALeader!!.isChosen = false
+                            viewModel.teamALeader!!.team = 0
                             viewModel.setALeader(it)
                         }
                     }
-                    it.isChosen = true
+                    it.team = 1
                     isSetALeader = true
                     checkLeaderSettings()
                 }
@@ -103,7 +103,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
     fun selectBLeader(view: View) {
         if (!viewModel.players.value.isNullOrEmpty()) {
             ChoiceDialog(viewModel.players.value!!, "B팀 리더 선택") {
-                if (it.isChosen) {
+                if (it.team != 0) {
                     Snackbar.make(binding.root, "이미 선택된 선수입니다.", Snackbar.LENGTH_SHORT).show()
                 } else {
                     binding.tvBLeader.apply {
@@ -112,11 +112,11 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
                         if (viewModel.teamBLeader == null) {
                             viewModel.setBLeader(it)
                         } else {
-                            viewModel.teamBLeader!!.isChosen = false
+                            viewModel.teamBLeader!!.team = 0
                             viewModel.setBLeader(it)
                         }
                     }
-                    it.isChosen = true
+                    it.team = 2
                     isSetBLeader = true
                     checkLeaderSettings()
                 }

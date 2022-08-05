@@ -38,7 +38,7 @@
             android:layout_width="160dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:onClick="@{fragment.selectALeader}"
+            android:onClick="@{fragment::selectALeader}"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="12dp"
             app:cardElevation="8dp"
@@ -64,7 +64,7 @@
             android:id="@+id/btn_team_b_leader"
             android:layout_width="160dp"
             android:layout_height="50dp"
-            android:onClick="@{fragment.selectBLeader}"
+            android:onClick="@{fragment::selectBLeader}"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="12dp"
             app:cardElevation="8dp"
@@ -124,7 +124,7 @@
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:gravity="center"
-                    android:onClick="@{fragment.setRandom}"
+                    android:onClick="@{fragment::setRandom}"
                     android:text="무작위"
                     android:textColor="@color/gray" />
 
@@ -143,7 +143,7 @@
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:gravity="center"
-                    android:onClick="@{fragment.setDirect}"
+                    android:onClick="@{fragment::setDirect}"
                     android:text="직접 선택"
                     android:textColor="@color/gray" />
             </LinearLayout>
@@ -188,7 +188,7 @@
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:gravity="center"
-                    android:onClick="@{fragment.setSix}"
+                    android:onClick="@{fragment::setSix}"
                     android:text="6 vs 6"
                     android:textColor="@color/gray" />
 
@@ -207,7 +207,7 @@
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:gravity="center"
-                    android:onClick="@{fragment.setSeven}"
+                    android:onClick="@{fragment::setSeven}"
                     android:text="7 vs 7"
                     android:textColor="@color/gray" />
             </LinearLayout>
@@ -217,7 +217,7 @@
             android:id="@+id/btn_select_team_members"
             android:layout_width="300dp"
             android:layout_height="70dp"
-            android:onClick="@{fragment.setTeamMembers}"
+            android:onClick="@{fragment::setTeamMembers}"
             app:cardCornerRadius="12dp"
             app:cardElevation="10dp"
             app:layout_constraintBottom_toTopOf="@+id/textView"
@@ -243,7 +243,7 @@
             android:layout_height="wrap_content"
             android:background="@color/gray"
             android:gravity="center"
-            android:onClick="@{fragment.confirmTeams}"
+            android:onClick="@{fragment::confirmTeams}"
             android:padding="16dp"
             android:text="팀 확정"
             android:textColor="@color/white"

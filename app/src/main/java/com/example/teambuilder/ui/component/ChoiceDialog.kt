@@ -21,7 +21,7 @@ class ChoiceDialog(
     private lateinit var binding: DialogChoiceBinding
 
     private val adapter = PlayerAdapter(onClickPlayer = {
-        if (!it.isChosen) {
+        if (it.team == 0) { // 어느 팀에도 속하지 않았다면
             dismiss()
         }
         onChosen(it)

@@ -59,12 +59,6 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
         duration = 1000
     }
 
-    private val fadeIn6 = AlphaAnimation(0f, 1f).apply {
-        interpolator = AccelerateDecelerateInterpolator()
-        fillAfter = true
-        duration = 1000
-    }
-
     override fun proceed() {
         binding.fragment = this@TeamBuildFragment
         startAnim()

@@ -20,8 +20,10 @@ class TeamBuildViewModel @Inject constructor(
     private lateinit var bLeader: Player
 
     fun getPlayers() {
-        repository.getAllPlayer {
-            _players.postValue(it)
+        repository.getAllPlayer { list ->
+            _players.postValue(
+                list.sortedWith(compareByDescending<Player> { it.isSuperPlayer }.thenBy { it.index })
+            )
         }
     }
 

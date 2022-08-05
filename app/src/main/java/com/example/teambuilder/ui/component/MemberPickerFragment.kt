@@ -1,7 +1,5 @@
 package com.example.teambuilder.ui.component
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +19,7 @@ class MemberPickerFragment : BottomSheetDialogFragment() {
     ): View? {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_member_picker, container, false)
+        isCancelable = false
         return binding.root
     }
 

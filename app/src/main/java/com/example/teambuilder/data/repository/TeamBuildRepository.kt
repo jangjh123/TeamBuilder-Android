@@ -17,6 +17,7 @@ class TeamBuildRepository {
                 snapshot.children.forEach {
                     players.add(
                         Player(
+                            index = it.child("index").getValue<Int>()!!,
                             name = it.key!!,
                             affiliation = it.child("affiliation").value.toString(),
                             isSuperPlayer = it.child("isSP").getValue<Boolean>()!!

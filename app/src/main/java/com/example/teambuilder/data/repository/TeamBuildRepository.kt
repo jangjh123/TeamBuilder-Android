@@ -13,7 +13,7 @@ class TeamBuildRepository {
     fun getAllPlayer(onResult: (List<Player>) -> Unit) {
         reference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val players = mutableListOf<Player>()
+                val players = ArrayList<Player>()
                 snapshot.children.forEach {
                     players.add(
                         Player(

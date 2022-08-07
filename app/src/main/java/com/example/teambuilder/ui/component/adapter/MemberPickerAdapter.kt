@@ -1,22 +1,22 @@
-package com.example.teambuilder.ui.component
+package com.example.teambuilder.ui.component.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
-import com.example.teambuilder.databinding.ItemPlayerBinding
+import com.example.teambuilder.databinding.ItemMemberPickerBinding
 import com.example.teambuilder.util.GenericDiffUtil
-import kotlin.coroutines.coroutineContext
 
-class PlayerAdapter(private inline val onClickPlayer: (Player) -> Unit) :
+class MemberPickerAdapter(
+    private inline val onClickRemove: (Player) -> Unit,
+    private val teamLeader: Player
+) :
     ListAdapter<Player, RecyclerView.ViewHolder>(GenericDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(
-            ItemPlayerBinding.inflate(
+            ItemMemberPickerBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -31,28 +31,20 @@ class PlayerAdapter(private inline val onClickPlayer: (Player) -> Unit) :
         }
     }
 
-    inner class ViewHolder(private val binding: ItemPlayerBinding) :
+    inner class ViewHolder(private val binding: ItemMemberPickerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(player: Player) {
             with(binding) {
                 tvName.text = player.name
-                tvAffiliation.text = player.affiliation
-                cvPlayer.setOnClickListener {
-                    onClickPlayer(player)
+
+                if (player == teamLeader) {
+                    tvLeader.text = "리더"
+                } else {
+                    tvLeader.text = ""
                 }
 
-                if (player.isSuperPlayer) {
-                    tvSuperPlayer.text = binding.root.context.getString(R.string.super_player)
-                } else {
-                    tvSuperPlayer.text = ""
-                }
-
-                if (player.team != 0) {
-                    layPlayer.alpha = 0.2f
-                    tvChosen.visibility = View.VISIBLE
-                } else {
-                    layPlayer.alpha = 1f
-                    tvChosen.visibility = View.GONE
+                binding.layPlayer.setOnClickListener {
+                    onClickRemove(player)
                 }
             }
         }

@@ -6,11 +6,11 @@
 
         <variable
             name="dialog"
-            type="com.example.teambuilder.ui.component.ChoiceDialog" />
+            type="com.example.teambuilder.ui.component.dialog.ChoiceDialog" />
 
         <variable
             name="adapter"
-            type="com.example.teambuilder.ui.component.PlayerAdapter" />
+            type="com.example.teambuilder.ui.component.adapter.PlayerAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,19 +44,15 @@
                     android:textSize="16dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginHorizontal="10dp"
                     android:id="@+id/rv_players"
                     setAdapter="@{adapter}"
                     setLayoutManager="@{1}"
                     setLinearSnapHelper="@{true}"
                     android:layout_width="match_parent"
                     android:layout_height="450dp"
+                    android:layout_marginHorizontal="10dp"
                     android:overScrollMode="never" />
             </LinearLayout>
-
-
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </layout>

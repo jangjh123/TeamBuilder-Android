@@ -7,12 +7,14 @@ import android.view.animation.AlphaAnimation
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.example.teambuilder.R
+import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.databinding.FragmentTeamBuildBinding
 import com.example.teambuilder.ui.BaseFragment
-import com.example.teambuilder.ui.component.ChoiceDialog
-import com.example.teambuilder.ui.component.MemberPickerFragment
-import com.google.android.material.snackbar.Snackbar
+import com.example.teambuilder.ui.component.dialog.ChoiceDialog
+import com.example.teambuilder.ui.component.dialog.DefaultDialog
+import com.example.teambuilder.ui.component.dialog.MemberPickerFragment
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -79,23 +81,19 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
     fun selectALeader(view: View) {
         if (!viewModel.players.value.isNullOrEmpty()) {
             ChoiceDialog(viewModel.players.value!!, "A팀 리더 선택") {
-                if (it.team != 0) {
-                    Snackbar.make(binding.root, "이미 선택된 선수입니다.", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    binding.tvALeader.apply {
-                        text = it.name
-                        setTextColor(getColor(R.color.point_color))
-                        if (viewModel.teamALeader == null) {
-                            viewModel.setALeader(it)
-                        } else {
-                            viewModel.teamALeader!!.team = 0
-                            viewModel.setALeader(it)
-                        }
+                binding.tvALeader.apply {
+                    text = it.name
+                    setTextColor(getColor(R.color.point_color))
+                    if (viewModel.teamALeader == null) {
+                        viewModel.setALeader(it)
+                    } else {
+                        viewModel.teamALeader!!.team = 0
+                        viewModel.setALeader(it)
                     }
-                    it.team = 1
-                    isSetALeader = true
-                    checkLeaderSettings()
                 }
+                it.team = 1
+                isSetALeader = true
+                checkLeaderSettings()
             }.show(childFragmentManager, "set_a_leader")
         }
     }
@@ -103,23 +101,19 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
     fun selectBLeader(view: View) {
         if (!viewModel.players.value.isNullOrEmpty()) {
             ChoiceDialog(viewModel.players.value!!, "B팀 리더 선택") {
-                if (it.team != 0) {
-                    Snackbar.make(binding.root, "이미 선택된 선수입니다.", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    binding.tvBLeader.apply {
-                        text = it.name
-                        setTextColor(getColor(R.color.point_color))
-                        if (viewModel.teamBLeader == null) {
-                            viewModel.setBLeader(it)
-                        } else {
-                            viewModel.teamBLeader!!.team = 0
-                            viewModel.setBLeader(it)
-                        }
+                binding.tvBLeader.apply {
+                    text = it.name
+                    setTextColor(getColor(R.color.point_color))
+                    if (viewModel.teamBLeader == null) {
+                        viewModel.setBLeader(it)
+                    } else {
+                        viewModel.teamBLeader!!.team = 0
+                        viewModel.setBLeader(it)
                     }
-                    it.team = 2
-                    isSetBLeader = true
-                    checkLeaderSettings()
                 }
+                it.team = 2
+                isSetBLeader = true
+                checkLeaderSettings()
             }.show(childFragmentManager, "set_b_leader")
         }
     }
@@ -146,19 +140,27 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
 
     fun setRandom(view: View) {
         if (isSelectWayVisible) {
-            setColorBySelection(view, binding.btnDirect, isRandom, isDirect)
-            isRandom = true
-            isDirect = false
-            checkWaySetting()
+            if (isTeamsExist()) {
+                rebuildTeam(Sequence.WAY)
+            } else {
+                setColorBySelection(view, binding.btnDirect, isRandom, isDirect)
+                isRandom = true
+                isDirect = false
+                checkWaySetting()
+            }
         }
     }
 
     fun setDirect(view: View) {
         if (isSelectWayVisible) {
-            setColorBySelection(view, binding.btnRandom, isDirect, isRandom)
-            isDirect = true
-            isRandom = false
-            checkWaySetting()
+            if (isTeamsExist()) {
+                rebuildTeam(Sequence.WAY)
+            } else {
+                setColorBySelection(view, binding.btnRandom, isDirect, isRandom)
+                isDirect = true
+                isRandom = false
+                checkWaySetting()
+            }
         }
     }
 
@@ -174,19 +176,28 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
 
     fun setSix(view: View) {
         if (isMemberCountVisible) {
-            setColorBySelection(view, binding.btn7Vs7, isSix, isSeven)
-            isSix = true
-            isSeven = false
-            checkMemberCountSetting()
+            if (isTeamsExist()) {
+                rebuildTeam(Sequence.MEMBER_COUNT)
+            } else {
+                setColorBySelection(view, binding.btn7Vs7, isSix, isSeven)
+                isSix = true
+                isSeven = false
+                checkMemberCountSetting()
+            }
+
         }
     }
 
     fun setSeven(view: View) {
         if (isMemberCountVisible) {
-            setColorBySelection(view, binding.btn6Vs6, isSeven, isSix)
-            isSeven = true
-            isSix = false
-            checkMemberCountSetting()
+            if (isTeamsExist()) {
+                rebuildTeam(Sequence.MEMBER_COUNT)
+            } else {
+                setColorBySelection(view, binding.btn6Vs6, isSeven, isSix)
+                isSeven = true
+                isSix = false
+                checkMemberCountSetting()
+            }
         }
     }
 
@@ -207,14 +218,105 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
 
                 }
                 isDirect -> {
-                    MemberPickerFragment().show(childFragmentManager, "member_picker")
+                    MemberPickerFragment(
+                        teamMemberLimit =
+                        if (isSix) {
+                            6
+                        } else {
+                            7
+                        },
+                        entry = LinkedList<Player>().apply {
+                            viewModel.players.value?.let { players ->
+                                players.forEach { player ->
+                                    if (player.team == 0) {
+                                        add(player)
+                                    }
+                                }
+                            }
+                        },
+                        teamALeader = viewModel.teamALeader!!,
+                        teamBLeader = viewModel.teamBLeader!!,
+                        viewModel.teamA.ifEmpty {
+                            null
+                        } as MutableList<Player>?,
+                        viewModel.teamB.ifEmpty {
+                            null
+                        } as MutableList<Player>?,
+                        onClickCancel = {
+                            viewModel.resetTeam()
+                        },
+                        onResult = {
+                            viewModel.setATeam(it.first)
+                            viewModel.setBTeam(it.second)
+
+                            playColorAnimation(
+                                binding.btnConfirmTeam,
+                                getColor(R.color.gray),
+                                getColor(R.color.point_color)
+                            )
+                        }).show(childFragmentManager, "member_picker")
                 }
             }
         }
     }
 
-
     fun confirmTeams(view: View) {
 
     }
+
+    private fun isTeamsExist(): Boolean =
+        viewModel.teamA.isNotEmpty() || viewModel.teamB.isNotEmpty()
+
+    private fun rebuildTeam(sequence: Sequence) {
+        DefaultDialog(
+            "팀 재구성",
+            "이미 구성된 팀이 있습니다.\n재구성을 진행합니다.",
+            "취소",
+            "확인",
+            null,
+            null,
+            onClickConfirm = {
+                viewModel.resetTeam()
+
+                when (sequence) {
+                    Sequence.WAY -> {
+                        if (isRandom) {
+                            isRandom = false
+                            resetButtonColor(binding.btnRandom)
+                        } else if (isDirect) {
+                            isDirect = false
+                            resetButtonColor(binding.btnDirect)
+                        }
+
+                        if (isSix) {
+                            isSix = false
+                            resetButtonColor(binding.btn6Vs6)
+                        } else if (isSeven) {
+                            isSeven = false
+                            resetButtonColor(binding.btn7Vs7)
+                        }
+                    }
+                    Sequence.MEMBER_COUNT -> {
+                        if (isSix) {
+                            isSix = false
+                            resetButtonColor(binding.btn6Vs6)
+                        } else if (isSeven) {
+                            isSeven = false
+                            resetButtonColor(binding.btn7Vs7)
+                        }
+                    }
+                }
+            }
+        ).show(childFragmentManager, "rebuild")
+    }
+
+    private fun resetButtonColor(view: View) {
+        playColorAnimation(view, getColor(R.color.point_color), getColor(R.color.white))
+        (view as TextView).setTextColor(getColor(R.color.gray))
+    }
+}
+
+enum class Sequence {
+    WAY,
+    MEMBER_COUNT
 }

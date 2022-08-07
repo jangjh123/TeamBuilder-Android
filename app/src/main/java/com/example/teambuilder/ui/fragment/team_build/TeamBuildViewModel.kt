@@ -19,6 +19,9 @@ class TeamBuildViewModel @Inject constructor(
     var teamALeader: Player? = null
     var teamBLeader: Player? = null
 
+    var teamA = listOf<Player>()
+    var teamB = listOf<Player>()
+
     fun getPlayers() {
         repository.getAllPlayer { list ->
             _players.postValue(
@@ -33,5 +36,34 @@ class TeamBuildViewModel @Inject constructor(
 
     fun setBLeader(player: Player) {
         teamBLeader = player
+    }
+
+    fun setATeam(list: List<Player>) {
+        teamA = list
+        players.value!!.forEach {
+            if (it.team == 1 && list.indexOf(it) == -1) {
+                it.team = 0
+            }
+        }
+    }
+
+    fun setBTeam(list: List<Player>) {
+        teamB = list
+        players.value!!.forEach {
+            if (it.team == 2 && list.indexOf(it) == -1) {
+                it.team = 0
+            }
+        }
+    }
+
+    fun resetTeam() {
+        players.value!!.forEach {
+            if (it != teamALeader && it != teamBLeader) {
+                it.team = 0
+            }
+        }
+
+        teamA = listOf()
+        teamB = listOf()
     }
 }

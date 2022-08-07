@@ -1,4 +1,4 @@
-package com.example.teambuilder.ui.component
+package com.example.teambuilder.ui.component.dialog
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -11,6 +11,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.databinding.DialogChoiceBinding
+import com.example.teambuilder.ui.component.adapter.PlayerAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class ChoiceDialog(
     private val players: List<Player>,
@@ -22,9 +24,11 @@ class ChoiceDialog(
 
     private val adapter = PlayerAdapter(onClickPlayer = {
         if (it.team == 0) { // 어느 팀에도 속하지 않았다면
+            onChosen(it)
             dismiss()
+        } else {
+            Snackbar.make(binding.root, "이미 선택된 선수입니다.", Snackbar.LENGTH_SHORT).show()
         }
-        onChosen(it)
     })
 
     override fun onCreateView(

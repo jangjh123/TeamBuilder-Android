@@ -10,6 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewTreeLifecycleOwner
 
 abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : Fragment() {
     lateinit var binding: VB

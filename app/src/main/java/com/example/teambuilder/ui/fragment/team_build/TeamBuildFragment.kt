@@ -1,11 +1,11 @@
 package com.example.teambuilder.ui.fragment.team_build
 
-import android.annotation.SuppressLint
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.databinding.FragmentTeamBuildBinding
@@ -20,15 +20,6 @@ import java.util.*
 @AndroidEntryPoint
 class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragment_team_build) {
     private val viewModel: TeamBuildViewModel by viewModels()
-    private var isSetALeader = false
-    private var isSetBLeader = false
-    private var isSelectWayVisible = false
-    private var isRandom = false
-    private var isDirect = false
-    private var isMemberCountVisible = false
-    private var isSix = false
-    private var isSeven = false
-    private var isSetTeamMembersVisible = false
 
     private val fadeIn1 = AlphaAnimation(0f, 1f).apply {
         interpolator = AccelerateDecelerateInterpolator()
@@ -54,16 +45,9 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
         duration = 1000
     }
 
-    private val fadeIn5 = AlphaAnimation(0.1f, 1f).apply {
-        interpolator = AccelerateDecelerateInterpolator()
-        fillAfter = true
-        duration = 1000
-    }
-
     override fun proceed() {
         binding.fragment = this@TeamBuildFragment
         startAnim()
-        viewModel.getPlayers()
     }
 
     private fun startAnim() {
@@ -78,189 +62,81 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
         binding.btnSelectTeamMembers.startAnimation(fadeIn2)
     }
 
-    fun selectALeader(view: View) {
-        if (!viewModel.players.value.isNullOrEmpty()) {
-            ChoiceDialog(viewModel.players.value!!, "A팀 리더 선택") {
-                binding.tvALeader.apply {
-                    text = it.name
-                    setTextColor(getColor(R.color.point_color))
-                    if (viewModel.teamALeader == null) {
-                        viewModel.setALeader(it)
-                    } else {
-                        viewModel.teamALeader!!.team = 0
-                        viewModel.setALeader(it)
-                    }
-                }
-                it.team = 1
-                isSetALeader = true
-                checkLeaderSettings()
-            }.show(childFragmentManager, "set_a_leader")
-        }
-    }
-
-    fun selectBLeader(view: View) {
-        if (!viewModel.players.value.isNullOrEmpty()) {
-            ChoiceDialog(viewModel.players.value!!, "B팀 리더 선택") {
-                binding.tvBLeader.apply {
-                    text = it.name
-                    setTextColor(getColor(R.color.point_color))
-                    if (viewModel.teamBLeader == null) {
-                        viewModel.setBLeader(it)
-                    } else {
-                        viewModel.teamBLeader!!.team = 0
-                        viewModel.setBLeader(it)
-                    }
-                }
-                it.team = 2
-                isSetBLeader = true
-                checkLeaderSettings()
-            }.show(childFragmentManager, "set_b_leader")
-        }
-    }
-
-    private fun checkLeaderSettings() {
-        if (isSetALeader && isSetBLeader && !isSelectWayVisible) {
-            binding.textView4.startAnimation(fadeIn3)
-            binding.rgMemberSelectWay.startAnimation(fadeIn3)
-            isSelectWayVisible = true
-        }
-    }
-
-    private fun setColorBySelection(view1: View, view2: View, chosen: Boolean, unChosen: Boolean) {
-        if (!chosen) {
-            playColorAnimation(view1, getColor(R.color.white), getColor(R.color.point_color))
-            (view1 as TextView).setTextColor(getColor(R.color.white))
-        }
-
-        if (unChosen) {
-            playColorAnimation(view2, getColor(R.color.point_color), getColor(R.color.white))
-            (view2 as TextView).setTextColor(getColor(R.color.gray))
-        }
-    }
-
-    fun setRandom(view: View) {
-        if (isSelectWayVisible) {
-            if (isTeamsExist()) {
-                rebuildTeam(Sequence.WAY)
-            } else {
-                setColorBySelection(view, binding.btnDirect, isRandom, isDirect)
-                isRandom = true
-                isDirect = false
-                checkWaySetting()
+    fun onClickALeader(view: View) {
+        ChoiceDialog(viewModel.players.value!!, "A팀 리더 선택") {
+            binding.tvALeader.apply {
+                text = it.name
+                setTextColor(getColor(R.color.point_color))
+                viewModel.setALeader(it)
             }
-        }
+        }.show(childFragmentManager, "set_a_leader")
     }
 
-    fun setDirect(view: View) {
-        if (isSelectWayVisible) {
-            if (isTeamsExist()) {
-                rebuildTeam(Sequence.WAY)
-            } else {
-                setColorBySelection(view, binding.btnRandom, isDirect, isRandom)
-                isDirect = true
-                isRandom = false
-                checkWaySetting()
+    fun onClickBLeader(view: View) {
+        ChoiceDialog(viewModel.players.value!!, "B팀 리더 선택") {
+            binding.tvBLeader.apply {
+                text = it.name
+                setTextColor(getColor(R.color.point_color))
+                viewModel.setBLeader(it)
             }
-        }
+        }.show(childFragmentManager, "set_b_leader")
     }
 
-    private fun checkWaySetting() {
-        if (isRandom || isDirect) {
-            if (!isMemberCountVisible) {
-                binding.textView2.startAnimation(fadeIn4)
-                binding.rgNVsN.startAnimation(fadeIn4)
-                isMemberCountVisible = true
-            }
-        }
+    fun onClickRandom(view: View) = viewModel.setRandom()
+    fun onClickPicking(view: View) = viewModel.setPicking()
+    fun onClickSix(view: View) = viewModel.setSix()
+    fun onClickSeven(view: View) = viewModel.setSeven()
+
+    fun onClickSetMembers(view: View) {
+//        if (isSetTeamMembersVisible) {
+//            when {
+//                isRandom -> {
+//
+//                }
+//                isDirect -> {
+//                    MemberPickerFragment(
+//                        teamMemberLimit =
+//                        if (isSix) {
+//                            6
+//                        } else {
+//                            7
+//                        },
+//                        entry = LinkedList<Player>().apply {
+//                            viewModel.players.value?.let { players ->
+//                                players.forEach { player ->
+//                                    if (player.team == 0) {
+//                                        add(player)
+//                                    }
+//                                }
+//                            }
+//                        },
+//                        teamALeader = viewModel.aLeader.value!!,
+//                        teamBLeader = viewModel.bLeader.value!!,
+//                        viewModel.teamA.ifEmpty {
+//                            null
+//                        } as MutableList<Player>?,
+//                        viewModel.teamB.ifEmpty {
+//                            null
+//                        } as MutableList<Player>?,
+//                        onClickCancel = {
+//                            viewModel.resetTeam()
+//                        },
+//                        onResult = {
+//                            viewModel.setATeam(it.first)
+//                            viewModel.setBTeam(it.second)
+//
+//                            playColorAnimation(
+//                                binding.btnConfirmTeam,
+//                                getColor(R.color.gray),
+//                                getColor(R.color.point_color)
+//                            )
+//                        }).show(childFragmentManager, "member_picker")
+//                }
+//            }
+//        }
     }
 
-    fun setSix(view: View) {
-        if (isMemberCountVisible) {
-            if (isTeamsExist()) {
-                rebuildTeam(Sequence.MEMBER_COUNT)
-            } else {
-                setColorBySelection(view, binding.btn7Vs7, isSix, isSeven)
-                isSix = true
-                isSeven = false
-                checkMemberCountSetting()
-            }
-
-        }
-    }
-
-    fun setSeven(view: View) {
-        if (isMemberCountVisible) {
-            if (isTeamsExist()) {
-                rebuildTeam(Sequence.MEMBER_COUNT)
-            } else {
-                setColorBySelection(view, binding.btn6Vs6, isSeven, isSix)
-                isSeven = true
-                isSix = false
-                checkMemberCountSetting()
-            }
-        }
-    }
-
-    private fun checkMemberCountSetting() {
-        if (isSix || isSeven) {
-            if (!isSetTeamMembersVisible) {
-                binding.btnSelectTeamMembers.startAnimation(fadeIn5)
-                isSetTeamMembersVisible = true
-            }
-        }
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    fun setTeamMembers(view: View) {
-        if (isSetTeamMembersVisible) {
-            when {
-                isRandom -> {
-
-                }
-                isDirect -> {
-                    MemberPickerFragment(
-                        teamMemberLimit =
-                        if (isSix) {
-                            6
-                        } else {
-                            7
-                        },
-                        entry = LinkedList<Player>().apply {
-                            viewModel.players.value?.let { players ->
-                                players.forEach { player ->
-                                    if (player.team == 0) {
-                                        add(player)
-                                    }
-                                }
-                            }
-                        },
-                        teamALeader = viewModel.teamALeader!!,
-                        teamBLeader = viewModel.teamBLeader!!,
-                        viewModel.teamA.ifEmpty {
-                            null
-                        } as MutableList<Player>?,
-                        viewModel.teamB.ifEmpty {
-                            null
-                        } as MutableList<Player>?,
-                        onClickCancel = {
-                            viewModel.resetTeam()
-                        },
-                        onResult = {
-                            viewModel.setATeam(it.first)
-                            viewModel.setBTeam(it.second)
-
-                            playColorAnimation(
-                                binding.btnConfirmTeam,
-                                getColor(R.color.gray),
-                                getColor(R.color.point_color)
-                            )
-                        }).show(childFragmentManager, "member_picker")
-                }
-            }
-        }
-    }
-
-    fun confirmTeams(view: View) {
+    fun onClickConfirmTeams(view: View) {
 
     }
 
@@ -278,43 +154,62 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
             onClickConfirm = {
                 viewModel.resetTeam()
 
-                when (sequence) {
-                    Sequence.WAY -> {
-                        if (isRandom) {
-                            isRandom = false
-                            resetButtonColor(binding.btnRandom)
-                        } else if (isDirect) {
-                            isDirect = false
-                            resetButtonColor(binding.btnDirect)
-                        }
-
-                        if (isSix) {
-                            isSix = false
-                            resetButtonColor(binding.btn6Vs6)
-                        } else if (isSeven) {
-                            isSeven = false
-                            resetButtonColor(binding.btn7Vs7)
-                        }
-                    }
-                    Sequence.MEMBER_COUNT -> {
-                        if (isSix) {
-                            isSix = false
-                            resetButtonColor(binding.btn6Vs6)
-                        } else if (isSeven) {
-                            isSeven = false
-                            resetButtonColor(binding.btn7Vs7)
-                        }
-                    }
-                }
+//                when (sequence) {
+//                    Sequence.WAY -> {
+//                        if (isRandom) {
+//                            isRandom = false
+//                            resetButtonColor(binding.btnRandom)
+//                        } else if (isDirect) {
+//                            isDirect = false
+//                            resetButtonColor(binding.btnPicking)
+//                        }
+//
+//                        if (isSix) {
+//                            isSix = false
+//                            resetButtonColor(binding.btn6Vs6)
+//                        } else if (isSeven) {
+//                            isSeven = false
+//                            resetButtonColor(binding.btn7Vs7)
+//                        }
+//                    }
+//                    Sequence.MEMBER_COUNT -> {
+//                        if (isSix) {
+//                            isSix = false
+//                            resetButtonColor(binding.btn6Vs6)
+//                        } else if (isSeven) {
+//                            isSeven = false
+//                            resetButtonColor(binding.btn7Vs7)
+//                        }
+//                    }
+//                }
             }
         ).show(childFragmentManager, "rebuild")
     }
 
-    private fun resetButtonColor(view: View) {
-        playColorAnimation(view, getColor(R.color.point_color), getColor(R.color.white))
-        (view as TextView).setTextColor(getColor(R.color.gray))
+    override fun setObserver() {
+        viewModel.isRandom.onChanged { setColorBySelection(binding.btnRandom, it) }
+        viewModel.isPicking.onChanged { setColorBySelection(binding.btnPicking, it) }
+        viewModel.isSix.onChanged { setColorBySelection(binding.btn6Vs6, it) }
+        viewModel.isSeven.onChanged { setColorBySelection(binding.btn7Vs7, it) }
+    }
+
+    private inline fun LiveData<Boolean>.onChanged(crossinline onChanged: (Boolean) -> Unit) {
+        this.observe(viewLifecycleOwner) {
+            onChanged(it)
+        }
+    }
+
+    private fun setColorBySelection(view: View, boolean: Boolean) {
+        if (boolean) {
+            playColorAnimation(view, getColor(R.color.white), getColor(R.color.point_color))
+            (view as TextView).setTextColor(getColor(R.color.white))
+        } else {
+            playColorAnimation(view, getColor(R.color.point_color), getColor(R.color.white))
+            (view as TextView).setTextColor(getColor(R.color.gray))
+        }
     }
 }
+
 
 enum class Sequence {
     WAY,

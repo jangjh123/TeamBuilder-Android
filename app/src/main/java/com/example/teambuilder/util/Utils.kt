@@ -26,3 +26,9 @@ inline fun LiveData<Boolean>.isTrue(crossinline isTrue: () -> Unit) {
         isTrue()
     }
 }
+
+inline fun <T> ArrayList<T>.isNotEmpty(crossinline isNotEmpty: () -> Unit) {
+    if (this.isNotEmpty()) {
+        isNotEmpty()
+    }
+}

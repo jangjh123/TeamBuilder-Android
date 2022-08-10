@@ -13,6 +13,7 @@ import com.example.teambuilder.ui.component.dialog.ChoiceDialog
 import com.example.teambuilder.ui.component.dialog.DefaultDialog
 import com.example.teambuilder.ui.component.dialog.BuilderDialog
 import com.example.teambuilder.util.Utils.resetTeam
+import com.example.teambuilder.util.isNotEmpty
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -58,8 +59,8 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
     }
 
     fun onClickALeader(view: View) {
-        viewModel.players.value?.let {
-            ChoiceDialog(it, "A팀 리더 선택") {
+        viewModel.players.isNotEmpty {
+            ChoiceDialog(viewModel.players, "A팀 리더 선택") {
                 binding.tvALeader.apply {
                     text = it.name
                     setTextColor(getColor(R.color.point_color))
@@ -70,8 +71,8 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
     }
 
     fun onClickBLeader(view: View) {
-        viewModel.players.value?.let {
-            ChoiceDialog(it, "B팀 리더 선택") {
+        viewModel.players.isNotEmpty {
+            ChoiceDialog(viewModel.players, "B팀 리더 선택") {
                 binding.tvBLeader.apply {
                     text = it.name
                     setTextColor(getColor(R.color.point_color))
@@ -144,7 +145,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
                 memberCount,
                 viewModel.teamALeader.value!!,
                 viewModel.teamBLeader.value!!,
-                viewModel.players.value!!,
+                viewModel.players,
                 onResult = {
                     playColorAnimation(
                         binding.btnConfirmTeam,
@@ -161,7 +162,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
                 memberCount,
                 viewModel.teamALeader.value!!,
                 viewModel.teamBLeader.value!!,
-                viewModel.players.value!!,
+                viewModel.players!!,
                 onResult = {
                     playColorAnimation(
                         binding.btnConfirmTeam,
@@ -318,7 +319,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
             null,
             onClickConfirm = {
                 resetTeam(
-                    viewModel.players.value!!,
+                    viewModel.players,
                     viewModel.teamALeader.value!!,
                     viewModel.teamBLeader.value!!
                 )

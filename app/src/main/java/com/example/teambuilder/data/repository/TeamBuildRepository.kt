@@ -1,37 +1,35 @@
 package com.example.teambuilder.data.repository
 
 import com.example.teambuilder.data.model.Player
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 
 class TeamBuildRepository {
     private val reference = FirebaseDatabase.getInstance().getReference("PLAYER")
 
-    fun getAllPlayer(onResult: (List<Player>) -> Unit) {
-        reference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val players = ArrayList<Player>()
-                snapshot.children.forEach {
-                    players.add(
-                        Player(
-                            index = it.child("index").getValue<Int>()!!,
-                            name = it.key!!,
-                            affiliation = it.child("affiliation").value.toString(),
-                            isSuperPlayer = it.child("isSP").getValue<Boolean>()!!
-                        )
-                    )
+    suspend fun getAllPlayer(): Flow<Player> = callbackFlow {
+        reference.get().addOnSuccessListener { snapshot ->
+            snapshot.children.forEach { player ->
+                launch {
+                    send(Player(
+                        index = player.child("index").getValue<Int>()!!,
+                        name = player.key!!,
+                        affiliation = player.child("affiliation").value.toString(),
+                        isSuperPlayer = player.child("isSP").getValue<Boolean>()!!
+                    ))
                 }
 
-                onResult(players)
             }
+        }
 
-            override fun onCancelled(error: DatabaseError) {
+        reference.get().addOnCanceledListener {
+            close()
+        }
 
-            }
-
-        })
+        awaitClose()
     }
 }

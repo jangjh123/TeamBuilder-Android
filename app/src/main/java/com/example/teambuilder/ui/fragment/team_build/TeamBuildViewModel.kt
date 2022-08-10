@@ -1,5 +1,6 @@
 package com.example.teambuilder.ui.fragment.team_build
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,8 @@ import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.data.repository.TeamBuildRepository
 import com.example.teambuilder.util.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,21 +17,19 @@ class TeamBuildViewModel @Inject constructor(
     private val repository: TeamBuildRepository
 ) : ViewModel() {
 
-    private fun getPlayers() {
-        repository.getAllPlayer { list ->
-            _players.postValue(
-                list.sortedWith(compareByDescending<Player> { it.isSuperPlayer }.thenBy { it.index })
-            )
+    val players = ArrayList<Player>()
+
+    private suspend fun getPlayers() {
+        repository.getAllPlayer().collectLatest {
+            players.add(it)
         }
     }
 
     init {
-        getPlayers()
+        CoroutineScope(Dispatchers.IO).launch {
+            getPlayers()
+        }
     }
-
-    private val _players = MutableLiveData<List<Player>>()
-    val players: LiveData<List<Player>>
-        get() = _players
 
     private val _teamALeader = MutableLiveData<Player>()
     val teamALeader: LiveData<Player>

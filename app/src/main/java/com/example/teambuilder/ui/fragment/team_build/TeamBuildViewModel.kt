@@ -6,10 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.data.repository.TeamBuildRepository
+import com.example.teambuilder.util.SingleLiveEvent
 import com.example.teambuilder.util.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,10 +23,14 @@ class TeamBuildViewModel @Inject constructor(
 
     val players = ArrayList<Player>()
 
-    private suspend fun getPlayers() {
-        repository.getAllPlayer().collectLatest {
-            players.add(it)
-        }
+    suspend fun getPlayers() {
+        repository.getAllPlayer()
+            .catch {
+                errorInfo.call()
+            }
+            .collectLatest {
+                players.add(it)
+            }
     }
 
     init {
@@ -70,6 +78,8 @@ class TeamBuildViewModel @Inject constructor(
     private val _isConfirmButtonAvailable = MutableLiveData<Boolean>()
     val isConfirmButtonAvailable: LiveData<Boolean>
         get() = _isConfirmButtonAvailable
+
+    val errorInfo = SingleLiveEvent<Unit>()
 
     fun setRandom(boolean: Boolean) {
         if (boolean) {

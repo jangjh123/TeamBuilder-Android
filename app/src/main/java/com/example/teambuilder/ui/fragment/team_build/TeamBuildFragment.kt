@@ -15,6 +15,9 @@ import com.example.teambuilder.ui.component.dialog.BuilderDialog
 import com.example.teambuilder.util.Utils.resetTeam
 import com.example.teambuilder.util.isNotEmpty
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -296,6 +299,24 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
                 )
                 setTouchable(binding.btnConfirmTeam, false)
             }
+        }
+
+        viewModel.errorInfo.observe(viewLifecycleOwner) {
+            DefaultDialog(
+                "네트워크 오류",
+                "인터넷 연결 상태를 확인 후\n다시 시도해주세요.",
+                "종료",
+                "재시도",
+                null,
+                onClickCancel = {
+                    requireActivity().finish()
+                },
+                onClickConfirm = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.getPlayers()
+                    }
+                }
+            ).show(childFragmentManager, "error_occurred")
         }
     }
 

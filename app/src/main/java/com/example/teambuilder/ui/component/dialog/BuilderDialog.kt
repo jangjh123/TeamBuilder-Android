@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
-import com.example.teambuilder.databinding.FragmentMemberPickerBinding
-import com.example.teambuilder.ui.component.adapter.MemberPickerAdapter
+import com.example.teambuilder.databinding.DialogBuilderBinding
+import com.example.teambuilder.ui.component.adapter.TeamBuilderAdapter
 import com.example.teambuilder.util.Utils.resetTeam
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -21,20 +21,21 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 
-class MemberPickerFragment(
+class BuilderDialog(
+    private val isRandom: Boolean,
     private val memberCount: Int,
     private val teamALeader: Player,
     private val teamBLeader: Player,
     private val players: List<Player>,
     private inline val onResult: (Pair<List<Player>, List<Player>>) -> Unit
 ) : BottomSheetDialogFragment() {
-    private lateinit var binding: FragmentMemberPickerBinding
+    private lateinit var binding: DialogBuilderBinding
 
-    private val adapterA = MemberPickerAdapter(onClickRemove = {
+    private val adapterA = TeamBuilderAdapter(onClickRemove = {
         removePlayer(it, true)
     }, teamALeader)
 
-    private val adapterB = MemberPickerAdapter(onClickRemove = {
+    private val adapterB = TeamBuilderAdapter(onClickRemove = {
         removePlayer(it, false)
     }, teamBLeader)
 
@@ -62,9 +63,9 @@ class MemberPickerFragment(
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_member_picker, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.dialog_builder, container, false)
         isCancelable = false
-        binding.fragment = this@MemberPickerFragment
+        binding.fragment = this@BuilderDialog
         binding.adapterA = adapterA
         binding.adapterB = adapterB
 
@@ -79,34 +80,42 @@ class MemberPickerFragment(
     }
 
     private fun initTeams() {
-        teamA = ArrayList<Player>().apply {
-            players.forEach {
-                if (it.team == 1) {
-                    add(it)
-                }
-            }
-        }
-        adapterA.setList(teamA)
-        teamB = ArrayList<Player>().apply {
-            players.forEach {
-                if (it.team == 2) {
-                    add(it)
-                }
-            }
-        }
-        adapterB.setList(teamB)
+        if (isRandom) {
 
-        if (teamA.size == memberCount && teamB.size == memberCount) {
-            isTeamAFull = true
-            isTeamBFull = true
+        } else {
+            teamA = ArrayList<Player>().apply {
+                players.forEach {
+                    if (it.team == 1) {
+                        add(it)
+                    }
+                }
+            }
+            adapterA.setList(teamA)
+            teamB = ArrayList<Player>().apply {
+                players.forEach {
+                    if (it.team == 2) {
+                        add(it)
+                    }
+                }
+            }
+            adapterB.setList(teamB)
+
+            if (teamA.size == memberCount && teamB.size == memberCount) {
+                isTeamAFull = true
+                isTeamBFull = true
+            }
         }
     }
 
     private fun initEntry() {
-        entry = LinkedList<Player>().apply {
-            players.forEach {
-                if (it.team == 0) {
-                    offer(it)
+        if (isRandom) {
+
+        } else {
+            entry = LinkedList<Player>().apply {
+                players.forEach {
+                    if (it.team == 0) {
+                        offer(it)
+                    }
                 }
             }
         }

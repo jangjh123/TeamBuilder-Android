@@ -11,7 +11,7 @@ import com.example.teambuilder.databinding.FragmentTeamBuildBinding
 import com.example.teambuilder.ui.BaseFragment
 import com.example.teambuilder.ui.component.dialog.ChoiceDialog
 import com.example.teambuilder.ui.component.dialog.DefaultDialog
-import com.example.teambuilder.ui.component.dialog.MemberPickerFragment
+import com.example.teambuilder.ui.component.dialog.BuilderDialog
 import com.example.teambuilder.util.Utils.resetTeam
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -130,16 +130,35 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
     }
 
     fun onClickSetMembers(view: View) {
-        viewModel.isRandom.isTrue {
+        var memberCount = 0
+        viewModel.isSix.isTrue {
+            memberCount = 6
+        }
+        viewModel.isSeven.isTrue {
+            memberCount = 7
+        }
 
+        viewModel.isRandom.isTrue {
+            BuilderDialog(
+                true,
+                memberCount,
+                viewModel.teamALeader.value!!,
+                viewModel.teamBLeader.value!!,
+                viewModel.players.value!!,
+                onResult = {
+                    playColorAnimation(
+                        binding.btnConfirmTeam,
+                        getColor(R.color.gray),
+                        getColor(R.color.point_color)
+                    )
+                    isBuiltTeamsExist = true
+                }
+            ).show(childFragmentManager, "random_builder")
         }
         viewModel.isPicking.isTrue {
-            MemberPickerFragment(
-                memberCount = if (viewModel.isSix.value == true) {
-                    6
-                } else {
-                    7
-                },
+            BuilderDialog(
+                false,
+                memberCount,
                 viewModel.teamALeader.value!!,
                 viewModel.teamBLeader.value!!,
                 viewModel.players.value!!,

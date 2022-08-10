@@ -10,9 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : Fragment() {
@@ -29,52 +27,9 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : F
         return binding.root
     }
 
-//    protected open fun showProgress() {
-//        try {
-//            progressFragment.show(childFragmentManager, "progress")
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//    }
-//
-//    protected open fun dismissProgress() {
-//        try {
-//            progressFragment.dismiss()
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//
-//    }
-
-//    protected open fun isProgressShowing(): Boolean {
-//        return progressFragment.isVisible
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        dismissProgress()
-//    }
-
     protected open fun setObserver() {
 
     }
-
-//    protected open fun setOnFailureView(failureView: View, successView: View) {
-//        failureView.visibility = View.VISIBLE
-//        successView.visibility = View.GONE
-//        dismissProgress()
-//    }
-//
-//    protected open fun setOnSuccessView(successView: View, failureView: View) {
-//        successView.visibility = View.VISIBLE
-//        failureView.visibility = View.GONE
-//    }
-//
-//    protected open fun onClickRetryButton(successView: View, failureView: View) {
-//        setOnSuccessView(successView, failureView)
-//        showProgress()
-//        startProcess()
-//    }
 
     protected open fun proceed() {
     }

@@ -2,17 +2,15 @@ package com.example.teambuilder.ui.component.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teambuilder.data.model.Player
-import com.example.teambuilder.databinding.ItemMemberPickerBinding
-import com.example.teambuilder.util.GenericDiffUtil
+import com.example.teambuilder.databinding.ItemTeamBuildBinding
 
-class MemberPickerAdapter(
+class TeamBuilderAdapter(
     private inline val onClickRemove: (Player) -> Unit,
     private val teamLeader: Player
 ) :
-    RecyclerView.Adapter<MemberPickerAdapter.ViewHolder>() {
+    RecyclerView.Adapter<TeamBuilderAdapter.ViewHolder>() {
     private var mList = ArrayList<Player>()
 
     fun setList(list: ArrayList<Player>) {
@@ -32,7 +30,7 @@ class MemberPickerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            ItemMemberPickerBinding.inflate(
+            ItemTeamBuildBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -48,7 +46,7 @@ class MemberPickerAdapter(
         return mList.size
     }
 
-    inner class ViewHolder(private val binding: ItemMemberPickerBinding) :
+    inner class ViewHolder(private val binding: ItemTeamBuildBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(player: Player) {
             with(binding) {

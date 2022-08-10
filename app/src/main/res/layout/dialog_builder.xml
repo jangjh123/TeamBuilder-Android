@@ -6,21 +6,20 @@
 
         <variable
             name="fragment"
-            type="com.example.teambuilder.ui.component.dialog.MemberPickerFragment" />
+            type="com.example.teambuilder.ui.component.dialog.BuilderDialog" />
 
         <variable
             name="adapterA"
-            type="com.example.teambuilder.ui.component.adapter.MemberPickerAdapter" />
+            type="com.example.teambuilder.ui.component.adapter.TeamBuilderAdapter" />
 
         <variable
             name="adapterB"
-            type="com.example.teambuilder.ui.component.adapter.MemberPickerAdapter" />
+            type="com.example.teambuilder.ui.component.adapter.TeamBuilderAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:layout_marginTop="40dp"
         android:background="@drawable/box_radius_white">
 

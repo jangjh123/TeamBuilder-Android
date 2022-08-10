@@ -12,9 +12,25 @@ class MemberPickerAdapter(
     private inline val onClickRemove: (Player) -> Unit,
     private val teamLeader: Player
 ) :
-    ListAdapter<Player, RecyclerView.ViewHolder>(GenericDiffUtil()) {
+    RecyclerView.Adapter<MemberPickerAdapter.ViewHolder>() {
+    private var mList = ArrayList<Player>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    fun setList(list: ArrayList<Player>) {
+        mList = list
+    }
+
+    fun addPlayer(player: Player) {
+        mList.add(player)
+        this.notifyItemInserted(mList.size - 1)
+    }
+
+    fun removePlayer(player: Player) {
+        val position = mList.indexOf(player)
+        mList.remove(player)
+        this.notifyItemRemoved(position)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemMemberPickerBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -24,11 +40,12 @@ class MemberPickerAdapter(
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) {
-            val news = getItem(position)
-            holder.bind(news)
-        }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(mList[position])
+    }
+
+    override fun getItemCount(): Int {
+        return mList.size
     }
 
     inner class ViewHolder(private val binding: ItemMemberPickerBinding) :

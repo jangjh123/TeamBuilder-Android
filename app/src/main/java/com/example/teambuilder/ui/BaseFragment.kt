@@ -87,4 +87,11 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : F
             addUpdateListener { animator -> view.setBackgroundColor(animator.animatedValue as Int) }
         }.start()
     }
+
+    inline fun <T> LiveData<T>.onChanged(crossinline onChanged: (T) -> Unit) {
+        this.observe(viewLifecycleOwner) {
+            onChanged(it)
+        }
+    }
 }
+

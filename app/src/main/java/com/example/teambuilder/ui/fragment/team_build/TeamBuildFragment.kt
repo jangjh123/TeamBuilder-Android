@@ -1,49 +1,34 @@
 package com.example.teambuilder.ui.fragment.team_build
 
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils.loadAnimation
 import android.widget.TextView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import com.example.teambuilder.R
-import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.databinding.FragmentTeamBuildBinding
 import com.example.teambuilder.ui.BaseFragment
 import com.example.teambuilder.ui.component.dialog.ChoiceDialog
 import com.example.teambuilder.ui.component.dialog.DefaultDialog
 import com.example.teambuilder.ui.component.dialog.MemberPickerFragment
+import com.example.teambuilder.util.Utils.resetTeam
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 
 @AndroidEntryPoint
 class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragment_team_build) {
     private val viewModel: TeamBuildViewModel by viewModels()
+    private var isSelectingMethodVisible = false
+    private var isMemberCountVisible = false
+    private var isBuildButtonVisible = false
+    private var isConfirmButtonAvailable = false
+    private var isBuiltTeamsExist = false
 
-    private val fadeIn1 = AlphaAnimation(0f, 1f).apply {
-        interpolator = AccelerateDecelerateInterpolator()
-        duration = 1000
-    }
-
-    private val fadeIn2 = AlphaAnimation(0f, 0.1f).apply {
-        interpolator = AccelerateDecelerateInterpolator()
-        fillAfter = true
-        startOffset = 1000
-        duration = 1000
-    }
-
-    private val fadeIn3 = AlphaAnimation(0.1f, 1f).apply {
-        interpolator = AccelerateDecelerateInterpolator()
-        fillAfter = true
-        duration = 1000
-    }
-
-    private val fadeIn4 = AlphaAnimation(0.1f, 1f).apply {
-        interpolator = AccelerateDecelerateInterpolator()
-        fillAfter = true
-        duration = 1000
-    }
+    private val fadeIn1: Animation by lazy { loadAnimation(requireContext(), R.anim.fade_in_1) }
+    private val fadeIn2: Animation by lazy { loadAnimation(requireContext(), R.anim.fade_in_2) }
+    private val fadeIn3: Animation by lazy { loadAnimation(requireContext(), R.anim.fade_in_3) }
+    private val fadeIn4: Animation by lazy { loadAnimation(requireContext(), R.anim.fade_in_4) }
+    private val fadeIn5: Animation by lazy { loadAnimation(requireContext(), R.anim.fade_in_5) }
 
     override fun proceed() {
         binding.fragment = this@TeamBuildFragment
@@ -55,147 +40,163 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
         binding.btnTeamALeader.startAnimation(fadeIn1)
         binding.btnTeamBLeader.startAnimation(fadeIn1)
 
-        binding.textView4.startAnimation(fadeIn2)
-        binding.rgMemberSelectWay.startAnimation(fadeIn2)
-        binding.textView2.startAnimation(fadeIn2)
+        binding.tvSelectingMethod.startAnimation(fadeIn2)
+        binding.rgMemberSelectingMethod.startAnimation(fadeIn2)
+        binding.tvMemberCount.startAnimation(fadeIn2)
         binding.rgNVsN.startAnimation(fadeIn2)
-        binding.btnSelectTeamMembers.startAnimation(fadeIn2)
+        binding.btnBuildTeam.startAnimation(fadeIn2)
     }
 
     fun onClickALeader(view: View) {
-        ChoiceDialog(viewModel.players.value!!, "A팀 리더 선택") {
-            binding.tvALeader.apply {
-                text = it.name
-                setTextColor(getColor(R.color.point_color))
-                viewModel.setALeader(it)
-            }
-        }.show(childFragmentManager, "set_a_leader")
+        viewModel.players.value?.let {
+            ChoiceDialog(it, "A팀 리더 선택") {
+                binding.tvALeader.apply {
+                    text = it.name
+                    setTextColor(getColor(R.color.point_color))
+                    viewModel.setALeader(it)
+                }
+            }.show(childFragmentManager, "set_a_leader")
+        }
     }
 
     fun onClickBLeader(view: View) {
-        ChoiceDialog(viewModel.players.value!!, "B팀 리더 선택") {
-            binding.tvBLeader.apply {
-                text = it.name
-                setTextColor(getColor(R.color.point_color))
-                viewModel.setBLeader(it)
-            }
-        }.show(childFragmentManager, "set_b_leader")
+        viewModel.players.value?.let {
+            ChoiceDialog(it, "B팀 리더 선택") {
+                binding.tvBLeader.apply {
+                    text = it.name
+                    setTextColor(getColor(R.color.point_color))
+                    viewModel.setBLeader(it)
+                }
+            }.show(childFragmentManager, "set_b_leader")
+        }
     }
 
-    fun onClickRandom(view: View) = viewModel.setRandom()
-    fun onClickPicking(view: View) = viewModel.setPicking()
-    fun onClickSix(view: View) = viewModel.setSix()
-    fun onClickSeven(view: View) = viewModel.setSeven()
+    fun onClickRandom(view: View) {
+        if (!isBuiltTeamsExist) {
+            if (isSelectingMethodVisible) {
+                viewModel.setRandom()
+            }
+        } else {
+
+        }
+    }
+
+    fun onClickPicking(view: View) {
+        if (!isBuiltTeamsExist) {
+            if (isSelectingMethodVisible) {
+                viewModel.setPicking()
+            }
+        } else {
+
+        }
+    }
+
+    fun onClickSix(view: View) {
+        if (!isBuiltTeamsExist) {
+            if (isMemberCountVisible) {
+                viewModel.setSix()
+            }
+        } else {
+
+        }
+    }
+
+    fun onClickSeven(view: View) {
+        if (!isBuiltTeamsExist) {
+            if (isMemberCountVisible) {
+                viewModel.setSeven()
+            }
+        } else {
+
+        }
+    }
 
     fun onClickSetMembers(view: View) {
-//        if (isSetTeamMembersVisible) {
-//            when {
-//                isRandom -> {
-//
-//                }
-//                isDirect -> {
-//                    MemberPickerFragment(
-//                        teamMemberLimit =
-//                        if (isSix) {
-//                            6
-//                        } else {
-//                            7
-//                        },
-//                        entry = LinkedList<Player>().apply {
-//                            viewModel.players.value?.let { players ->
-//                                players.forEach { player ->
-//                                    if (player.team == 0) {
-//                                        add(player)
-//                                    }
-//                                }
-//                            }
-//                        },
-//                        teamALeader = viewModel.aLeader.value!!,
-//                        teamBLeader = viewModel.bLeader.value!!,
-//                        viewModel.teamA.ifEmpty {
-//                            null
-//                        } as MutableList<Player>?,
-//                        viewModel.teamB.ifEmpty {
-//                            null
-//                        } as MutableList<Player>?,
-//                        onClickCancel = {
-//                            viewModel.resetTeam()
-//                        },
-//                        onResult = {
-//                            viewModel.setATeam(it.first)
-//                            viewModel.setBTeam(it.second)
-//
-//                            playColorAnimation(
-//                                binding.btnConfirmTeam,
-//                                getColor(R.color.gray),
-//                                getColor(R.color.point_color)
-//                            )
-//                        }).show(childFragmentManager, "member_picker")
-//                }
-//            }
-//        }
+        if (isBuildButtonVisible) {
+            when {
+                viewModel.isRandom.value == true -> {
+
+                }
+                viewModel.isPicking.value == true -> {
+                    MemberPickerFragment(
+                        memberCount = if (viewModel.isSix.value == true) {
+                            6
+                        } else {
+                            7
+                        },
+                        viewModel.aLeader.value!!,
+                        viewModel.bLeader.value!!,
+                        viewModel.players.value!!,
+                        onResult = {
+                            playColorAnimation(
+                                binding.btnConfirmTeam,
+                                getColor(R.color.gray),
+                                getColor(R.color.point_color)
+                            )
+                            isBuiltTeamsExist = true
+                        }
+                    ).show(childFragmentManager, "member_picker")
+                }
+            }
+        }
     }
 
     fun onClickConfirmTeams(view: View) {
 
     }
 
-    private fun isTeamsExist(): Boolean =
-        viewModel.teamA.isNotEmpty() || viewModel.teamB.isNotEmpty()
-
-    private fun rebuildTeam(sequence: Sequence) {
-        DefaultDialog(
-            "팀 재구성",
-            "이미 구성된 팀이 있습니다.\n재구성을 진행합니다.",
-            "취소",
-            "확인",
-            null,
-            null,
-            onClickConfirm = {
-                viewModel.resetTeam()
-
-//                when (sequence) {
-//                    Sequence.WAY -> {
-//                        if (isRandom) {
-//                            isRandom = false
-//                            resetButtonColor(binding.btnRandom)
-//                        } else if (isDirect) {
-//                            isDirect = false
-//                            resetButtonColor(binding.btnPicking)
-//                        }
-//
-//                        if (isSix) {
-//                            isSix = false
-//                            resetButtonColor(binding.btn6Vs6)
-//                        } else if (isSeven) {
-//                            isSeven = false
-//                            resetButtonColor(binding.btn7Vs7)
-//                        }
-//                    }
-//                    Sequence.MEMBER_COUNT -> {
-//                        if (isSix) {
-//                            isSix = false
-//                            resetButtonColor(binding.btn6Vs6)
-//                        } else if (isSeven) {
-//                            isSeven = false
-//                            resetButtonColor(binding.btn7Vs7)
-//                        }
-//                    }
-//                }
-            }
-        ).show(childFragmentManager, "rebuild")
-    }
-
     override fun setObserver() {
-        viewModel.isRandom.onChanged { setColorBySelection(binding.btnRandom, it) }
-        viewModel.isPicking.onChanged { setColorBySelection(binding.btnPicking, it) }
-        viewModel.isSix.onChanged { setColorBySelection(binding.btn6Vs6, it) }
-        viewModel.isSeven.onChanged { setColorBySelection(binding.btn7Vs7, it) }
-    }
+        viewModel.aLeader.onChanged {
+            if (viewModel.bLeader.value != null) {
+                if (!isSelectingMethodVisible) {
+                    isSelectingMethodVisible = true
+                    binding.tvSelectingMethod.startAnimation(fadeIn3)
+                    binding.rgMemberSelectingMethod.startAnimation(fadeIn3)
+                }
+            }
+        }
+        viewModel.bLeader.onChanged {
+            if (viewModel.aLeader.value != null) {
+                if (!isSelectingMethodVisible) {
+                    isSelectingMethodVisible = true
+                    binding.tvSelectingMethod.startAnimation(fadeIn3)
+                    binding.rgMemberSelectingMethod.startAnimation(fadeIn3)
+                }
+            }
+        }
 
-    private inline fun LiveData<Boolean>.onChanged(crossinline onChanged: (Boolean) -> Unit) {
-        this.observe(viewLifecycleOwner) {
-            onChanged(it)
+        viewModel.isRandom.onChanged {
+            setColorBySelection(binding.btnRandom, it)
+            if (!isMemberCountVisible) {
+                isMemberCountVisible = true
+                binding.tvMemberCount.startAnimation(fadeIn4)
+                binding.rgNVsN.startAnimation(fadeIn4)
+            }
+        }
+
+        viewModel.isPicking.onChanged {
+            setColorBySelection(binding.btnPicking, it)
+            if (!isMemberCountVisible) {
+                isMemberCountVisible = true
+                binding.tvMemberCount.startAnimation(fadeIn4)
+                binding.rgNVsN.startAnimation(fadeIn4)
+            }
+        }
+
+        viewModel.isSix.onChanged {
+            setColorBySelection(binding.btn6Vs6, it)
+            if (!isBuildButtonVisible) {
+                isBuildButtonVisible = true
+                binding.btnBuildTeam.startAnimation(fadeIn5)
+            }
+        }
+
+        viewModel.isSeven.onChanged {
+            setColorBySelection(binding.btn7Vs7, it)
+            if (!isBuildButtonVisible) {
+                isBuildButtonVisible = true
+                binding.btnBuildTeam.startAnimation(fadeIn5)
+            }
         }
     }
 

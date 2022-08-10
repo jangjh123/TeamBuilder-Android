@@ -5,14 +5,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.teambuilder.ui.component.adapter.MemberPickerAdapter
 
 object BindingAdapter {
 
     @JvmStatic
-    @BindingAdapter("setAdapter")
-    fun setAdapter(
+    @BindingAdapter("setListAdapter")
+    fun setListAdapter(
         view: RecyclerView,
         adapter: ListAdapter<Any, RecyclerView.ViewHolder>
+    ) {
+        view.adapter = adapter
+    }
+
+    @JvmStatic
+    @BindingAdapter("setRecyclerViewAdapter")
+    fun setRecyclerViewAdapter(
+        view: RecyclerView,
+        adapter: RecyclerView.Adapter<MemberPickerAdapter.ViewHolder>
     ) {
         view.adapter = adapter
     }

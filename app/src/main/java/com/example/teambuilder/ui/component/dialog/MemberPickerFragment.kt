@@ -1,6 +1,5 @@
 package com.example.teambuilder.ui.component.dialog
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,36 +10,51 @@ import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.databinding.FragmentMemberPickerBinding
 import com.example.teambuilder.ui.component.adapter.MemberPickerAdapter
+import com.example.teambuilder.util.Utils.resetTeam
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MemberPickerFragment(
-    private val teamMemberLimit: Int,
-    private val entry: Queue<Player>,
+    private val memberCount: Int,
     private val teamALeader: Player,
     private val teamBLeader: Player,
-    private val teamA: MutableList<Player>?,
-    private val teamB: MutableList<Player>?,
-    private inline val onClickCancel: () -> Unit,
+    private val players: List<Player>,
     private inline val onResult: (Pair<List<Player>, List<Player>>) -> Unit
 ) : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentMemberPickerBinding
+
     private val adapterA = MemberPickerAdapter(onClickRemove = {
         removePlayer(it, true)
     }, teamALeader)
+
     private val adapterB = MemberPickerAdapter(onClickRemove = {
         removePlayer(it, false)
     }, teamBLeader)
 
     private var currentPlayer = Player(0, "", "", false)
-    private val teamAList = teamA ?: mutableListOf(teamALeader)
-    private val teamBList = teamB ?: mutableListOf(teamBLeader)
+
+    private lateinit var teamA: ArrayList<Player>
+    private lateinit var teamB: ArrayList<Player>
+    private lateinit var entry: Queue<Player>
+
     private var isTeamAFull = false
     private var isTeamBFull = false
 
-    // todo 필요없는 변수 있는지 확인 후 리팩토링
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = BottomSheetDialog(requireContext(), theme)
+        dialog.behavior.apply {
+            state = BottomSheetBehavior.STATE_EXPANDED
+            isDraggable = false
+        }
+        return dialog
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,127 +67,186 @@ class MemberPickerFragment(
         binding.fragment = this@MemberPickerFragment
         binding.adapterA = adapterA
         binding.adapterB = adapterB
-        adapterA.submitList(teamA ?: listOf(teamALeader))
-        adapterB.submitList(teamB ?: listOf(teamBLeader))
 
+        initTeams()
         initEntry()
         initView()
         return binding.root
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = BottomSheetDialog(requireContext(), theme)
-        dialog.behavior.apply {
-            state = BottomSheetBehavior.STATE_EXPANDED
-            isDraggable = false
-        }
-        return dialog
     }
 
     override fun getTheme(): Int {
         return R.style.CustomBottomSheetDialogTheme
     }
 
+    private fun initTeams() {
+        teamA = ArrayList<Player>().apply {
+            players.forEach {
+                if (it.team == 1) {
+                    add(it)
+                }
+            }
+        }
+        adapterA.setList(teamA)
+        teamB = ArrayList<Player>().apply {
+            players.forEach {
+                if (it.team == 2) {
+                    add(it)
+                }
+            }
+        }
+        adapterB.setList(teamB)
+    }
+
     private fun initEntry() {
-        entry.remove(teamALeader)
-        entry.remove(teamBLeader)
+        entry = LinkedList<Player>().apply {
+            players.forEach {
+                if (it.team == 0) {
+                    offer(it)
+                }
+            }
+        }
     }
 
     private fun initView() {
-        binding.tvTeamAMemberCnt.text = "$teamMemberLimit / ${teamA?.size ?: 1}"
-        binding.tvTeamBMemberCnt.text = "$teamMemberLimit / ${teamB?.size ?: 1}"
-
-        if (teamA?.isNotEmpty() == true) {
-            isTeamAFull = true
-            isTeamBFull = true
-        }
+        binding.tvTeamAMemberCnt.text = "$memberCount / ${teamA?.size ?: 1}"
+        binding.tvTeamBMemberCnt.text = "$memberCount / ${teamB?.size ?: 1}"
 
         pollAndSetView()
-        binding.btnTeamA.setOnClickListener {
-            if (!isTeamAFull) {
-                teamAList.add(currentPlayer)
-                adapterA.submitList(teamAList.toMutableList())
-                binding.tvTeamAMemberCnt.text = "$teamMemberLimit / ${teamAList.size}"
-                binding.rvTeamA.smoothScrollToPosition(teamAList.size - 1)
-                currentPlayer.team = 1
-                pollAndSetView()
+    }
 
-                if (teamMemberLimit == teamAList.size) {
-                    isTeamAFull = true
-                }
-                checkBothTeamsAreFull()
-            }
-        }
-
-        binding.btnTeamB.setOnClickListener {
-            if (!isTeamBFull) {
-                teamBList.add(currentPlayer)
-                adapterB.submitList(teamBList.toMutableList())
-                binding.tvTeamBMemberCnt.text = "$teamMemberLimit / ${teamBList.size}"
-                binding.rvTeamB.smoothScrollToPosition(teamBList.size - 1)
-                currentPlayer.team = 2
-                pollAndSetView()
-
-                if (teamMemberLimit == teamBList.size) {
-                    isTeamBFull = true
-                }
-                checkBothTeamsAreFull()
-            }
-        }
-
-        binding.btnExcept.setOnClickListener {
+    fun onClickTeamA(view: View) {
+        if (teamA.size != memberCount) {
+            adapterA.addPlayer(currentPlayer)
+            binding.tvTeamAMemberCnt.text = "$memberCount / ${teamA.size}"
+            binding.rvTeamA.smoothScrollToPosition(teamA.size - 1)
+            currentPlayer.team = 2
             pollAndSetView()
-            checkEntryIsEmpty()
-        }
 
-        binding.btnCancel.setOnClickListener {
-            onClickCancel()
-            dismiss()
-        }
-
-        binding.btnConfirm.setOnClickListener {
+            if (memberCount == teamA.size) {
+                isTeamAFull = true
+            }
             checkBothTeamsAreFull()
+        } else {
+            showSnackBar("정원을 초과할 수 없습니다.")
         }
+    }
+
+    fun onClickTeamB(view: View) {
+        if (teamB.size != memberCount) {
+            adapterB.addPlayer(currentPlayer)
+            binding.tvTeamBMemberCnt.text = "$memberCount / ${teamB.size}"
+            binding.rvTeamB.smoothScrollToPosition(teamB.size - 1)
+            currentPlayer.team = 1
+            pollAndSetView()
+
+            if (memberCount == teamB.size) {
+                isTeamBFull = true
+            }
+            checkBothTeamsAreFull()
+        } else {
+            showSnackBar("정원을 초과할 수 없습니다.")
+        }
+    }
+
+    fun onClickExcept(view: View) {
+        pollAndSetView()
+    }
+
+    fun onClickCancel(view: View) {
+        DefaultDialog(
+            "팀 구성 취소",
+            "현재 구성 중인 팀이 삭제됩니다.",
+            "취소",
+            "확인",
+            null,
+            null,
+            onClickConfirm = {
+                resetTeam(players, teamALeader, teamBLeader)
+            },
+        ).show(childFragmentManager, "cancel_team_building")
+        dismiss()
+    }
+
+    fun onClickConfirm(view: View) {
+        checkBothTeamsAreFull()
     }
 
     private fun pollAndSetView() {
-        val polled = entry.poll()!!
-        binding.tvName.text = polled.name
-        binding.tvAffiliation.text = polled.affiliation
-        currentPlayer = polled
+        if (entry.size != 0) {
+            val polled = entry.poll()!!
+            binding.tvName.text = polled.name
+            binding.tvAffiliation.text = polled.affiliation
+            currentPlayer = polled
+        } else {
+            binding.tvName.text = ""
+            binding.tvAffiliation.text = ""
+            DefaultDialog(
+                "팀 재구성",
+                "엔트리가 비었습니다.\n팀을 재구성합니다.",
+                "취소",
+                "확인",
+                null,
+                null,
+                onClickConfirm = {
+                    resetTeam(players, teamALeader, teamBLeader)
+                    players.forEach {
+                        if (it != teamALeader && it != teamBLeader) {
+                            entry.offer(it)
+                        }
+                    }
+
+                    for (i in memberCount - 1 downTo 1) {
+                        teamA[i].team = 0
+                        teamB[i].team = 0
+                        adapterA.removePlayer(teamA[i])
+                        adapterB.removePlayer(teamB[i])
+                    }
+                    isTeamAFull = false
+                    isTeamBFull = false
+                    initView()
+                }
+            ).show(childFragmentManager, "entry_is_empty")
+        }
     }
 
     private fun removePlayer(player: Player, isTeamA: Boolean) {
-        if (isTeamA) {
-            teamAList.remove(player)
-            adapterA.submitList(teamAList.toMutableList())
-            binding.tvTeamAMemberCnt.text = "$teamMemberLimit / ${teamAList.size}"
-            isTeamAFull = false
+        if (player == teamALeader || player == teamBLeader) {
+            showSnackBar("리더는 삭제할 수 없습니다.")
         } else {
-            teamBList.remove(player)
-            adapterB.submitList(teamBList.toMutableList())
-            binding.tvTeamBMemberCnt.text = "$teamMemberLimit / ${teamBList.size}"
-            isTeamBFull = false
+            if (isTeamA) {
+                adapterA.removePlayer(player)
+                binding.tvTeamAMemberCnt.text = "$memberCount / ${teamA.size}"
+                isTeamAFull = false
+            } else {
+                adapterB.removePlayer(player)
+                binding.tvTeamBMemberCnt.text = "$memberCount / ${teamB.size}"
+                isTeamBFull = false
+            }
+            player.team = 0
+            entry.offer(player)
         }
-        entry.offer(player)
-    }
-
-    private fun checkEntryIsEmpty() {
-        // todo 엔트리가 비었는지
     }
 
     @Suppress("UNCHECKED_CAST")
     private fun checkBothTeamsAreFull() {
+        // todo 리팩토링 예정
         if (isTeamAFull && isTeamBFull) {
-            DefaultDialog("팀 설정 완료", "팀이 모두 구성됐습니다.", "재확인", "완료",
-                Pair(teamAList, teamBList),
-                onClickCancel = {
+            CoroutineScope(Dispatchers.Default).launch {
+                delay(500L)
+                DefaultDialog("팀 설정 완료", "팀이 모두 구성됐습니다.", "재확인", "완료",
+                    Pair(teamA, teamB),
+                    onClickCancel = {
 
-                },
-                onClickConfirm = {
-                    onResult(it as Pair<List<Player>, List<Player>>)
-                    dismiss()
-                }).show(childFragmentManager, "confirm")
+                    },
+                    onClickConfirm = {
+                        onResult(it as Pair<List<Player>, List<Player>>)
+                        dismiss()
+                    }).show(childFragmentManager, "confirm")
+            }
         }
+    }
+
+    private fun showSnackBar(text: String) {
+        Snackbar.make(dialog!!.window!!.decorView, text, Snackbar.LENGTH_SHORT).show()
     }
 }

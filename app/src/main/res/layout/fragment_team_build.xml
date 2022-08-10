@@ -18,7 +18,7 @@
 
         <!--        Team Leader-->
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tv_select_leader"
             style="@style/TextViewBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btn_team_b_leader"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_leader">
 
             <TextView
                 android:id="@+id/tv_a_leader"

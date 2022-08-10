@@ -95,6 +95,11 @@ class MemberPickerFragment(
             }
         }
         adapterB.setList(teamB)
+
+        if (teamA.size == memberCount && teamB.size == memberCount) {
+            isTeamAFull = true
+            isTeamBFull = true
+        }
     }
 
     private fun initEntry() {
@@ -162,9 +167,9 @@ class MemberPickerFragment(
             null,
             onClickConfirm = {
                 resetTeam(players, teamALeader, teamBLeader)
+                dismiss()
             },
         ).show(childFragmentManager, "cancel_team_building")
-        dismiss()
     }
 
     fun onClickConfirm(view: View) {
@@ -232,7 +237,7 @@ class MemberPickerFragment(
         // todo 리팩토링 예정
         if (isTeamAFull && isTeamBFull) {
             CoroutineScope(Dispatchers.Default).launch {
-                delay(500L)
+                delay(200L)
                 DefaultDialog("팀 설정 완료", "팀이 모두 구성됐습니다.", "재확인", "완료",
                     Pair(teamA, teamB),
                     onClickCancel = {

@@ -30,7 +30,7 @@ class DefaultDialog(
             DataBindingUtil.inflate(inflater, R.layout.dialog_default, container, false)
         binding.root.background = ColorDrawable(Color.TRANSPARENT)
         binding.dialog = this@DefaultDialog
-
+        isCancelable = false
         initView()
 
         return binding.root

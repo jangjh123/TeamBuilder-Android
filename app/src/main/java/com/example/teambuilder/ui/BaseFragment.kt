@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewTreeLifecycleOwner
+import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : Fragment() {
     lateinit var binding: VB
@@ -78,6 +79,10 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : F
     protected open fun proceed() {
     }
 
+    protected fun showSnackBar(text: String) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).show()
+    }
+
     protected fun getColor(color: Int) =
         ContextCompat.getColor(requireContext(), color)
 
@@ -88,9 +93,23 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : F
         }.start()
     }
 
-    inline fun <T> LiveData<T>.onChanged(crossinline onChanged: (T) -> Unit) {
+    protected inline fun <T> LiveData<T>.onChanged(crossinline onChanged: (T) -> Unit) {
         this.observe(viewLifecycleOwner) {
             onChanged(it)
+        }
+    }
+
+    protected inline fun LiveData<Boolean>.isNullOrFalse(crossinline isNullOrFalse: () -> Unit) {
+        if (this.value == false) {
+            isNullOrFalse()
+        } else if (this.value == null) {
+            isNullOrFalse()
+        }
+    }
+
+    protected inline fun LiveData<Boolean>.isTrue(crossinline isTrue: () -> Unit) {
+        if (this.value == true) {
+            isTrue()
         }
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.data.repository.TeamBuildRepository
+import com.example.teambuilder.util.isTrue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -29,13 +30,13 @@ class TeamBuildViewModel @Inject constructor(
     val players: LiveData<List<Player>>
         get() = _players
 
-    private val _aLeader = MutableLiveData<Player>()
-    val aLeader: LiveData<Player>
-        get() = _aLeader
+    private val _teamALeader = MutableLiveData<Player>()
+    val teamALeader: LiveData<Player>
+        get() = _teamALeader
 
-    private val _bLeader = MutableLiveData<Player>()
-    val bLeader: LiveData<Player>
-        get() = _bLeader
+    private val _teamBLeader = MutableLiveData<Player>()
+    val teamBLeader: LiveData<Player>
+        get() = _teamBLeader
 
     private val _isRandom = MutableLiveData<Boolean>()
     val isRandom: LiveData<Boolean>
@@ -53,48 +54,96 @@ class TeamBuildViewModel @Inject constructor(
     val isSeven: LiveData<Boolean>
         get() = _isSeven
 
-    fun setRandom() {
-        _isRandom.postValue(true)
-        if (isPicking.value == true) {
-            _isPicking.postValue(false)
-        }
-    }
+    private val _isSelectingMethodVisible = MutableLiveData<Boolean>()
+    val isSelectingMethodVisible: LiveData<Boolean>
+        get() = _isSelectingMethodVisible
 
-    fun setPicking() {
-        _isPicking.postValue(true)
-        if (isRandom.value == true) {
+    private val _isMemberCountVisible = MutableLiveData<Boolean>()
+    val isMemberCountVisible: LiveData<Boolean>
+        get() = _isMemberCountVisible
+
+    private val _isBuildButtonVisible = MutableLiveData<Boolean>()
+    val isBuildButtonVisible: LiveData<Boolean>
+        get() = _isBuildButtonVisible
+
+    private val _isConfirmButtonAvailable = MutableLiveData<Boolean>()
+    val isConfirmButtonAvailable: LiveData<Boolean>
+        get() = _isConfirmButtonAvailable
+
+    fun setRandom(boolean: Boolean) {
+        if (boolean) {
+            isPicking.isTrue {
+                _isPicking.postValue(false)
+            }
+            _isRandom.postValue(true)
+        } else {
             _isRandom.postValue(false)
         }
     }
 
-    fun setSix() {
-        _isSix.postValue(true)
-        if (isSeven.value == true) {
-            _isSeven.postValue(false)
+    fun setPicking(boolean: Boolean) {
+        if (boolean) {
+            isRandom.isTrue {
+                _isRandom.postValue(false)
+            }
+            _isPicking.postValue(true)
+        } else {
+            _isPicking.postValue(false)
         }
     }
 
-    fun setSeven() {
-        _isSeven.postValue(true)
-        if (isSix.value == true) {
+    fun setSix(boolean: Boolean) {
+        if (boolean) {
+            isSeven.isTrue {
+                _isSeven.postValue(false)
+            }
+            _isSix.postValue(true)
+        } else {
             _isSix.postValue(false)
         }
     }
 
-    fun setALeader(player: Player) {
-        aLeader.value.let { // 원래 리더였던 플레이어 팀 초기화
+    fun setSeven(boolean: Boolean) {
+        if (boolean) {
+            isSix.isTrue {
+                _isSix.postValue(false)
+            }
+            _isSeven.postValue(true)
+        } else {
+            _isSeven.postValue(false)
+        }
+    }
+
+    fun setSelectingMethodVisible(boolean: Boolean) {
+        _isSelectingMethodVisible.postValue(boolean)
+    }
+
+    fun setMemberCountVisible(boolean: Boolean) {
+        _isMemberCountVisible.postValue(boolean)
+    }
+
+    fun setBuildButtonVisible(boolean: Boolean) {
+        _isBuildButtonVisible.postValue(boolean)
+    }
+
+    fun setConfirmButtonAvailable(boolean: Boolean) {
+        _isConfirmButtonAvailable.postValue(boolean)
+    }
+
+    fun setTeamALeader(player: Player) {
+        teamALeader.value.let { // 원래 리더였던 플레이어 팀 초기화
             it?.team = 0
         }
-        _aLeader.postValue(player)
+        _teamALeader.postValue(player)
         player.team = 1
 
     }
 
-    fun setBLeader(player: Player) {
-        bLeader.value.let { // 원래 리더였던 플레이어 팀 초기화
+    fun setTeamBLeader(player: Player) {
+        teamBLeader.value.let { // 원래 리더였던 플레이어 팀 초기화
             it?.team = 0
         }
-        _bLeader.postValue(player)
+        _teamBLeader.postValue(player)
         player.team = 2
     }
 }

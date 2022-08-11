@@ -11,28 +11,29 @@ import androidx.fragment.app.DialogFragment
 import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.data.model.Team
-import com.example.teambuilder.databinding.DialogChoiceBinding
+import com.example.teambuilder.databinding.DialogSelectionBinding
 import com.example.teambuilder.ui.component.adapter.PlayerAdapter
 import com.google.android.material.snackbar.Snackbar
 
-class ChoiceDialog(
+class SelectionDialog(
     private val players: List<Player>,
-    private val title: String,
-    private inline val onChosen: (Player) -> Unit
+    private inline val onClickCancel: () -> Unit,
+    private inline val onClickConfirm: () -> Unit
 ) : DialogFragment() {
-
-    private lateinit var binding: DialogChoiceBinding
-
+    private lateinit var binding: DialogSelectionBinding
     private val adapter = PlayerAdapter(
-        false,
+        true,
         onClickPlayer = {
-        if (it.team == Team.NONE) { // 어느 팀에도 속하지 않았다면
-            onChosen(it)
-            dismiss()
-        } else {
-            Snackbar.make(binding.root, "이미 선택된 선수입니다.", Snackbar.LENGTH_SHORT).show()
-        }
-    })
+            if (it.team == Team.TEAM_A || it.team == Team.TEAM_B) {
+                Snackbar.make(dialog!!.window!!.decorView, "리더는 제외할 수 없습니다.", Snackbar.LENGTH_SHORT)
+            } else {
+                if (it.team == Team.NONE) {
+                    it.team = Team.RANDOM
+                } else if (it.team == Team.RANDOM) {
+                    it.team = Team.NONE
+                }
+            }
+        })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,11 +41,11 @@ class ChoiceDialog(
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.dialog_choice, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.dialog_selection, container, false)
         binding.root.background = ColorDrawable(Color.TRANSPARENT)
-        binding.dialog = this@ChoiceDialog
+        binding.dialog = this@SelectionDialog
         binding.adapter = adapter
-
+        isCancelable = false
         initView()
 
         return binding.root
@@ -60,7 +61,20 @@ class ChoiceDialog(
     }
 
     private fun initView() {
-        binding.tvTitle.text = title
-        adapter.submitList(players)
+        with(binding) {
+
+        }
+    }
+
+    fun onClickCancel(view: View) {
+        onClickCancel()
+        players.forEach {
+            // Team.NONE 으로 변경했던 것 취소.
+        }
+        dismiss()
+    }
+
+    fun onClickConfirm(view: View) {
+        onClickConfirm()
     }
 }

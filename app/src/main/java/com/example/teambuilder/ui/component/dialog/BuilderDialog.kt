@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
+import com.example.teambuilder.data.model.Team
 import com.example.teambuilder.databinding.DialogBuilderBinding
 import com.example.teambuilder.ui.component.adapter.TeamBuilderAdapter
 import com.example.teambuilder.util.Utils.resetTeam
@@ -22,7 +23,6 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class BuilderDialog(
-    private val isRandom: Boolean,
     private val memberCount: Int,
     private val teamALeader: Player,
     private val teamBLeader: Player,
@@ -65,7 +65,7 @@ class BuilderDialog(
         binding =
             DataBindingUtil.inflate(inflater, R.layout.dialog_builder, container, false)
         isCancelable = false
-        binding.fragment = this@BuilderDialog
+        binding.dialog = this@BuilderDialog
         binding.adapterA = adapterA
         binding.adapterB = adapterB
 
@@ -80,50 +80,43 @@ class BuilderDialog(
     }
 
     private fun initTeams() {
-        if (isRandom) {
-
-        } else {
-            teamA = ArrayList<Player>().apply {
-                players.forEach {
-                    if (it.team == 1) {
-                        add(it)
-                    }
+        teamA = ArrayList<Player>().apply {
+            players.forEach {
+                if (it.team == Team.TEAM_A) {
+                    add(it)
                 }
-            }
-            adapterA.setList(teamA)
-            teamB = ArrayList<Player>().apply {
-                players.forEach {
-                    if (it.team == 2) {
-                        add(it)
-                    }
-                }
-            }
-            adapterB.setList(teamB)
-
-            if (teamA.size == memberCount && teamB.size == memberCount) {
-                isTeamAFull = true
-                isTeamBFull = true
             }
         }
+        adapterA.setList(teamA)
+        teamB = ArrayList<Player>().apply {
+            players.forEach {
+                if (it.team == Team.TEAM_B) {
+                    add(it)
+                }
+            }
+        }
+        adapterB.setList(teamB)
+
+        if (teamA.size == memberCount && teamB.size == memberCount) {
+            isTeamAFull = true
+            isTeamBFull = true
+        }
+
     }
 
     private fun initEntry() {
-        if (isRandom) {
-
-        } else {
-            entry = LinkedList<Player>().apply {
-                players.forEach {
-                    if (it.team == 0) {
-                        offer(it)
-                    }
+        entry = LinkedList<Player>().apply {
+            players.forEach {
+                if (it.team == Team.NONE) {
+                    offer(it)
                 }
             }
         }
     }
 
     private fun initView() {
-        binding.tvTeamAMemberCnt.text = "$memberCount / ${teamA?.size ?: 1}"
-        binding.tvTeamBMemberCnt.text = "$memberCount / ${teamB?.size ?: 1}"
+        binding.tvTeamAMemberCnt.text = "$memberCount / ${teamA?.size}"
+        binding.tvTeamBMemberCnt.text = "$memberCount / ${teamB?.size}"
 
         pollAndSetView()
     }
@@ -133,7 +126,7 @@ class BuilderDialog(
             adapterA.addPlayer(currentPlayer)
             binding.tvTeamAMemberCnt.text = "$memberCount / ${teamA.size}"
             binding.rvTeamA.smoothScrollToPosition(teamA.size - 1)
-            currentPlayer.team = 2
+            currentPlayer.team = Team.TEAM_B
             pollAndSetView()
 
             if (memberCount == teamA.size) {
@@ -150,7 +143,7 @@ class BuilderDialog(
             adapterB.addPlayer(currentPlayer)
             binding.tvTeamBMemberCnt.text = "$memberCount / ${teamB.size}"
             binding.rvTeamB.smoothScrollToPosition(teamB.size - 1)
-            currentPlayer.team = 1
+            currentPlayer.team = Team.TEAM_A
             pollAndSetView()
 
             if (memberCount == teamB.size) {
@@ -210,8 +203,8 @@ class BuilderDialog(
                     }
 
                     for (i in memberCount - 1 downTo 1) {
-                        teamA[i].team = 0
-                        teamB[i].team = 0
+                        teamA[i].team = Team.NONE
+                        teamB[i].team = Team.NONE
                         adapterA.removePlayer(teamA[i])
                         adapterB.removePlayer(teamB[i])
                     }
@@ -236,14 +229,13 @@ class BuilderDialog(
                 binding.tvTeamBMemberCnt.text = "$memberCount / ${teamB.size}"
                 isTeamBFull = false
             }
-            player.team = 0
+            player.team = Team.NONE
             entry.offer(player)
         }
     }
 
     @Suppress("UNCHECKED_CAST")
     private fun checkBothTeamsAreFull() {
-        // todo 리팩토링 예정
         if (isTeamAFull && isTeamBFull) {
             CoroutineScope(Dispatchers.Default).launch {
                 delay(200L)

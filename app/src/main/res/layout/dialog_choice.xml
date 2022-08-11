@@ -45,9 +45,9 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_players"
-                    setAdapter="@{adapter}"
                     setLayoutManager="@{1}"
                     setLinearSnapHelper="@{true}"
+                    setAdapter="@{adapter}"
                     android:layout_width="match_parent"
                     android:layout_height="450dp"
                     android:layout_marginHorizontal="10dp"

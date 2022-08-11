@@ -5,5 +5,6 @@ data class Player(
     val name: String,
     val affiliation: String,
     val isSuperPlayer: Boolean,
-    var team: Int = 0,
+    var team: Team = Team.NONE,
+    var isLeader: Boolean = false
 )

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="dialog"
             type="com.example.teambuilder.ui.component.dialog.DefaultDialog" />
@@ -58,6 +57,7 @@
                     android:id="@+id/btn_confirm"
                     style="@style/TextViewBold"
                     android:layout_width="wrap_content"
+                    android:onClick="@{dialog::onClickConfirm}"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="2dp"
@@ -72,6 +72,7 @@
                     android:id="@+id/btn_cancel"
                     style="@style/TextViewDefault"
                     android:layout_width="wrap_content"
+                    android:onClick="@{dialog::onClickCancel}"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:padding="8dp"

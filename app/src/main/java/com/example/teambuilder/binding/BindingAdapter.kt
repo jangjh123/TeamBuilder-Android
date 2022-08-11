@@ -10,8 +10,8 @@ import com.example.teambuilder.ui.component.adapter.TeamBuilderAdapter
 object BindingAdapter {
 
     @JvmStatic
-    @BindingAdapter("setListAdapter")
-    fun setListAdapter(
+    @BindingAdapter("setAdapter")
+    fun setAdapter(
         view: RecyclerView,
         adapter: ListAdapter<Any, RecyclerView.ViewHolder>
     ) {

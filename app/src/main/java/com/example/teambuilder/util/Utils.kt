@@ -2,12 +2,13 @@ package com.example.teambuilder.util
 
 import androidx.lifecycle.LiveData
 import com.example.teambuilder.data.model.Player
+import com.example.teambuilder.data.model.Team
 
 object Utils {
     fun resetTeam(players: List<Player>, teamALeader: Player, teamBLeader: Player) {
         players.forEach {
             if (it != teamALeader && it != teamBLeader) {
-                it.team = 0
+                it.team = Team.NONE
             }
         }
     }

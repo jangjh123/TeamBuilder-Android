@@ -9,9 +9,10 @@ import androidx.fragment.app.viewModels
 import com.example.teambuilder.R
 import com.example.teambuilder.databinding.FragmentTeamBuildBinding
 import com.example.teambuilder.ui.BaseFragment
+import com.example.teambuilder.ui.component.dialog.BuilderDialog
 import com.example.teambuilder.ui.component.dialog.ChoiceDialog
 import com.example.teambuilder.ui.component.dialog.DefaultDialog
-import com.example.teambuilder.ui.component.dialog.BuilderDialog
+import com.example.teambuilder.ui.component.dialog.SelectionDialog
 import com.example.teambuilder.util.Utils.resetTeam
 import com.example.teambuilder.util.isNotEmpty
 import dagger.hilt.android.AndroidEntryPoint
@@ -143,25 +144,32 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
         }
 
         viewModel.isRandom.isTrue {
-            BuilderDialog(
-                true,
-                memberCount,
-                viewModel.teamALeader.value!!,
-                viewModel.teamBLeader.value!!,
+            SelectionDialog(
                 viewModel.players,
-                onResult = {
-                    playColorAnimation(
-                        binding.btnConfirmTeam,
-                        getColor(R.color.gray),
-                        getColor(R.color.point_color)
-                    )
-                    isBuiltTeamsExist = true
+                onClickCancel = {
+
+                },
+                onClickConfirm = {
+                    BuilderDialog(
+                        memberCount,
+                        viewModel.teamALeader.value!!,
+                        viewModel.teamBLeader.value!!,
+                        viewModel.players,
+                        onResult = {
+                            playColorAnimation(
+                                binding.btnConfirmTeam,
+                                getColor(R.color.gray),
+                                getColor(R.color.point_color)
+                            )
+                            isBuiltTeamsExist = true
+                        }
+                    ).show(childFragmentManager, "random_builder")
                 }
-            ).show(childFragmentManager, "random_builder")
+            ).show(childFragmentManager, "selection")
+
         }
         viewModel.isPicking.isTrue {
             BuilderDialog(
-                false,
                 memberCount,
                 viewModel.teamALeader.value!!,
                 viewModel.teamBLeader.value!!,

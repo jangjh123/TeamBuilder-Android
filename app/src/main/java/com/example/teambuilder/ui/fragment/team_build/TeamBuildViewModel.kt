@@ -1,10 +1,10 @@
 package com.example.teambuilder.ui.fragment.team_build
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.teambuilder.data.model.Player
+import com.example.teambuilder.data.model.Team
 import com.example.teambuilder.data.repository.TeamBuildRepository
 import com.example.teambuilder.util.SingleLiveEvent
 import com.example.teambuilder.util.isTrue
@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,16 +22,15 @@ class TeamBuildViewModel @Inject constructor(
     private val repository: TeamBuildRepository
 ) : ViewModel() {
 
-    val players = ArrayList<Player>()
+    var players = ArrayList<Player>()
 
     suspend fun getPlayers() {
         repository.getAllPlayer()
-            .catch {
-                errorInfo.call()
-            }
-            .collectLatest {
-                players.add(it)
-            }
+            .catch { errorInfo.call() }
+            .collect {
+            players = it
+        }
+        players.sortWith(compareByDescending<Player> { it.isSuperPlayer }.thenBy { it.name })
     }
 
     init {
@@ -143,18 +143,22 @@ class TeamBuildViewModel @Inject constructor(
 
     fun setTeamALeader(player: Player) {
         teamALeader.value.let { // 원래 리더였던 플레이어 팀 초기화
-            it?.team = 0
+            it?.team = Team.NONE
+            it?.isLeader = false
         }
         _teamALeader.postValue(player)
-        player.team = 1
+        player.team = Team.TEAM_A
+        player.isLeader = true
 
     }
 
     fun setTeamBLeader(player: Player) {
         teamBLeader.value.let { // 원래 리더였던 플레이어 팀 초기화
-            it?.team = 0
+            it?.team = Team.NONE
+            it?.isLeader = false
         }
         _teamBLeader.postValue(player)
-        player.team = 2
+        player.team = Team.TEAM_B
+        player.isLeader = true
     }
 }

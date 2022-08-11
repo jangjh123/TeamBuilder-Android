@@ -69,7 +69,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
             <TextView
-                android:id="@+id/tv_super_player"
+                android:id="@+id/tv_special"
                 style="@style/TextViewBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

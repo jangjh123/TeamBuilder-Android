@@ -51,18 +51,20 @@ class DefaultDialog(
             tvBody.text = body
             btnCancel.text = cancelText
             btnConfirm.text = confirmText
-            btnCancel.setOnClickListener {
-                onClickCancel?.invoke()
-                dismiss()
-            }
-            btnConfirm.setOnClickListener {
-                if (confirmResult != null) {
-                    onClickConfirm?.invoke(confirmResult)
-                } else {
-                    onClickConfirm?.invoke(null)
-                }
-                dismiss()
-            }
         }
+    }
+
+    fun onClickCancel(view: View) {
+        onClickCancel?.invoke()
+        dismiss()
+    }
+
+    fun onClickConfirm(view: View) {
+        if (confirmResult != null) {
+            onClickConfirm?.invoke(confirmResult)
+        } else {
+            onClickConfirm?.invoke(null)
+        }
+        dismiss()
     }
 }

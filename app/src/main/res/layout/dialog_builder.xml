@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="fragment"
+            name="dialog"
             type="com.example.teambuilder.ui.component.dialog.BuilderDialog" />
 
         <variable
@@ -136,7 +136,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_team_b"
-                    setAdapter="@{adapterB}"
+                    setRecyclerViewAdapter="@{adapterB}"
                     setLayoutManager="@{1}"
                     setLinearSnapHelper="@{true}"
                     android:layout_width="match_parent"
@@ -217,7 +217,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:onClick="@{fragment::onClickTeamA}"
+                android:onClick="@{dialog::onClickTeamA}"
                 android:text="A팀"
                 android:textColor="@color/point_color"
                 android:textSize="16dp" />
@@ -229,7 +229,7 @@
             android:layout_height="50dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
-            android:onClick="@{fragment::onClickTeamB}"
+            android:onClick="@{dialog::onClickTeamB}"
             app:cardCornerRadius="12dp"
             app:cardElevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -261,7 +261,7 @@
                 android:id="@+id/btn_except"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
-                android:onClick="@{fragment::onClickExcept}"
+                android:onClick="@{dialog::onClickExcept}"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -284,7 +284,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:onClick="@{fragment::onClickCancel}"
+                android:onClick="@{dialog::onClickCancel}"
                 android:padding="10dp"
                 android:text="취소"
                 android:textColor="@color/gray"
@@ -299,7 +299,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:onClick="@{fragment::onClickConfirm}"
+                android:onClick="@{dialog::onClickConfirm}"
                 android:padding="10dp"
                 android:text="완료"
                 android:textColor="@color/point_color"

@@ -17,10 +17,12 @@
             app:destination="@id/frag_win_rate" />
         <argument
             android:name="teamA"
-            app:argType="com.example.teambuilder.data.model.Player[]" />
+            app:argType="com.example.teambuilder.data.model.Player[]"
+            app:nullable="true" />
         <argument
             android:name="teamB"
-            app:argType="com.example.teambuilder.data.model.Player[]" />
+            app:argType="com.example.teambuilder.data.model.Player[]"
+            app:nullable="true" />
     </fragment>
 
     <fragment

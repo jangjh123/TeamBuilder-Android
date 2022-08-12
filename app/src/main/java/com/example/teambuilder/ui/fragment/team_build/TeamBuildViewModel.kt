@@ -28,8 +28,8 @@ class TeamBuildViewModel @Inject constructor(
         repository.getAllPlayer()
             .catch { errorInfo.call() }
             .collect {
-            players = it
-        }
+                players = it
+            }
         players.sortWith(compareByDescending<Player> { it.isSuperPlayer }.thenBy { it.name })
     }
 
@@ -162,7 +162,7 @@ class TeamBuildViewModel @Inject constructor(
         player.isLeader = true
     }
 
-    fun getTeams() : Pair<List<Player>, List<Player>> {
+    fun getTeams(): Pair<List<Player>, List<Player>> {
         val teamA = ArrayList<Player>()
         val teamB = ArrayList<Player>()
 
@@ -175,5 +175,11 @@ class TeamBuildViewModel @Inject constructor(
         }
 
         return Pair(teamA, teamB)
+    }
+
+    fun setTeamExist() {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.setMatchExist()
+        }
     }
 }

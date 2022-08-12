@@ -16,12 +16,12 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     override fun onResume() {
         super.onResume()
         println("###### TEAM A ######")
-        args.teamA.forEach {
+        args.teamA?.forEach {
             println(it.toString())
         }
 
         println("###### TEAM B ######")
-        args.teamB.forEach {
+        args.teamB?.forEach {
             println(it.toString())
         }
     }

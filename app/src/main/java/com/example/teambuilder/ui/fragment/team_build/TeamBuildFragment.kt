@@ -187,6 +187,7 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
 
     fun onClickConfirmTeams(view: View) {
         val teams = viewModel.getTeams()
+        viewModel.setTeamExist()
         findNavController().navigate(
             TeamBuildFragmentDirections.actionFragTeamBuildToFragMatch(
                 teams.first.toTypedArray(),

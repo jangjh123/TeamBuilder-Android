@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="dialog"
+            type="com.example.teambuilder.ui.component.dialog.BuilderDialog" />
+
+        <variable
+            name="adapterA"
+            type="com.example.teambuilder.ui.component.adapter.TeamBuilderAdapter" />
+
+        <variable
+            name="adapterB"
+            type="com.example.teambuilder.ui.component.adapter.TeamBuilderAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/box_radius_white">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_team_a"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/cv_team_b"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.4">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="A 팀"
+                    android:textColor="@color/point_color"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_team_a_member_cnt"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="6 / 1"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView5"
+                    app:layout_constraintStart_toEndOf="@+id/textView5" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_team_a"
+                    setLayoutManager="@{1}"
+                    setLinearSnapHelper="@{true}"
+                    setRecyclerViewAdapter="@{adapterA}"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            style="@style/TextViewDefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="명단의 이름을 터치하면 팀에서 제외되어 엔트리에 삽입됩니다."
+            android:textColor="@color/gray"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/view_frame"
+            app:layout_constraintEnd_toEndOf="@+id/cv_team_b"
+            app:layout_constraintStart_toStartOf="@+id/cv_team_a"
+            app:layout_constraintTop_toBottomOf="@+id/cv_team_a" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_team_b"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/cv_team_a"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.4">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="B 팀"
+                    android:textColor="@color/point_color"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_team_b_member_cnt"
+                    style="@style/TextViewDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="6 / 1"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView6"
+                    app:layout_constraintStart_toEndOf="@+id/textView6" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_team_b"
+                    setRecyclerViewAdapter="@{adapterB}"
+                    setLayoutManager="@{1}"
+                    setLinearSnapHelper="@{true}"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <View
+            android:id="@+id/view_frame"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="@color/point_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv_team_a" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_affiliation"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@color/main"
+            app:layout_constraintBottom_toBottomOf="@+id/view_frame"
+            app:layout_constraintEnd_toEndOf="@+id/view_frame"
+            app:layout_constraintStart_toStartOf="@+id/view_frame"
+            app:layout_constraintTop_toTopOf="@+id/view_frame" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/TextViewBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="홍길동"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_frame" />
+
+        <TextView
+            android:id="@+id/tv_affiliation"
+            style="@style/TextViewDefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="경북 산학"
+            android:textColor="@color/gray"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_team_a"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/btn_team_b"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_affiliation">
+
+            <TextView
+                style="@style/TextViewBold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:onClick="@{dialog::onClickTeamA}"
+                android:text="A팀"
+                android:textColor="@color/point_color"
+                android:textSize="16dp" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_team_b"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:onClick="@{dialog::onClickTeamB}"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_team_a"
+            app:layout_constraintTop_toBottomOf="@+id/tv_affiliation">
+
+            <TextView
+                style="@style/TextViewBold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="B팀"
+                android:textColor="@color/point_color"
+                android:textSize="16dp" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lay_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_team_a">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_except"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:onClick="@{dialog::onClickExcept}"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    style="@style/TextViewDefault"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="경기에서 제외"
+                    android:textColor="@color/gray"
+                    android:textSize="16dp" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/btn_cancel"
+                style="@style/TextViewDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:onClick="@{dialog::onClickCancel}"
+                android:padding="10dp"
+                android:text="취소"
+                android:textColor="@color/gray"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_confirm"
+                app:layout_constraintTop_toTopOf="@+id/btn_confirm" />
+
+            <TextView
+                android:id="@+id/btn_confirm"
+                style="@style/TextViewDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:onClick="@{dialog::onClickConfirm}"
+                android:padding="10dp"
+                android:text="완료"
+                android:textColor="@color/point_color"
+                android:textSize="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

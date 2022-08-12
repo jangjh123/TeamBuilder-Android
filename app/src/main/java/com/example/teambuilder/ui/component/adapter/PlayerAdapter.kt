@@ -39,11 +39,20 @@ class PlayerAdapter(
                 tvName.text = player.name
                 tvAffiliation.text = player.affiliation
 
-                if (isSelection) { // 랜덤 팀원 선택
+                if (isSelection) { // 랜덤 팀원 선택시, 리더를 제외한 팀원의 team 값이 Team_RANDOM 으로 설정되어 들어옴.
                     tvSpecial.text = if (player.isLeader) {
                         "리더"
                     } else {
                         ""
+                    }
+
+                    if (player.team == Team.RANDOM) {
+                        layPlayer.alpha = 1f
+                        tvState.visibility = View.GONE
+                    } else if (player.team == Team.NONE) {
+                        layPlayer.alpha = 0.2f
+                        tvState.visibility = View.VISIBLE
+                        tvState.text = "제외됨"
                     }
 
                     cvPlayer.setOnClickListener {

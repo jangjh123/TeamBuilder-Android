@@ -28,7 +28,7 @@ class BuilderDialog(
     private val teamALeader: Player,
     private val teamBLeader: Player,
     private val players: List<Player>,
-    private inline val onResult: (Pair<List<Player>, List<Player>>) -> Unit
+    private inline val onTeamBuilt: () -> Unit
 ) : BottomSheetDialogFragment() {
     private lateinit var binding: DialogBuilderBinding
 
@@ -281,7 +281,7 @@ class BuilderDialog(
 
                     },
                     onClickConfirm = {
-                        onResult(it as Pair<List<Player>, List<Player>>)
+                        onTeamBuilt()
                         dismiss()
                     }).show(childFragmentManager, "confirm")
             }

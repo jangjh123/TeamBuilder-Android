@@ -161,4 +161,19 @@ class TeamBuildViewModel @Inject constructor(
         player.team = Team.TEAM_B
         player.isLeader = true
     }
+
+    fun getTeams() : Pair<List<Player>, List<Player>> {
+        val teamA = ArrayList<Player>()
+        val teamB = ArrayList<Player>()
+
+        players.forEach {
+            if (it.team == Team.TEAM_A) {
+                teamA.add(it)
+            } else if (it.team == Team.TEAM_B) {
+                teamB.add(it)
+            }
+        }
+
+        return Pair(teamA, teamB)
+    }
 }

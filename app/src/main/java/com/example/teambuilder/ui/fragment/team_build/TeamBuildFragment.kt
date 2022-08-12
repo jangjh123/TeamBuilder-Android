@@ -6,6 +6,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils.loadAnimation
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.teambuilder.R
 import com.example.teambuilder.databinding.FragmentTeamBuildBinding
 import com.example.teambuilder.ui.BaseFragment
@@ -147,7 +148,11 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
             SelectionDialog(
                 viewModel.players,
                 onClickCancel = {
-                    resetTeam(viewModel.players, viewModel.teamALeader.value!!, viewModel.teamBLeader.value!!)
+                    resetTeam(
+                        viewModel.players,
+                        viewModel.teamALeader.value!!,
+                        viewModel.teamBLeader.value!!
+                    )
                 },
                 onClickConfirm = {
                     BuilderDialog(
@@ -156,13 +161,9 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
                         viewModel.teamALeader.value!!,
                         viewModel.teamBLeader.value!!,
                         viewModel.players,
-                        onResult = {
-                            playColorAnimation(
-                                binding.btnConfirmTeam,
-                                getColor(R.color.gray),
-                                getColor(R.color.point_color)
-                            )
+                        onTeamBuilt = {
                             isBuiltTeamsExist = true
+                            viewModel.setConfirmButtonAvailable(true)
                         }
                     ).show(childFragmentManager, "random_builder")
                 }
@@ -176,20 +177,22 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
                 viewModel.teamALeader.value!!,
                 viewModel.teamBLeader.value!!,
                 viewModel.players,
-                onResult = {
-                    playColorAnimation(
-                        binding.btnConfirmTeam,
-                        getColor(R.color.gray),
-                        getColor(R.color.point_color)
-                    )
+                onTeamBuilt = {
                     isBuiltTeamsExist = true
+                    viewModel.setConfirmButtonAvailable(true)
                 }
             ).show(childFragmentManager, "member_picker")
         }
     }
 
     fun onClickConfirmTeams(view: View) {
-
+        val teams = viewModel.getTeams()
+        findNavController().navigate(
+            TeamBuildFragmentDirections.actionFragTeamBuildToFragMatch(
+                teams.first.toTypedArray(),
+                teams.second.toTypedArray()
+            )
+        )
     }
 
     override fun setObserver() {

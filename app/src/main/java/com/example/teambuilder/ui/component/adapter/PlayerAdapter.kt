@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.data.model.Team
 import com.example.teambuilder.databinding.ItemPlayerBinding
@@ -13,7 +12,7 @@ import com.example.teambuilder.util.GenericDiffUtil
 
 class PlayerAdapter(
     private val isSelection: Boolean,
-    private inline val onClickPlayer: (Player) -> Unit
+    private inline val onClickPlayer: ((Player) -> Unit)?
 ) : ListAdapter<Player, RecyclerView.ViewHolder>(GenericDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -37,41 +36,48 @@ class PlayerAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(player: Player) {
             with(binding) {
-                if (isSelection) {
-                    cvPlayer.alpha = 0.4f
-                    if (player.team != Team.NONE) {
-                        cvPlayer.alpha = 1f
-                    }
-
-                    if (player.isLeader) {
-                        tvSpecial.text = "리더"
-                    } else {
-                        tvSpecial.text = ""
-                    }
-                } else {
-                    if (player.isSuperPlayer) {
-                        tvSpecial.text = binding.root.context.getString(R.string.super_player)
-                    } else {
-                        tvSpecial.text = ""
-                    }
-                }
-
                 tvName.text = player.name
                 tvAffiliation.text = player.affiliation
 
-                if (player.team == Team.NONE) {
-                    layPlayer.alpha = 1f
-                    tvChosen.visibility = View.GONE
-                } else {
-                    layPlayer.alpha = 0.2f
-                    tvChosen.visibility = View.VISIBLE
-                }
-
-                cvPlayer.setOnClickListener {
-                    if (isSelection) {
-                        cvPlayer.alpha = 1f
+                if (isSelection) { // 랜덤 팀원 선택
+                    tvSpecial.text = if (player.isLeader) {
+                        "리더"
+                    } else {
+                        ""
                     }
-                    onClickPlayer(player)
+
+                    cvPlayer.setOnClickListener {
+                        if (player.team == Team.RANDOM) {
+                            layPlayer.alpha = 0.2f
+                            tvState.visibility = View.VISIBLE
+                            tvState.text = "제외됨"
+                            player.team = Team.NONE
+                        } else if (player.team == Team.NONE) {
+                            layPlayer.alpha = 1f
+                            player.team = Team.RANDOM
+                            tvState.visibility = View.GONE
+                        }
+                    }
+
+                } else { // 리더 선택
+                    tvSpecial.text = if (player.isSuperPlayer) {
+                        "고수"
+                    } else {
+                        ""
+                    }
+
+                    if (player.team == Team.NONE) {
+                        layPlayer.alpha = 1f
+                        tvState.visibility = View.GONE
+                    } else {
+                        layPlayer.alpha = 0.2f
+                        tvState.visibility = View.VISIBLE
+                        tvState.text = "선택됨"
+                    }
+
+                    cvPlayer.setOnClickListener {
+                        onClickPlayer?.invoke(player)
+                    }
                 }
             }
         }

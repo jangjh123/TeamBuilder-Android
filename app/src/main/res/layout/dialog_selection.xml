@@ -39,7 +39,7 @@
                     android:layout_height="50dp"
                     android:background="@color/point_color"
                     android:gravity="center"
-                    android:text="참여 인원을 모두 선택해주세요."
+                    android:text="제외할 선수를 선택해주세요."
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="parent"

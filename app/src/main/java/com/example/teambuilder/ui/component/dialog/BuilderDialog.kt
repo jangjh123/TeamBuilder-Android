@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class BuilderDialog(
+    private val isRandom: Boolean,
     private val memberCount: Int,
     private val teamALeader: Player,
     private val teamBLeader: Player,
@@ -80,21 +81,42 @@ class BuilderDialog(
     }
 
     private fun initTeams() {
-        teamA = ArrayList<Player>().apply {
+        teamA = ArrayList<Player>()
+        teamB = ArrayList<Player>()
+
+        if (isRandom) {
+            val tempPlayers = ArrayList<Player>()
             players.forEach {
-                if (it.team == Team.TEAM_A) {
-                    add(it)
+                if (it.team == Team.RANDOM) {
+                    tempPlayers.add(it)
+                }
+            }
+            val set = mutableSetOf<Int>()
+            while (set.size < (memberCount - 1) * 2) {
+                set.add((0 until tempPlayers.size).random())
+            }
+
+            var cnt = 0
+
+            set.forEach {
+                cnt++
+                if (cnt < memberCount) {
+                    tempPlayers[it].team = Team.TEAM_A
+                } else {
+                    tempPlayers[it].team = Team.TEAM_B
                 }
             }
         }
+
+        players.forEach {
+            if (it.team == Team.TEAM_A) {
+                teamA.add(it)
+            } else if (it.team == Team.TEAM_B) {
+                teamB.add(it)
+            }
+        }
+
         adapterA.setList(teamA)
-        teamB = ArrayList<Player>().apply {
-            players.forEach {
-                if (it.team == Team.TEAM_B) {
-                    add(it)
-                }
-            }
-        }
         adapterB.setList(teamB)
 
         if (teamA.size == memberCount && teamB.size == memberCount) {
@@ -102,13 +124,24 @@ class BuilderDialog(
             isTeamBFull = true
         }
 
+        checkBothTeamsAreFull()
     }
 
     private fun initEntry() {
-        entry = LinkedList<Player>().apply {
-            players.forEach {
-                if (it.team == Team.NONE) {
-                    offer(it)
+        if (isRandom) {
+            entry = LinkedList<Player>().apply {
+                players.forEach {
+                    if (it.team == Team.RANDOM) {
+                        offer(it)
+                    }
+                }
+            }
+        } else {
+            entry = LinkedList<Player>().apply {
+                players.forEach {
+                    if (it.team == Team.NONE) {
+                        offer(it)
+                    }
                 }
             }
         }
@@ -202,12 +235,15 @@ class BuilderDialog(
                         }
                     }
 
-                    for (i in memberCount - 1 downTo 1) {
+                    for (i in teamA.size - 1 downTo 1) {
                         teamA[i].team = Team.NONE
-                        teamB[i].team = Team.NONE
                         adapterA.removePlayer(teamA[i])
+                    }
+                    for (i in teamB.size - 1 downTo 1) {
+                        teamB[i].team = Team.NONE
                         adapterB.removePlayer(teamB[i])
                     }
+
                     isTeamAFull = false
                     isTeamBFull = false
                     initView()

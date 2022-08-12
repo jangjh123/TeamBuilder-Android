@@ -147,10 +147,11 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
             SelectionDialog(
                 viewModel.players,
                 onClickCancel = {
-
+                    resetTeam(viewModel.players, viewModel.teamALeader.value!!, viewModel.teamBLeader.value!!)
                 },
                 onClickConfirm = {
                     BuilderDialog(
+                        true,
                         memberCount,
                         viewModel.teamALeader.value!!,
                         viewModel.teamBLeader.value!!,
@@ -166,14 +167,15 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
                     ).show(childFragmentManager, "random_builder")
                 }
             ).show(childFragmentManager, "selection")
-
         }
+
         viewModel.isPicking.isTrue {
             BuilderDialog(
+                false,
                 memberCount,
                 viewModel.teamALeader.value!!,
                 viewModel.teamBLeader.value!!,
-                viewModel.players!!,
+                viewModel.players,
                 onResult = {
                     playColorAnimation(
                         binding.btnConfirmTeam,

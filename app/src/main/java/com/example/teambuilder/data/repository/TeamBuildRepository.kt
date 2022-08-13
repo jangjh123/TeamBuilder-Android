@@ -1,5 +1,10 @@
 package com.example.teambuilder.data.repository
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import com.example.data_store.KEY_IS_EXIST
 import com.example.teambuilder.data.model.Player
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.getValue
@@ -8,8 +13,11 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TeamBuildRepository {
+class TeamBuildRepository @Inject constructor(
+    private val dataStore: DataStore<Preferences>
+) {
     private val reference = FirebaseDatabase.getInstance().getReference("PLAYER")
     suspend fun getAllPlayer(): Flow<ArrayList<Player>> = callbackFlow {
         reference.get().addOnSuccessListener { snapshot ->
@@ -40,6 +48,12 @@ class TeamBuildRepository {
 
         awaitClose {
             cancel()
+        }
+    }
+
+    suspend fun setMatchExist() {
+        dataStore.edit {
+            it[KEY_IS_EXIST] = true
         }
     }
 }

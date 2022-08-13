@@ -2,7 +2,7 @@ package com.example.teambuilder.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.example.teambuilder.data.repository.MainRepository
+import com.example.teambuilder.data.repository.SplashRepository
 import com.example.teambuilder.data.repository.TeamBuildRepository
 import dagger.Module
 import dagger.Provides
@@ -20,5 +20,5 @@ object RepositoryModule {
 
     @ViewModelScoped
     @Provides
-    fun provideMainRepository(dataStore: DataStore<Preferences>) = MainRepository(dataStore)
+    fun provideSplashRepository(dataStore: DataStore<Preferences>) = SplashRepository(dataStore)
 }

@@ -1,7 +1,6 @@
 package com.example.teambuilder.ui.activity.main
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -13,7 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
-    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,19 +21,15 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
         navController = fragmentContainerView.findNavController()
 
-        setFragment()
-    }
+        val isMatchExist = intent.getBooleanExtra("isMatchExist", false)
 
-    private fun setFragment() {
-        viewModel.getTeamExist {
-            if (it) {
-                navController.navigate(
-                    TeamBuildFragmentDirections.actionFragTeamBuildToFragMatch(
-                        null,
-                        null
-                    )
+        if (isMatchExist) {
+            navController.navigate(
+                TeamBuildFragmentDirections.actionFragTeamBuildToFragMatch(
+                    null,
+                    null
                 )
-            }
+            )
         }
     }
 }

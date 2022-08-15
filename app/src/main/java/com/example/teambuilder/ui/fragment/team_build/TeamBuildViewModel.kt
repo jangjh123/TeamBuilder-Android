@@ -182,4 +182,13 @@ class TeamBuildViewModel @Inject constructor(
             repository.setMatchExist()
         }
     }
+
+    fun setMatch() {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.saveMatch(
+                getTeams().first,
+                getTeams().second
+            )
+        }
+    }
 }

@@ -10,7 +10,7 @@ class TeamBuilderAdapter(
     private inline val onClickRemove: (Player) -> Unit,
     private val teamLeader: Player
 ) :
-    RecyclerView.Adapter<TeamBuilderAdapter.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mList = ArrayList<Player>()
 
     fun setList(list: ArrayList<Player>) {
@@ -38,8 +38,8 @@ class TeamBuilderAdapter(
         )
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(mList[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as ViewHolder).bind(mList[position])
     }
 
     override fun getItemCount(): Int {

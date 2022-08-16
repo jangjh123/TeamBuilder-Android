@@ -12,14 +12,25 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     private val args: MatchFragmentArgs by navArgs()
     private val viewModel: MatchViewModel by viewModels()
 
-    override fun onResume() {
-        super.onResume()
+    override fun proceed() {
+        binding.fragment = this@MatchFragment
 
-        if (args.teamA == null) {
-            viewModel.getCurrentMatch {
+        setCurrentMatch()
+    }
 
-            }
-        } else {
+    private fun setCurrentMatch() {
+//        if (args.teamA == null) {
+//            viewModel.getCurrentMatch {
+//                teamAAdapter = TeamAdapter(Team.TEAM_A, it.teamAPlayers.split("\n").toList())
+//                binding.teamAAdapter = teamAAdapter
+//            }
+//        } else {
+//            initViewFromBuild()
+//        }
+    }
+
+    private fun initViewFromBuild() {
+        with(binding) {
 
         }
     }

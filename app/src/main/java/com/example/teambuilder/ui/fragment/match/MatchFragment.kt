@@ -1,5 +1,6 @@
 package com.example.teambuilder.ui.fragment.match
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.teambuilder.R
@@ -8,7 +9,6 @@ import com.example.teambuilder.data.model.Team
 import com.example.teambuilder.databinding.FragmentMatchBinding
 import com.example.teambuilder.ui.BaseFragment
 import com.example.teambuilder.ui.component.adapter.TeamAdapter
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,6 +41,43 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
             teamAAdapter.submitList(args.teamA?.toList())
             teamBAdapter.submitList(args.teamB?.toList())
         }
-        BottomSheetBehavior.from(binding.bs).state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    override fun setObserver() {
+        viewModel.teamAScore.onChanged {
+            binding.tvAScore.text = "$it"
+        }
+
+        viewModel.teamBScore.onChanged {
+            binding.tvBScore.text = "$it"
+        }
+    }
+
+    fun onClickAUp(view: View) {
+        viewModel.setTeamAScore(1)
+    }
+
+    fun onClickADown(view: View) {
+        if (viewModel.teamAScore.value == 0) {
+            showSnackBar("현재 0점 입니다.")
+        } else {
+            viewModel.setTeamAScore(-1)
+        }
+    }
+
+    fun onClickBUp(view: View) {
+        viewModel.setTeamBScore(1)
+    }
+
+    fun onClickBDown(view: View) {
+        if (viewModel.teamBScore.value == 0) {
+            showSnackBar("현재 0점 입니다.")
+        } else {
+            viewModel.setTeamBScore(-1)
+        }
+    }
+
+    fun onClickQuitMatch(view: View) {
+
     }
 }

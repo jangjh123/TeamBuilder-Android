@@ -25,6 +25,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     private var isLoaded = false
     private var isPlus = false
     private var isTeamAScoreChange = false
+    private var isOnScoring = false
     private val fadeIn1: Animation by lazy {
         AnimationUtils.loadAnimation(
             requireContext(),
@@ -114,6 +115,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                     viewModel.setTeamBScore(isPlus)
                 }
                 viewModel.setPersonalScore(name, isPlus)
+                isOnScoring = false
             }
         ).show(childFragmentManager, "score")
     }
@@ -129,46 +131,58 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     }
 
     fun onClickAUp(view: View) {
-        isPlus = true
-        isTeamAScoreChange = true
-        binding.rvTeamB.startAnimation(fadeOut1)
-        showScoreSnackBar()
-        teamAAdapter.isTouchable = true
-        teamBAdapter.isTouchable = false
-    }
-
-    fun onClickBUp(view: View) {
-        isPlus = true
-        isTeamAScoreChange = false
-        binding.rvTeamA.startAnimation(fadeOut2)
-        showScoreSnackBar()
-        teamBAdapter.isTouchable = true
-        teamAAdapter.isTouchable = false
-    }
-
-    fun onClickADown(view: View) {
-        if (viewModel.teamAScore.value == 0) {
-            showSnackBar("현재 0점 입니다.")
-        } else {
-            isPlus = false
-            teamAAdapter.isTouchable = true
-            teamBAdapter.isTouchable = false
+        if (!isOnScoring) {
+            isPlus = true
             isTeamAScoreChange = true
             binding.rvTeamB.startAnimation(fadeOut1)
             showScoreSnackBar()
+            teamAAdapter.isTouchable = true
+            teamBAdapter.isTouchable = false
+            isOnScoring = true
+        }
+    }
+
+    fun onClickBUp(view: View) {
+        if (!isOnScoring) {
+            isPlus = true
+            isTeamAScoreChange = false
+            binding.rvTeamA.startAnimation(fadeOut2)
+            showScoreSnackBar()
+            teamBAdapter.isTouchable = true
+            teamAAdapter.isTouchable = false
+            isOnScoring = true
+        }
+    }
+
+    fun onClickADown(view: View) {
+        if (!isOnScoring) {
+            if (viewModel.teamAScore.value == 0) {
+                showSnackBar("현재 0점 입니다.")
+            } else {
+                isPlus = false
+                teamAAdapter.isTouchable = true
+                teamBAdapter.isTouchable = false
+                isTeamAScoreChange = true
+                binding.rvTeamB.startAnimation(fadeOut1)
+                showScoreSnackBar()
+                isOnScoring = true
+            }
         }
     }
 
     fun onClickBDown(view: View) {
-        if (viewModel.teamBScore.value == 0) {
-            showSnackBar("현재 0점 입니다.")
-        } else {
-            isPlus = false
-            teamBAdapter.isTouchable = true
-            teamAAdapter.isTouchable = false
-            isTeamAScoreChange = false
-            binding.rvTeamA.startAnimation(fadeOut2)
-            showScoreSnackBar()
+        if (!isOnScoring) {
+            if (viewModel.teamBScore.value == 0) {
+                showSnackBar("현재 0점 입니다.")
+            } else {
+                isPlus = false
+                teamBAdapter.isTouchable = true
+                teamAAdapter.isTouchable = false
+                isTeamAScoreChange = false
+                binding.rvTeamA.startAnimation(fadeOut2)
+                showScoreSnackBar()
+                isOnScoring = true
+            }
         }
     }
 

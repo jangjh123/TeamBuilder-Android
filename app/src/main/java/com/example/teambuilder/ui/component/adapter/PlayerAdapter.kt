@@ -27,8 +27,8 @@ class PlayerAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
-            val news = getItem(position)
-            holder.bind(news)
+            val player = getItem(position)
+            holder.bind(player)
         }
     }
 

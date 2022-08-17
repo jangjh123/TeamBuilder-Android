@@ -5,9 +5,13 @@ import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.example.data_store.KEY_IS_EXIST
+import com.example.teambuilder.data.local.match.MatchDao
+import com.example.teambuilder.data.model.Match
 import com.example.teambuilder.data.model.Player
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.getValue
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +20,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TeamBuildRepository @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
+    private val dao: MatchDao
 ) {
     private val reference = FirebaseDatabase.getInstance().getReference("PLAYER")
     suspend fun getAllPlayer(): Flow<ArrayList<Player>> = callbackFlow {
@@ -55,5 +60,30 @@ class TeamBuildRepository @Inject constructor(
         dataStore.edit {
             it[KEY_IS_EXIST] = true
         }
+    }
+
+    fun saveMatch(
+        teamAPlayers: List<Player>,
+        teamBPlayers: List<Player>
+    ) {
+        val sb1 = StringBuilder()
+        val sb2 = StringBuilder()
+
+        teamAPlayers.forEach {
+            sb1.append(it.name)
+            sb1.append("\n")
+        }
+
+        teamBPlayers.forEach {
+            sb2.append(it.name)
+            sb2.append("\n")
+        }
+
+        dao.insert(
+            Match(
+                teamAPlayers = sb1.toString(),
+                teamBPlayers = sb2.toString()
+            )
+        )
     }
 }

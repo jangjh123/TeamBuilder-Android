@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.teambuilder.ui.component.adapter.TeamBuilderAdapter
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 object BindingAdapter {
 
@@ -13,7 +13,7 @@ object BindingAdapter {
     @BindingAdapter("setAdapter")
     fun setAdapter(
         view: RecyclerView,
-        adapter: ListAdapter<Any, RecyclerView.ViewHolder>
+        adapter: ListAdapter<Any, ViewHolder>
     ) {
         view.adapter = adapter
     }
@@ -22,7 +22,7 @@ object BindingAdapter {
     @BindingAdapter("setRecyclerViewAdapter")
     fun setRecyclerViewAdapter(
         view: RecyclerView,
-        adapter: RecyclerView.Adapter<TeamBuilderAdapter.ViewHolder>
+        adapter: RecyclerView.Adapter<ViewHolder>
     ) {
         view.adapter = adapter
     }

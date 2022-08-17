@@ -1,12 +1,15 @@
 package com.example.teambuilder.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Match(
-    val winner: String,
-    val loser: String,
-    val winnerScore: Int,
-    val loserScore: Int,
-    val teamALeader: Player,
-    val teamBLeader: Player,
-    val teamAPlayers: List<Player>,
-    val teamBPlayers: List<Player>
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
+    val winner: String = "None",
+    val winnerScore: Int = 0,
+    val loserScore: Int = 0,
+    val teamAPlayers: String,
+    val teamBPlayers: String
 )

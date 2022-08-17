@@ -3,8 +3,8 @@ package com.example.teambuilder.data.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.teambuilder.data.model.Match
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MatchDao {
@@ -15,11 +15,8 @@ interface MatchDao {
     suspend fun getCurrentMatch(): Match
 
     @Insert
-    fun insert(match: Match)
+    suspend fun insert(match: Match)
 
-    @Query("UPDATE `match` set winner = 'A'")
-    fun setTeamAWinner()
-
-    @Query("UPDATE `match` set winner = 'B'")
-    fun setTeamBWinner()
+    @Update
+    suspend fun updateMatch(match: Match)
 }

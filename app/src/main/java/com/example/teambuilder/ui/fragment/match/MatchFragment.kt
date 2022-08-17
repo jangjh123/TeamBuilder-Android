@@ -9,6 +9,7 @@ import com.example.teambuilder.data.model.Team
 import com.example.teambuilder.databinding.FragmentMatchBinding
 import com.example.teambuilder.ui.BaseFragment
 import com.example.teambuilder.ui.component.adapter.TeamAdapter
+import com.example.teambuilder.ui.component.dialog.DefaultDialog
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,6 +19,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     private val viewModel: MatchViewModel by viewModels()
     private val teamAAdapter = TeamAdapter(Team.TEAM_A)
     private val teamBAdapter = TeamAdapter(Team.TEAM_B)
+    private var isLoaded = false
 
     override fun proceed() {
         binding.fragment = this@MatchFragment
@@ -36,6 +38,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                 teamBAdapter.submitList(
                     gson.fromJson(it.teamBPlayers, Array<Player>::class.java).toList()
                 )
+                isLoaded = true
             }
         } else {
             teamAAdapter.submitList(args.teamA?.toList())
@@ -78,6 +81,28 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     }
 
     fun onClickQuitMatch(view: View) {
-
+        DefaultDialog(
+            "경기 종료",
+            "경기를 종료합니다.",
+            "취소",
+            "확인",
+            null,
+            null,
+            onClickConfirm = {
+                if (isLoaded) {
+                    viewModel.quitMatch(
+                        true,
+                        null,
+                        null
+                    )
+                } else {
+                    viewModel.quitMatch(
+                        isLoaded,
+                        args.teamA,
+                        args.teamB
+                    )
+                }
+            }
+        ).show(childFragmentManager, "quit_match")
     }
 }

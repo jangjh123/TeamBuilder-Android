@@ -59,7 +59,7 @@ class TeamBuildRepository @Inject constructor(
         }
     }
 
-    fun saveMatch(
+    suspend fun saveMatch(
         teamAPlayers: String,
         teamBPlayers: String
     ) {

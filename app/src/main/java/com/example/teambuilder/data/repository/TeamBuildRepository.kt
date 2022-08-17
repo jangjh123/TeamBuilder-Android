@@ -1,17 +1,14 @@
 package com.example.teambuilder.data.repository
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.example.data_store.KEY_IS_EXIST
-import com.example.teambuilder.data.local.match.MatchDao
+import com.example.teambuilder.data.local.MatchDao
 import com.example.teambuilder.data.model.Match
 import com.example.teambuilder.data.model.Player
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.getValue
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -63,26 +60,13 @@ class TeamBuildRepository @Inject constructor(
     }
 
     fun saveMatch(
-        teamAPlayers: List<Player>,
-        teamBPlayers: List<Player>
+        teamAPlayers: String,
+        teamBPlayers: String
     ) {
-        val sb1 = StringBuilder()
-        val sb2 = StringBuilder()
-
-        teamAPlayers.forEach {
-            sb1.append(it.name)
-            sb1.append("\n")
-        }
-
-        teamBPlayers.forEach {
-            sb2.append(it.name)
-            sb2.append("\n")
-        }
-
         dao.insert(
             Match(
-                teamAPlayers = sb1.toString(),
-                teamBPlayers = sb2.toString()
+                teamAPlayers = teamAPlayers,
+                teamBPlayers = teamBPlayers
             )
         )
     }

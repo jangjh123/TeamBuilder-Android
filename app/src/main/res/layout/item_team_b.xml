@@ -8,6 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="160dp"
+        android:layout_margin="4dp"
         android:layout_height="48dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp">
@@ -19,14 +20,15 @@
             <TextView
                 android:id="@+id/tv_name"
                 style="@style/TextViewDefault"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:gravity="center_vertical|start"
                 android:text="홍길동"
                 android:textColor="@color/black"
-                android:textSize="24dp"
-                app:layout_constraintEnd_toStartOf="@+id/view_head_start" />
+                android:textSize="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_affiliation"
+                app:layout_constraintEnd_toStartOf="@+id/view_head_start"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/view_head_start"
@@ -34,6 +36,18 @@
                 android:layout_height="match_parent"
                 android:background="@color/main"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_affiliation"
+                style="@style/TextViewDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="산융원"
+                android:textColor="@color/gray"
+                android:textSize="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tv_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

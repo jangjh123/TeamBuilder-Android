@@ -2,7 +2,7 @@ package com.example.teambuilder.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.example.teambuilder.data.local.match.MatchDao
+import com.example.teambuilder.data.local.MatchDao
 import com.example.teambuilder.data.repository.MatchRepository
 import com.example.teambuilder.data.repository.SplashRepository
 import com.example.teambuilder.data.repository.TeamBuildRepository

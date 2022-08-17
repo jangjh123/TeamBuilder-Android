@@ -11,5 +11,7 @@
     <color name="transparent">#00000000</color>
     <color name="main">#FF405DE6</color>
     <color name="point_color">#FF0091EA</color>
-    <color name="gray">#FF8C8E8F</color>
+    <color name="support_color">#FF092853</color>
+    <color name="light_gray">#FFEFF3F5</color>
+    <color name="gray">#FFD1D2D3</color>
 </resources>

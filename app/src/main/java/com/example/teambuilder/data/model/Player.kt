@@ -1,6 +1,7 @@
 package com.example.teambuilder.data.model
 
 import android.os.Parcelable
+import androidx.room.Embedded
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

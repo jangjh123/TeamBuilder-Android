@@ -2,7 +2,7 @@ package com.example.teambuilder.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.teambuilder.data.local.match.MatchDatabase
+import com.example.teambuilder.data.local.MatchDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.example.teambuilder.data.local.match
+package com.example.teambuilder.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert

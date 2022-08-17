@@ -8,6 +8,7 @@ import com.example.teambuilder.data.model.Team
 import com.example.teambuilder.data.repository.TeamBuildRepository
 import com.example.teambuilder.util.SingleLiveEvent
 import com.example.teambuilder.util.isTrue
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -186,8 +187,8 @@ class TeamBuildViewModel @Inject constructor(
     fun setMatch() {
         CoroutineScope(Dispatchers.IO).launch {
             repository.saveMatch(
-                getTeams().first,
-                getTeams().second
+                Gson().toJson(getTeams().first),
+                Gson().toJson(getTeams().second)
             )
         }
     }

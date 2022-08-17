@@ -1,6 +1,8 @@
 package com.example.teambuilder.data.model
 
+import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity
@@ -13,3 +15,4 @@ data class Match(
     val teamAPlayers: String,
     val teamBPlayers: String
 )
+

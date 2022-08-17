@@ -380,15 +380,6 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
             }
         ).show(childFragmentManager, "rebuild_team")
     }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setTouchable(view: View, boolean: Boolean) {
-        if (boolean) {
-            view.setOnTouchListener { _, _ -> false }
-        } else {
-            view.setOnTouchListener { _, _ -> true }
-        }
-    }
 }
 
 enum class Sequence {

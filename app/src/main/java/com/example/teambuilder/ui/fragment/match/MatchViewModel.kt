@@ -97,4 +97,8 @@ class MatchViewModel @Inject constructor(
             repository.setMatchIsOver()
         }
     }
+
+    fun editPersonalScore(name: String, score: Int) {
+        repository.setPersonalScore(name, score)
+    }
 }

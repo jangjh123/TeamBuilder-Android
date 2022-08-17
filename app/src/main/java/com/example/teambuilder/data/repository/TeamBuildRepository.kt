@@ -18,11 +18,12 @@ import javax.inject.Inject
 
 class TeamBuildRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>,
-    private val dao: MatchDao
+    private val dao: MatchDao,
+    private val realtimeDatabase: FirebaseDatabase
 ) {
-    private val reference = FirebaseDatabase.getInstance().getReference("PLAYER")
+    private val reference = realtimeDatabase.getReference("PLAYER")
     suspend fun getAllPlayer(): Flow<ArrayList<Player>> = callbackFlow {
-        reference.get().addOnSuccessListener { snapshot ->
+        realtimeDatabase.getReference("PLAYER").get().addOnSuccessListener { snapshot ->
             val list = ArrayList<Player>()
             snapshot.children.forEach { player ->
                 list.add(
@@ -30,7 +31,8 @@ class TeamBuildRepository @Inject constructor(
                         index = player.child("index").getValue<Int>()!!,
                         name = player.key!!,
                         affiliation = player.child("affiliation").value.toString(),
-                        isSuperPlayer = player.child("isSP").getValue<Boolean>()!!
+                        isSuperPlayer = player.child("isSP").getValue<Boolean>()!!,
+                        personalScore = player.child("personalScore").getValue<Int>()!!
                     )
                 )
                 launch {

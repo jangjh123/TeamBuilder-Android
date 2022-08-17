@@ -11,7 +11,9 @@ import com.example.teambuilder.databinding.ItemTeamBBinding
 import com.example.teambuilder.util.GenericDiffUtil
 
 class TeamAdapter(
-    private val team: Team
+    var isTouchable: Boolean,
+    private val team: Team,
+    private inline val onClickPlayer: (Player) -> Unit
 ) : ListAdapter<Player, RecyclerView.ViewHolder>(GenericDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -43,6 +45,11 @@ class TeamAdapter(
             with(binding) {
                 tvName.text = player.name
                 tvAffiliation.text = player.affiliation
+                layPlayer.setOnClickListener {
+                    if (isTouchable) {
+                        onClickPlayer(player)
+                    }
+                }
             }
         }
     }
@@ -53,6 +60,11 @@ class TeamAdapter(
             with(binding) {
                 tvName.text = player.name
                 tvAffiliation.text = player.affiliation
+                layPlayer.setOnClickListener {
+                    if (isTouchable) {
+                        onClickPlayer(player)
+                    }
+                }
             }
         }
     }

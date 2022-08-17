@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class SplashRepository @Inject
 constructor(
-    dataStore: DataStore<Preferences>
+    dataStore: DataStore<Preferences>,
 ) {
     private val matchExistFlow: Flow<Boolean> = dataStore.data.map {
         it[KEY_IS_EXIST] ?: false

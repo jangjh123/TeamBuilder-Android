@@ -7,6 +7,14 @@
         <variable
             name="fragment"
             type="com.example.teambuilder.ui.fragment.match.MatchFragment" />
+
+        <variable
+            name="teamAAdapter"
+            type="com.example.teambuilder.ui.component.adapter.TeamAdapter" />
+
+        <variable
+            name="teamBAdapter"
+            type="com.example.teambuilder.ui.component.adapter.TeamAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +26,7 @@
             style="@style/TextViewBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:text="A 팀"
             android:textColor="@color/black"
             android:textSize="30dp"
@@ -32,39 +40,37 @@
             style="@style/TextViewBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="B 팀"
             android:textColor="@color/black"
             android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/textView3" />
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rv_team_a"-->
-<!--            setLayoutManager="@{1}"-->
-<!--            setRecyclerViewAdapter="@{teamAAdapter}"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:overScrollMode="never"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/rv_team_b"-->
-<!--            app:layout_constraintHorizontal_bias="0.5"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/textView3" />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_team_a"
+            setLayoutManager="@{1}"
+            setRecyclerViewAdapter="@{teamAAdapter}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:overScrollMode="never"
+            app:layout_constraintEnd_toStartOf="@+id/rv_team_b"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rv_team_b"-->
-
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:overScrollMode="never"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.5"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/rv_team_a"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/rv_team_a" />-->
-<!--        setLayoutManager="@{1}"-->
-<!--        setRecyclerViewAdapter="@{teamBAdapter}"-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_team_b"
+            setLayoutManager="@{1}"
+            setRecyclerViewAdapter="@{teamBAdapter}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/rv_team_a"
+            app:layout_constraintTop_toTopOf="@+id/rv_team_a" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

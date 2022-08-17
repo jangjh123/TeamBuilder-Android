@@ -43,6 +43,10 @@
         tools:layout="@layout/fragment_win_rate"/>
     <action
         android:id="@+id/action_global_frag_match_history"
+        app:enterAnim="@anim/slide_from_right"
+        app:exitAnim="@anim/slide_to_left"
+        app:popUpTo="@+id/nav_main"
+        app:popUpToInclusive="true"
         app:destination="@id/frag_match_history" />
     <action
         android:id="@+id/action_global_frag_win_rate"

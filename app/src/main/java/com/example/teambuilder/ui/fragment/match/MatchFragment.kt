@@ -4,6 +4,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
@@ -208,6 +209,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                         args.teamB
                     )
                 }
+                findNavController().navigate(R.id.action_global_frag_match_history)
             }
         ).show(childFragmentManager, "quit_match")
     }

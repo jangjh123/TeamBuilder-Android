@@ -8,6 +8,7 @@ import com.example.teambuilder.data.model.Team
 import com.example.teambuilder.databinding.FragmentMatchBinding
 import com.example.teambuilder.ui.BaseFragment
 import com.example.teambuilder.ui.component.adapter.TeamAdapter
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,5 +41,6 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
             teamAAdapter.submitList(args.teamA?.toList())
             teamBAdapter.submitList(args.teamB?.toList())
         }
+        BottomSheetBehavior.from(binding.bs).state = BottomSheetBehavior.STATE_COLLAPSED
     }
 }

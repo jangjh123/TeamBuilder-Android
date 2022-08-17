@@ -6,6 +6,7 @@ import com.example.teambuilder.data.local.MatchDao
 import com.example.teambuilder.data.repository.MatchRepository
 import com.example.teambuilder.data.repository.SplashRepository
 import com.example.teambuilder.data.repository.TeamBuildRepository
+import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,21 +19,23 @@ object RepositoryModule {
 
     @ViewModelScoped
     @Provides
-    fun provideTeamBuildRepository(
-        dataStore: DataStore<Preferences>,
-        dao: MatchDao
-    ) = TeamBuildRepository(dataStore, dao)
+    fun provideSplashRepository(
+        dataStore: DataStore<Preferences>
+    ) = SplashRepository(dataStore)
 
     @ViewModelScoped
     @Provides
-    fun provideSplashRepository(
-        dataStore: DataStore<Preferences>, dao: MatchDao
-    ) = SplashRepository(dataStore)
+    fun provideTeamBuildRepository(
+        dataStore: DataStore<Preferences>,
+        dao: MatchDao,
+        realtimeDatabase: FirebaseDatabase
+    ) = TeamBuildRepository(dataStore, dao, realtimeDatabase)
 
     @ViewModelScoped
     @Provides
     fun provideMatchRepository(
         dataStore: DataStore<Preferences>,
-        dao: MatchDao
-    ) = MatchRepository(dataStore, dao)
+        dao: MatchDao,
+        realtimeDatabase: FirebaseDatabase
+    ) = MatchRepository(dataStore, dao, realtimeDatabase)
 }

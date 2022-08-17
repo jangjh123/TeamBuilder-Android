@@ -2,6 +2,7 @@ package com.example.teambuilder.ui
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +66,15 @@ abstract class BaseFragment<VB : ViewDataBinding>(private val layoutId: Int) : F
     protected inline fun LiveData<Boolean>.isTrue(crossinline isTrue: () -> Unit) {
         if (this.value == true) {
             isTrue()
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    protected fun setTouchable(view: View, boolean: Boolean) {
+        if (boolean) {
+            view.setOnTouchListener { _, _ -> false }
+        } else {
+            view.setOnTouchListener { _, _ -> true }
         }
     }
 }

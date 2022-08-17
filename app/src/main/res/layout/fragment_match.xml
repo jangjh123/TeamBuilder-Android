@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -17,68 +18,204 @@
             type="com.example.teambuilder.ui.component.adapter.TeamAdapter" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/sub_white">
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/TextViewBold"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/box_top_sheet"
+            android:elevation="10dp"
+            android:gravity="center"
+            android:text="매치"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_team_a"
+            setLayoutManager="@{1}"
+            setRecyclerViewAdapter="@{teamAAdapter}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:overScrollMode="never"
+            app:layout_constraintEnd_toStartOf="@+id/rv_team_b"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_team_b"
+            setLayoutManager="@{1}"
+            setRecyclerViewAdapter="@{teamBAdapter}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/rv_team_a"
+            app:layout_constraintTop_toTopOf="@+id/rv_team_a" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/lay_bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/box_bottom_sheet"
+            android:elevation="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_team_a">
+
+            <TextView
+                android:id="@+id/textView7"
+                style="@style/TextViewDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="A팀"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/textView2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/TextViewDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B팀"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView7"
+                app:layout_constraintTop_toTopOf="@+id/textView7" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:background="@color/sub_white"
-                android:layout_height="match_parent">
+                android:id="@+id/constraintLayout"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@+id/textView2"
+                app:layout_constraintStart_toEndOf="@+id/textView7"
+                app:layout_constraintTop_toBottomOf="@+id/textView7">
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/tv_a_score"
                     style="@style/TextViewBold"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:gravity="center"
-                    android:elevation="10dp"
-                    android:background="@drawable/box_top_sheet"
-                    android:textSize="16dp"
-                    android:text="매치"
-                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="0"
+                    android:textColor="@color/black"
+                    android:textSize="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                    app:layout_constraintEnd_toStartOf="@+id/textView8"
+                    app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    style="@style/TextViewBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textSize="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_team_a"
-                    setLayoutManager="@{1}"
-                    setRecyclerViewAdapter="@{teamAAdapter}"
+                <TextView
+                    android:id="@+id/tv_b_score"
+                    style="@style/TextViewBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:overScrollMode="never"
-                    app:layout_constraintEnd_toStartOf="@+id/rv_team_b"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_team_b"
-                    setLayoutManager="@{1}"
-                    setRecyclerViewAdapter="@{teamBAdapter}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/rv_team_a"
-                    app:layout_constraintTop_toTopOf="@+id/rv_team_a" />
+                    android:layout_marginStart="10dp"
+                    android:text="0"
+                    android:textColor="@color/black"
+                    android:textSize="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView8"
+                    app:layout_constraintStart_toEndOf="@+id/textView8"
+                    app:layout_constraintTop_toTopOf="@+id/textView8" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:id="@+id/bs"
-            android:layout_height="200dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/box_bottom_sheet"
-            app:behavior_draggable="true"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="50dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
+            <ImageView
+                android:id="@+id/btn_a_up"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{fragment::onClickAUp}"
+                android:src="@drawable/ic_caret_up_solid"
+                app:layout_constraintBottom_toTopOf="@+id/btn_a_down"
+                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+                app:tint="@color/point_color" />
+
+            <ImageView
+                android:id="@+id/btn_b_up"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="1dp"
+                android:onClick="@{fragment::onClickBUp}"
+                android:src="@drawable/ic_caret_up_solid"
+                app:layout_constraintBottom_toTopOf="@+id/btn_b_down"
+                app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+                app:tint="@color/point_color" />
+
+            <ImageView
+                android:id="@+id/btn_a_down"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{fragment::onClickADown}"
+                android:src="@drawable/ic_caret_down_solid"
+                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/btn_a_up"
+                app:tint="@color/point_color" />
+
+            <ImageView
+                android:id="@+id/btn_b_down"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="1dp"
+                android:onClick="@{fragment::onClickBDown}"
+                android:src="@drawable/ic_caret_down_solid"
+                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+                app:layout_constraintStart_toEndOf="@+id/constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/btn_b_up"
+                app:tint="@color/point_color" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btn_quit_match"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:onClick="@{fragment::onClickQuitMatch}"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+                <TextView
+                    style="@style/TextViewDefault"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="경기 종료"
+                    android:textColor="@color/red"
+                    android:textSize="16dp" />
+
+            </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -40,7 +40,7 @@ class BuilderDialog(
         removePlayer(it, false)
     }, teamBLeader)
 
-    private var currentPlayer = Player(0, "", "", false)
+    private var currentPlayer = Player(0, "", "", false, 0)
 
     private lateinit var teamA: ArrayList<Player>
     private lateinit var teamB: ArrayList<Player>

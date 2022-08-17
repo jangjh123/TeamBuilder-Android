@@ -25,10 +25,11 @@
                 android:layout_marginEnd="10dp"
                 android:text="홍길동"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 app:layout_constraintBottom_toTopOf="@+id/tv_affiliation"
                 app:layout_constraintEnd_toStartOf="@+id/view_head_start"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <View
                 android:id="@+id/view_head_start"

@@ -13,8 +13,23 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/sub_white"
         tools:context=".ui.fragment.TeamBuildFragment">
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/TextViewBold"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/box_top_sheet"
+            android:elevation="10dp"
+            android:gravity="center"
+            android:text="팀 구성"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!--        Team Leader-->
         <TextView
@@ -28,7 +43,7 @@
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="@+id/btn_team_b_leader"
             app:layout_constraintStart_toStartOf="@+id/btn_team_a_leader"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <!--        Random or peek-->
 

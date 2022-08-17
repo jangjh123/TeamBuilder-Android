@@ -15,7 +15,7 @@ class MatchViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun getCurrentMatch(onResult: (Match) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             onResult(repository.getMatchFromRoom())
         }
     }

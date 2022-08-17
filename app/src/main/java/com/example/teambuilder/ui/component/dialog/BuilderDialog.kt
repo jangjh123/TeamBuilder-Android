@@ -216,6 +216,25 @@ class BuilderDialog(
             val polled = entry.poll()!!
             binding.tvName.text = polled.name
             binding.tvAffiliation.text = polled.affiliation
+            binding.ivAffiliation.setImageResource(
+                when (polled.affiliation) {
+                    "경북지역 인자위" -> {
+                        R.drawable.logo_0
+                    }
+                    "경북산학융합원" -> {
+                        R.drawable.logo_1
+                    }
+                    "새마을세계화재단" -> {
+                        R.drawable.logo_2
+                    }
+                    "한국여성경제인협회" -> {
+                        R.drawable.logo_3
+                    }
+                    else -> {
+                        R.drawable.logo_free_agent
+                    }
+                }
+            )
             currentPlayer = polled
         } else {
             binding.tvName.text = ""

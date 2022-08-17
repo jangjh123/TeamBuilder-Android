@@ -23,34 +23,24 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:background="@color/sub_white"
                 android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/textView3"
                     style="@style/TextViewBold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="A 팀"
-                    android:textColor="@color/black"
-                    android:textSize="30dp"
-                    app:layout_constraintEnd_toStartOf="@+id/textView2"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="center"
+                    android:elevation="10dp"
+                    android:background="@drawable/box_top_sheet"
+                    android:textSize="16dp"
+                    android:text="매치"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView2"
-                    style="@style/TextViewBold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="B 팀"
-                    android:textColor="@color/black"
-                    android:textSize="30dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textView3"
-                    app:layout_constraintTop_toTopOf="@+id/textView3" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_team_a"

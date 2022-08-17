@@ -3,8 +3,10 @@ package com.example.teambuilder.ui.component.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.teambuilder.R
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.data.model.Team
 import com.example.teambuilder.databinding.ItemPlayerBinding
@@ -38,6 +40,25 @@ class PlayerAdapter(
             with(binding) {
                 tvName.text = player.name
                 tvAffiliation.text = player.affiliation
+                ivAffiliation.setImageResource(
+                    when (player.affiliation) {
+                        "경북지역 인자위" -> {
+                            R.drawable.logo_0
+                        }
+                        "경북산학융합원" -> {
+                            R.drawable.logo_1
+                        }
+                        "새마을세계화재단" -> {
+                            R.drawable.logo_2
+                        }
+                        "한국여성경제인협회" -> {
+                            R.drawable.logo_3
+                        }
+                        else -> {
+                            R.drawable.logo_free_agent
+                        }
+                    }
+                )
 
                 if (isSelection) { // 랜덤 팀원 선택시, 리더를 제외한 팀원의 team 값이 Team_RANDOM 으로 설정되어 들어옴.
                     tvSpecial.text = if (player.isLeader) {

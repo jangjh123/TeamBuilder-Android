@@ -39,12 +39,20 @@ class MatchViewModel @Inject constructor(
         _teamBScore.postValue(0)
     }
 
-    fun setTeamAScore(score: Int) {
-        _teamAScore.postValue(teamAScore.value!! + score)
+    fun setTeamAScore(isPlus: Boolean) {
+        if (isPlus) {
+            _teamAScore.postValue(teamAScore.value!! + 1)
+        } else {
+            _teamAScore.postValue(teamAScore.value!! - 1)
+        }
     }
 
-    fun setTeamBScore(score: Int) {
-        _teamBScore.postValue(teamBScore.value!! + score)
+    fun setTeamBScore(isPlus: Boolean) {
+        if (isPlus) {
+            _teamBScore.postValue(teamBScore.value!! + 1)
+        } else {
+            _teamBScore.postValue(teamBScore.value!! - 1)
+        }
     }
 
     fun quitMatch(isLoaded: Boolean, teamA: Array<Player>?, teamB: Array<Player>?) {
@@ -98,7 +106,11 @@ class MatchViewModel @Inject constructor(
         }
     }
 
-    fun editPersonalScore(name: String, score: Int) {
-        repository.setPersonalScore(name, score)
+    fun setPersonalScore(name: String, isPlus: Boolean) {
+        if (isPlus) {
+            repository.setPersonalScore(name, 1)
+        } else {
+            repository.setPersonalScore(name, -1)
+        }
     }
 }

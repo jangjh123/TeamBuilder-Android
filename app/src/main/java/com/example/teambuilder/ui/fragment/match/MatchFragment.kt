@@ -23,7 +23,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     private lateinit var teamAAdapter: TeamAdapter
     private lateinit var teamBAdapter: TeamAdapter
     private var isLoaded = false
-    private var isGetScore = false
+    private var isPlus = false
     private var isTeamAScoreChange = false
     private val fadeIn1: Animation by lazy {
         AnimationUtils.loadAnimation(
@@ -49,16 +49,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
             R.anim.fade_out_3
         )
     }
-    private val scoreSnackBar by lazy {
-        Snackbar.make(
-            binding.root,
-            if (isGetScore) {
-                "득점한 선수를 선택해주세요."
-            } else {
-                "득점을 취소할 선수를 선택해주세요."
-            }, Snackbar.LENGTH_INDEFINITE
-        )
-    }
+    private lateinit var scoreSnackBar: Snackbar
 
     override fun proceed() {
         initAdapter()
@@ -70,10 +61,10 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
 
     private fun initAdapter() {
         teamAAdapter = TeamAdapter(false, Team.TEAM_A, onClickPlayer = {
-            showScoreDialog(it.name, isGetScore)
+            showScoreDialog(it.name)
         })
         teamBAdapter = TeamAdapter(false, Team.TEAM_B, onClickPlayer = {
-            showScoreDialog(it.name, isGetScore)
+            showScoreDialog(it.name)
         })
     }
 
@@ -95,17 +86,17 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
         }
     }
 
-    private fun showScoreDialog(name: String, isGetScore: Boolean) {
+    private fun showScoreDialog(name: String) {
         DefaultDialog(
-            if (isGetScore) {
+            if (isPlus) {
                 "득점자"
             } else {
                 "득점 취소"
             },
-            if (isGetScore) {
+            if (isPlus) {
                 "$name 선수가 득점했나요?"
             } else {
-                "$name 선수의 득점을 취소합니다"
+                "$name 선수의 득점을 취소합니다."
             },
             "아니요",
             "네",
@@ -116,16 +107,13 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                 if (isTeamAScoreChange) {
                     binding.rvTeamB.startAnimation(fadeIn2)
                     teamAAdapter.isTouchable = false
+                    viewModel.setTeamAScore(isPlus)
                 } else {
                     binding.rvTeamA.startAnimation(fadeIn1)
                     teamBAdapter.isTouchable = false
+                    viewModel.setTeamBScore(isPlus)
                 }
-
-                if (isGetScore) {
-                    viewModel.editPersonalScore(name, 1)
-                } else {
-                    viewModel.editPersonalScore(name, -1)
-                }
+                viewModel.setPersonalScore(name, isPlus)
             }
         ).show(childFragmentManager, "score")
     }
@@ -141,21 +129,19 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     }
 
     fun onClickAUp(view: View) {
-        isGetScore = true
+        isPlus = true
         isTeamAScoreChange = true
-        viewModel.setTeamAScore(1)
         binding.rvTeamB.startAnimation(fadeOut1)
-        scoreSnackBar.show()
+        showScoreSnackBar()
         teamAAdapter.isTouchable = true
         teamBAdapter.isTouchable = false
     }
 
     fun onClickBUp(view: View) {
-        isGetScore = true
+        isPlus = true
         isTeamAScoreChange = false
-        viewModel.setTeamBScore(1)
         binding.rvTeamA.startAnimation(fadeOut2)
-        scoreSnackBar.show()
+        showScoreSnackBar()
         teamBAdapter.isTouchable = true
         teamAAdapter.isTouchable = false
     }
@@ -164,13 +150,12 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
         if (viewModel.teamAScore.value == 0) {
             showSnackBar("현재 0점 입니다.")
         } else {
-            binding.rvTeamB.startAnimation(fadeOut1)
-            scoreSnackBar.show()
+            isPlus = false
             teamAAdapter.isTouchable = true
             teamBAdapter.isTouchable = false
-            viewModel.setTeamAScore(-1)
-            isGetScore = false
             isTeamAScoreChange = true
+            binding.rvTeamB.startAnimation(fadeOut1)
+            showScoreSnackBar()
         }
     }
 
@@ -178,13 +163,12 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
         if (viewModel.teamBScore.value == 0) {
             showSnackBar("현재 0점 입니다.")
         } else {
-            binding.rvTeamA.startAnimation(fadeOut2)
-            scoreSnackBar.show()
+            isPlus = false
             teamBAdapter.isTouchable = true
             teamAAdapter.isTouchable = false
-            viewModel.setTeamBScore(-1)
-            isGetScore = false
             isTeamAScoreChange = false
+            binding.rvTeamA.startAnimation(fadeOut2)
+            showScoreSnackBar()
         }
     }
 
@@ -212,5 +196,17 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                 }
             }
         ).show(childFragmentManager, "quit_match")
+    }
+
+    private fun showScoreSnackBar() {
+        scoreSnackBar = Snackbar.make(
+            binding.root,
+            if (isPlus) {
+                "득점한 선수를 선택해주세요."
+            } else {
+                "득점을 취소할 선수를 선택해주세요."
+            }, Snackbar.LENGTH_INDEFINITE
+        )
+        scoreSnackBar.show()
     }
 }

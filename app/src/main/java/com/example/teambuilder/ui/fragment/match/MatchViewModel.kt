@@ -12,6 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -79,9 +81,12 @@ class MatchViewModel @Inject constructor(
     }
 
     fun quitMatch(isLoaded: Boolean, teamA: Array<Player>?, teamB: Array<Player>?) {
+        val dateFormat = SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale("ko", "KR"))
+
         val winner: String
         val winnerScore: Int
         val loserScore: Int
+        val endDate = dateFormat.format(System.currentTimeMillis())
 
         if (teamAScore.value!! > teamBScore.value!!) {
             winner = "A"
@@ -105,6 +110,7 @@ class MatchViewModel @Inject constructor(
                         this.winner = winner
                         this.winnerScore = winnerScore
                         this.loserScore = loserScore
+                        this.endDate = endDate
                     }
                 )
             }
@@ -119,6 +125,7 @@ class MatchViewModel @Inject constructor(
                         loserScore,
                         gson.toJson(teamA),
                         gson.toJson(teamB),
+                        endDate
                     )
                 )
             }

@@ -3,7 +3,6 @@ package com.example.teambuilder.ui.fragment.match
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -210,7 +209,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                         args.teamB
                     )
                 }
-                findNavController().navigate(R.id.action_global_frag_match_history)
+                findNavController().navigate(R.id.action_frag_match_to_frag_stat)
             }
         ).show(childFragmentManager, "quit_match")
     }

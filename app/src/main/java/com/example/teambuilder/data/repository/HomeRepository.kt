@@ -9,10 +9,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class SplashRepository @Inject
-constructor(
-    dataStore: DataStore<Preferences>,
-) {
+class HomeRepository @Inject constructor(
+    dataStore: DataStore<Preferences>
+){
     private val matchExistFlow: Flow<Boolean> = dataStore.data.map {
         it[KEY_IS_EXIST] ?: false
     }.flowOn(Dispatchers.IO)

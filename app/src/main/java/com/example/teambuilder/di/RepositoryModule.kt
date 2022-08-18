@@ -3,8 +3,8 @@ package com.example.teambuilder.di
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.example.teambuilder.data.local.MatchDao
+import com.example.teambuilder.data.repository.HomeRepository
 import com.example.teambuilder.data.repository.MatchRepository
-import com.example.teambuilder.data.repository.SplashRepository
 import com.example.teambuilder.data.repository.TeamBuildRepository
 import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
@@ -19,9 +19,9 @@ object RepositoryModule {
 
     @ViewModelScoped
     @Provides
-    fun provideSplashRepository(
+    fun provideHomeRepository(
         dataStore: DataStore<Preferences>
-    ) = SplashRepository(dataStore)
+    ) = HomeRepository(dataStore)
 
     @ViewModelScoped
     @Provides

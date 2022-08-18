@@ -2,6 +2,7 @@ package com.example.teambuilder.ui.activity.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -25,10 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         if (isMatchExist) {
             navController.navigate(
-                TeamBuildFragmentDirections.actionFragTeamBuildToFragMatch(
-                    null,
-                    null
-                )
+                R.id.nav_main, bundleOf(Pair("isMatchExist", isMatchExist))
             )
         }
     }

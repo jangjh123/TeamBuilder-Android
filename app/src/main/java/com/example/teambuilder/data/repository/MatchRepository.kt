@@ -5,6 +5,8 @@ import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.example.data_store.KEY_IS_EXIST
+import com.example.data_store.KEY_TEAM_A_SCORE
+import com.example.data_store.KEY_TEAM_B_SCORE
 import com.example.teambuilder.data.local.MatchDao
 import com.example.teambuilder.data.model.Match
 import com.google.firebase.database.FirebaseDatabase
@@ -38,6 +40,18 @@ class MatchRepository @Inject constructor(
             realtimeDatabase.getReference("PLAYER").child(name).child("personalScore").setValue(
                 personalScore + score
             )
+        }
+    }
+
+    suspend fun saveTeamAScoreIntoDataStore(score: Int) {
+        dataStore.edit {
+            it[KEY_TEAM_A_SCORE] = score
+        }
+    }
+
+    suspend fun saveTeamBScoreIntoDataStore(score: Int) {
+        dataStore.edit {
+            it[KEY_TEAM_B_SCORE] = score
         }
     }
 }

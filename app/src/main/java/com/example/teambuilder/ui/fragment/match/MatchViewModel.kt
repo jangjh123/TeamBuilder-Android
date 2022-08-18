@@ -45,6 +45,10 @@ class MatchViewModel @Inject constructor(
         } else {
             _teamAScore.postValue(teamAScore.value!! - 1)
         }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.saveTeamAScoreIntoDataStore(teamAScore.value!!)
+        }
     }
 
     fun setTeamBScore(isPlus: Boolean) {
@@ -52,6 +56,10 @@ class MatchViewModel @Inject constructor(
             _teamBScore.postValue(teamBScore.value!! + 1)
         } else {
             _teamBScore.postValue(teamBScore.value!! - 1)
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.saveTeamBScoreIntoDataStore(teamBScore.value!!)
         }
     }
 

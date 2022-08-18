@@ -10,7 +10,6 @@ data class Player (
     val name: String,
     val affiliation: String,
     val isSuperPlayer: Boolean,
-    var personalScore: Int,
     var team: Team = Team.NONE,
-    var isLeader: Boolean = false,
+    var isLeader: Boolean = false
 ) : Parcelable

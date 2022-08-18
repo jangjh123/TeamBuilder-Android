@@ -66,7 +66,6 @@ class RankingAdapter(
                     PieEntry(ranking.loseCount.toFloat(), "패")
                 )
 
-
                 val pieData = PieData(PieDataSet(pieEntry, ""))
 
                 pieChart.apply {
@@ -75,7 +74,7 @@ class RankingAdapter(
                     data.setValueTextColor(Color.TRANSPARENT)
                     data.dataSet.colors.apply {
                         add(0, ContextCompat.getColor(root.context, R.color.point_color))
-                        add(1, ContextCompat.getColor(root.context, R.color.gray))
+                        add(1, ContextCompat.getColor(root.context, R.color.light_gray))
                         setUsePercentValues(true)
                         setDrawEntryLabels(false)
                         description.isEnabled = false

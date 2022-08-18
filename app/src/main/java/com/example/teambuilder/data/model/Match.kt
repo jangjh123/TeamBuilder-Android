@@ -14,6 +14,6 @@ data class Match(
     var loserScore: Int = 0,
     val teamAPlayers: String,
     val teamBPlayers: String,
-    var endDate: String
+    var endDate: String = ""
 )
 

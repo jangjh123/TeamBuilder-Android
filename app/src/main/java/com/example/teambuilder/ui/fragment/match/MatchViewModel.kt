@@ -81,7 +81,7 @@ class MatchViewModel @Inject constructor(
     }
 
     fun quitMatch(isLoaded: Boolean, teamA: Array<Player>?, teamB: Array<Player>?) {
-        val dateFormat = SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale("ko", "KR"))
+        val dateFormat = SimpleDateFormat("yyyy-mm-dd hh:mm", Locale("ko", "KR"))
 
         val winner: String
         val winnerScore: Int
@@ -92,11 +92,23 @@ class MatchViewModel @Inject constructor(
             winner = "A"
             winnerScore = teamAScore.value!!
             loserScore = teamBScore.value!!
+
+            CoroutineScope(Dispatchers.IO).launch {
+                repository.setPersonalVictoryCount(teamA!!)
+                repository.setPersonalLoseCount(teamB!!)
+            }
+
         } else if (
             teamBScore.value!! > teamAScore.value!!) {
             winner = "B"
             winnerScore = teamBScore.value!!
             loserScore = teamAScore.value!!
+
+            CoroutineScope(Dispatchers.IO).launch {
+                repository.setPersonalVictoryCount(teamB!!)
+                repository.setPersonalLoseCount(teamA!!)
+            }
+
         } else {
             winner = "Draw"
             winnerScore = teamAScore.value!!

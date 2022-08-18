@@ -7,7 +7,7 @@ import com.example.data_store.KEY_IS_EXIST
 import com.example.teambuilder.data.local.MatchDao
 import com.example.teambuilder.data.model.Match
 import com.example.teambuilder.data.model.Player
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.getValue
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -19,11 +19,11 @@ import javax.inject.Inject
 class TeamBuildRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>,
     private val dao: MatchDao,
-    private val realtimeDatabase: FirebaseDatabase
+    private val realtimeDatabase: DatabaseReference
 ) {
-    private val reference = realtimeDatabase.getReference("PLAYER")
+
     suspend fun getAllPlayer(): Flow<ArrayList<Player>> = callbackFlow {
-        realtimeDatabase.getReference("PLAYER").get().addOnSuccessListener { snapshot ->
+        realtimeDatabase.get().addOnSuccessListener { snapshot ->
             val list = ArrayList<Player>()
             snapshot.children.forEach { player ->
                 list.add(
@@ -31,8 +31,7 @@ class TeamBuildRepository @Inject constructor(
                         index = player.child("index").getValue<Int>()!!,
                         name = player.key!!,
                         affiliation = player.child("affiliation").value.toString(),
-                        isSuperPlayer = player.child("isSP").getValue<Boolean>()!!,
-                        personalScore = player.child("personalScore").getValue<Int>()!!
+                        isSuperPlayer = player.child("isSP").getValue<Boolean>()!!
                     )
                 )
                 launch {
@@ -42,11 +41,11 @@ class TeamBuildRepository @Inject constructor(
             close()
         }
 
-        reference.get().addOnCanceledListener {
+        realtimeDatabase.get().addOnCanceledListener {
             close()
         }
 
-        reference.get().addOnFailureListener {
+        realtimeDatabase.get().addOnFailureListener {
             close()
         }
 
@@ -68,7 +67,7 @@ class TeamBuildRepository @Inject constructor(
         dao.insert(
             Match(
                 teamAPlayers = teamAPlayers,
-                teamBPlayers = teamBPlayers
+                teamBPlayers = teamBPlayers,
             )
         )
     }

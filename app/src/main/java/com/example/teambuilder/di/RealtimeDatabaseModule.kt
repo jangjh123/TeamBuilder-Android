@@ -14,5 +14,5 @@ object FirebaseDatabaseModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseDatabase() = Firebase.database
+    fun provideFirebaseDatabase() = Firebase.database.getReference("PLAYER")
 }

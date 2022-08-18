@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.example.teambuilder.ui.fragment.match_history.MatchHistoryFragment" />
+
+        <variable
+            name="adapter"
+            type="com.example.teambuilder.ui.component.adapter.MatchHistoryAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragment.match_history.MatchHistory">
+
+        <TextView
+            style="@style/TextViewDefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="진행한 매치가 없습니다."
+            android:layout_marginTop="40dp"
+            android:visibility="gone"
+            android:id="@+id/tv_no_match"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_match_history"
+            setAdapter="@{adapter}"
+            setLayoutManager="@{1}"
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

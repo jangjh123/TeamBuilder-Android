@@ -28,10 +28,7 @@ class PlayerAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) {
-            val player = getItem(position)
-            holder.bind(player)
-        }
+        (holder as ViewHolder).bind(getItem(position))
     }
 
     inner class ViewHolder(private val binding: ItemPlayerBinding) :

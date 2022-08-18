@@ -10,45 +10,35 @@
         android:name="com.example.teambuilder.ui.fragment.home.HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
-            app:enterAnim="@anim/slide_from_right"
-            app:exitAnim="@anim/slide_to_left"
-            app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right"
             android:id="@+id/action_frag_home_to_frag_team_build"
-            app:destination="@id/frag_team_build" />
-        <action
+            app:destination="@id/frag_team_build"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right"
+            app:popExitAnim="@anim/slide_to_right" />
+        <action
             android:id="@+id/action_frag_home_to_frag_match"
-            app:destination="@id/frag_match" />
-        <action
+            app:destination="@id/frag_match"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right"
-            android:id="@+id/action_frag_home_to_frag_stat"
-            app:destination="@id/frag_stat" />
+            app:popExitAnim="@anim/slide_to_right" />
+        <action
+            android:id="@+id/action_frag_home_to_frag_statistics"
+            app:destination="@id/frag_statistics"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 
     <fragment
         android:id="@+id/frag_match"
         android:name="com.example.teambuilder.ui.fragment.match.MatchFragment"
         tools:layout="@layout/fragment_match">
-        <argument
-            android:name="teamA"
-            android:defaultValue="@null"
-            app:argType="com.example.teambuilder.data.model.Player[]"
-            app:nullable="true" />
-        <argument
-            android:name="teamB"
-            android:defaultValue="@null"
-            app:argType="com.example.teambuilder.data.model.Player[]"
-            app:nullable="true" />
         <action
             android:id="@+id/action_frag_match_to_frag_stat"
-            app:destination="@id/frag_stat"
+            app:destination="@id/frag_statistics"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
@@ -73,9 +63,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/frag_stat"
-        android:name="com.example.teambuilder.ui.fragment.stat.StatFragment"
-        tools:layout="@layout/fragment_stat" />
+        android:id="@+id/frag_statistics"
+        android:name="com.example.teambuilder.ui.fragment.statistics.StatisticsFragment"
+        tools:layout="@layout/fragment_statistics" />
 
     <action
         android:id="@+id/action_global_frag_home"

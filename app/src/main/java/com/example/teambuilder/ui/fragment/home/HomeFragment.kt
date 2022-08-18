@@ -14,10 +14,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     override fun proceed() {
         binding.fragment = this@HomeFragment
-    }
-
-    override fun onResume() {
-        super.onResume()
         initView()
     }
 
@@ -51,8 +47,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
             }
 
-            btnStat.setOnClickListener {
-                findNavController().navigate(R.id.action_frag_home_to_frag_stat)
+            btnStatistics.setOnClickListener {
+                findNavController().navigate(R.id.action_frag_home_to_frag_statistics)
             }
 
             btnAddPlayer.setOnClickListener {

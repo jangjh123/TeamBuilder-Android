@@ -51,8 +51,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
             }
 
-            btnStat.setOnClickListener {
-                findNavController().navigate(R.id.action_frag_home_to_frag_stat)
+            btnStatistics.setOnClickListener {
+                findNavController().navigate(R.id.action_frag_home_to_frag_statistics)
             }
 
             btnAddPlayer.setOnClickListener {

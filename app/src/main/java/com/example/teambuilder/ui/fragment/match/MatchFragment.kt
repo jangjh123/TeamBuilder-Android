@@ -3,6 +3,7 @@ package com.example.teambuilder.ui.fragment.match
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -189,8 +190,8 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
 
     fun onClickQuitMatch(view: View) {
         DefaultDialog(
-            "경기 종료",
-            "경기를 종료합니다.",
+            "매치 종료",
+            "매치를 종료합니다.",
             "취소",
             "확인",
             null,

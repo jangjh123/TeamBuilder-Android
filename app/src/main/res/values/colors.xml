@@ -13,6 +13,6 @@
     <color name="point_color">#FF0091EA</color>
     <color name="support_color">#FF092853</color>
     <color name="sub_white">#FFFAFAFA</color>
-    <color name="gray">#FFD1D2D3</color>
+    <color name="gray">#FFAAAAAA</color>
     <color name="red">#AAFF4F4F</color>
 </resources>

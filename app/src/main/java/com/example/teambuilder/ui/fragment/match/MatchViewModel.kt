@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.teambuilder.data.model.Match
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.data.repository.MatchRepository
+import com.example.teambuilder.util.Utils.typePlayerList
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -30,10 +31,14 @@ class MatchViewModel @Inject constructor(
     val teamBScore: LiveData<Int>
         get() = _teamBScore
 
-    fun getCurrentMatch(onResult: (Match) -> Unit) {
+    fun getCurrentMatch(onResult: (Pair<List<Player>, List<Player>>) -> Unit) {
         CoroutineScope(Dispatchers.Main).launch {
             match = repository.getMatchFromRoom()
-            onResult(match)
+            val gson = Gson()
+            onResult(Pair(
+                gson.fromJson(match.teamAPlayers, typePlayerList),
+                gson.fromJson(match.teamBPlayers, typePlayerList)
+            ))
         }
     }
 
@@ -80,7 +85,7 @@ class MatchViewModel @Inject constructor(
         }
     }
 
-    fun quitMatch(isLoaded: Boolean, teamA: Array<Player>?, teamB: Array<Player>?) {
+    fun quitMatch() {
         val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분", Locale.KOREA)
 
         val winner: String
@@ -88,25 +93,25 @@ class MatchViewModel @Inject constructor(
         val loserScore: Int
         val endDate = dateFormat.format(System.currentTimeMillis())
 
-        if (teamAScore.value!! > teamBScore.value!!) {
+        if (teamAScore.value!! > teamBScore.value!!) { // A 팀 승리
             winner = "A"
             winnerScore = teamAScore.value!!
             loserScore = teamBScore.value!!
 
             CoroutineScope(Dispatchers.IO).launch {
-                repository.setPersonalVictoryCount(teamA!!)
-                repository.setPersonalLoseCount(teamB!!)
+                repository.setPersonalMatchCount(true, match.teamAPlayers)
+                repository.setPersonalMatchCount(false, match.teamBPlayers)
             }
 
         } else if (
-            teamBScore.value!! > teamAScore.value!!) {
+            teamBScore.value!! > teamAScore.value!!) { // B 팀 승리
             winner = "B"
             winnerScore = teamBScore.value!!
             loserScore = teamAScore.value!!
 
             CoroutineScope(Dispatchers.IO).launch {
-                repository.setPersonalVictoryCount(teamB!!)
-                repository.setPersonalLoseCount(teamA!!)
+                repository.setPersonalMatchCount(true, match.teamBPlayers)
+                repository.setPersonalMatchCount(false, match.teamAPlayers)
             }
 
         } else {
@@ -115,32 +120,15 @@ class MatchViewModel @Inject constructor(
             loserScore = teamBScore.value!!
         }
 
-        if (isLoaded) {
-            CoroutineScope(Dispatchers.IO).launch {
-                repository.updateMatchResult(
-                    match.apply {
-                        this.winner = winner
-                        this.winnerScore = winnerScore
-                        this.loserScore = loserScore
-                        this.endDate = endDate
-                    }
-                )
-            }
-        } else {
-            CoroutineScope(Dispatchers.IO).launch {
-                val gson = Gson()
-                repository.saveMatchResult(
-                    Match(
-                        0,
-                        winner,
-                        winnerScore,
-                        loserScore,
-                        gson.toJson(teamA),
-                        gson.toJson(teamB),
-                        endDate
-                    )
-                )
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.updateMatchResult(
+                repository.getMatchFromRoom().apply {
+                    this.winner = winner
+                    this.winnerScore = winnerScore
+                    this.loserScore = loserScore
+                    this.endDate = endDate
+                }
+            )
         }
 
         CoroutineScope(Dispatchers.IO).launch {

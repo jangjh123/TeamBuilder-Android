@@ -36,16 +36,6 @@
         android:id="@+id/frag_match"
         android:name="com.example.teambuilder.ui.fragment.match.MatchFragment"
         tools:layout="@layout/fragment_match">
-        <argument
-            android:name="teamA"
-            android:defaultValue="@null"
-            app:argType="com.example.teambuilder.data.model.Player[]"
-            app:nullable="true" />
-        <argument
-            android:name="teamB"
-            android:defaultValue="@null"
-            app:argType="com.example.teambuilder.data.model.Player[]"
-            app:nullable="true" />
         <action
             android:id="@+id/action_frag_match_to_frag_stat"
             app:destination="@id/frag_statistics"

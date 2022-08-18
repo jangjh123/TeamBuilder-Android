@@ -9,8 +9,10 @@ import com.example.data_store.KEY_TEAM_B_SCORE
 import com.example.teambuilder.data.local.MatchDao
 import com.example.teambuilder.data.model.Match
 import com.example.teambuilder.data.model.Player
+import com.example.teambuilder.util.Utils.typePlayerList
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.getValue
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -32,10 +34,6 @@ class MatchRepository @Inject constructor(
 
     suspend fun getMatchFromRoom() = dao.getCurrentMatch()
 
-    suspend fun saveMatchResult(match: Match) {
-        dao.insert(match)
-    }
-
     suspend fun updateMatchResult(match: Match) {
         dao.updateMatch(match)
     }
@@ -56,25 +54,28 @@ class MatchRepository @Inject constructor(
             }
     }
 
-    fun setPersonalVictoryCount(players: Array<Player>) {
+    fun setPersonalMatchCount(isWin: Boolean, json: String) {
+        val gson = Gson()
+        val players: List<Player> = gson.fromJson(json, typePlayerList)
+
         players.forEach {
-            realtimeDatabase.child(it.name).child("victoryCount").get()
+            realtimeDatabase.child(it.name).child(
+                if (isWin) {
+                    "victoryCount"
+                } else {
+                    "loseCount"
+                }
+            ).get()
                 .addOnSuccessListener { snapshot ->
                     val victoryCount = snapshot.getValue<Int>() ?: 0
-                    realtimeDatabase.child(it.name).child("victoryCount").setValue(
+                    realtimeDatabase.child(it.name).child(
+                        if (isWin) {
+                            "victoryCount"
+                        } else {
+                            "loseCount"
+                        }
+                    ).setValue(
                         victoryCount + 1
-                    )
-                }
-        }
-    }
-
-    fun setPersonalLoseCount(players: Array<Player>) {
-        players.forEach {
-            realtimeDatabase.child(it.name).child("loseCount").get()
-                .addOnSuccessListener { snapshot ->
-                    val loseCount = snapshot.getValue<Int>() ?: 0
-                    realtimeDatabase.child(it.name).child("loseCount").setValue(
-                        loseCount + 1
                     )
                 }
         }

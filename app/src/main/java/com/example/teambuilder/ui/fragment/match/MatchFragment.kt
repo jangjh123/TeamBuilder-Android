@@ -19,11 +19,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match) {
-    private val args: MatchFragmentArgs by navArgs()
     private val viewModel: MatchViewModel by viewModels()
     private lateinit var teamAAdapter: TeamAdapter
     private lateinit var teamBAdapter: TeamAdapter
-    private var isLoaded = false
     private var isPlus = false
     private var isTeamAScoreChange = false
     private var isOnScoring = false
@@ -71,20 +69,13 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     }
 
     private fun setCurrentMatch() {
-        if (args.teamA == null) {
-            viewModel.getCurrentMatch {
-                val gson = Gson()
-                teamAAdapter.submitList(
-                    gson.fromJson(it.teamAPlayers, Array<Player>::class.java).toList()
-                )
-                teamBAdapter.submitList(
-                    gson.fromJson(it.teamBPlayers, Array<Player>::class.java).toList()
-                )
-                isLoaded = true
-            }
-        } else {
-            teamAAdapter.submitList(args.teamA?.toList())
-            teamBAdapter.submitList(args.teamB?.toList())
+        viewModel.getCurrentMatch {
+            teamAAdapter.submitList(
+                it.first
+            )
+            teamBAdapter.submitList(
+                it.second
+            )
         }
     }
 
@@ -196,19 +187,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
             null,
             null,
             onClickConfirm = {
-                if (isLoaded) {
-                    viewModel.quitMatch(
-                        true,
-                        null,
-                        null
-                    )
-                } else {
-                    viewModel.quitMatch(
-                        isLoaded,
-                        args.teamA,
-                        args.teamB
-                    )
-                }
+                viewModel.quitMatch()
                 viewModel.resetScore()
                 findNavController().navigate(R.id.action_frag_match_to_frag_stat)
             }

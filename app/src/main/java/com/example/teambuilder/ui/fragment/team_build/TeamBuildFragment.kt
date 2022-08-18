@@ -1,6 +1,5 @@
 package com.example.teambuilder.ui.fragment.team_build
 
-import android.annotation.SuppressLint
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils.loadAnimation
@@ -186,15 +185,9 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
     }
 
     fun onClickConfirmTeams(view: View) {
-        val teams = viewModel.getTeams()
         viewModel.setTeamExist()
         viewModel.setMatch()
-        findNavController().navigate(
-            TeamBuildFragmentDirections.actionFragTeamBuildToFragMatch(
-                teams.first.toTypedArray(),
-                teams.second.toTypedArray()
-            )
-        )
+        findNavController().navigate(TeamBuildFragmentDirections.actionFragTeamBuildToFragMatch())
     }
 
     override fun setObserver() {

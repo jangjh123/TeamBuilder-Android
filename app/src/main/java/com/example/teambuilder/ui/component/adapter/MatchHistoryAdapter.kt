@@ -9,6 +9,7 @@ import com.example.teambuilder.data.model.Match
 import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.databinding.ItemMatchBinding
 import com.example.teambuilder.util.GenericDiffUtil
+import com.example.teambuilder.util.Utils.typePlayerList
 import com.google.gson.Gson
 
 class MatchHistoryAdapter(
@@ -51,10 +52,10 @@ class MatchHistoryAdapter(
                 val stringBuilderTeamB = StringBuilder()
                 val gson = Gson()
 
-                gson.fromJson(match.teamAPlayers, Array<Player>::class.java).forEach {
+                (gson.fromJson(match.teamAPlayers, typePlayerList) as List<Player>).forEach {
                     stringBuilderTeamA.append("${it.name} ")
                 }
-                gson.fromJson(match.teamBPlayers, Array<Player>::class.java).forEach {
+                (gson.fromJson(match.teamBPlayers, typePlayerList) as List<Player>).forEach {
                     stringBuilderTeamB.append("${it.name} ")
                 }
 

@@ -1,5 +1,6 @@
 package com.example.teambuilder.ui.fragment.match_history
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.teambuilder.R
 import com.example.teambuilder.databinding.FragmentMatchHistoryBinding
@@ -17,16 +18,17 @@ class MatchHistoryFragment :
         adapter = MatchHistoryAdapter()
         binding.fragment = this@MatchHistoryFragment
         binding.adapter = adapter
-    }
-
-    override fun onResume() {
-        super.onResume()
         viewModel.getAllMatch()
     }
 
     override fun setObserver() {
         viewModel.matches.onChanged {
-            adapter.submitList(it)
+            if (it.isEmpty()) {
+                binding.tvNoMatch.visibility = View.VISIBLE
+                binding.rvMatchHistory.visibility = View.GONE
+            } else {
+                adapter.submitList(it)
+            }
         }
     }
 }

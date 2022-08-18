@@ -5,16 +5,13 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.teambuilder.R
-import com.example.teambuilder.data.model.Player
 import com.example.teambuilder.data.model.Team
 import com.example.teambuilder.databinding.FragmentMatchBinding
 import com.example.teambuilder.ui.BaseFragment
 import com.example.teambuilder.ui.component.adapter.TeamAdapter
 import com.example.teambuilder.ui.component.dialog.DefaultDialog
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

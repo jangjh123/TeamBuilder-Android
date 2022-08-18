@@ -8,7 +8,7 @@ import com.example.teambuilder.data.model.Match
 
 @Dao
 interface MatchDao {
-    @Query("SELECT * FROM `match`")
+    @Query("SELECT * FROM `match` ORDER BY id DESC")
     suspend fun getAll(): List<Match>
 
     @Query("SELECT * FROM 'match' ORDER BY 1 DESC")

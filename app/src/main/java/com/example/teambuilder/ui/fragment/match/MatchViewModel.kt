@@ -81,7 +81,7 @@ class MatchViewModel @Inject constructor(
     }
 
     fun quitMatch(isLoaded: Boolean, teamA: Array<Player>?, teamB: Array<Player>?) {
-        val dateFormat = SimpleDateFormat("yyyy-mm-dd hh:mm", Locale("ko", "KR"))
+        val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분", Locale.KOREA)
 
         val winner: String
         val winnerScore: Int

@@ -4,6 +4,13 @@
 
     <data>
 
+        <variable
+            name="fragment"
+            type="com.example.teambuilder.ui.fragment.match_history.MatchHistoryFragment" />
+
+        <variable
+            name="adapter"
+            type="com.example.teambuilder.ui.component.adapter.MatchHistoryAdapter" />
     </data>
 
     <FrameLayout
@@ -11,11 +18,13 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.match_history.MatchHistory">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_match_history"
+            setAdapter="@{adapter}"
+            setLayoutManager="@{1}"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 </layout>

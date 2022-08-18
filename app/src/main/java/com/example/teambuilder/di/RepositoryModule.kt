@@ -4,9 +4,10 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.example.teambuilder.data.local.MatchDao
 import com.example.teambuilder.data.repository.HomeRepository
+import com.example.teambuilder.data.repository.MatchHistoryRepository
 import com.example.teambuilder.data.repository.MatchRepository
 import com.example.teambuilder.data.repository.TeamBuildRepository
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DatabaseReference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +29,7 @@ object RepositoryModule {
     fun provideTeamBuildRepository(
         dataStore: DataStore<Preferences>,
         dao: MatchDao,
-        realtimeDatabase: FirebaseDatabase
+        realtimeDatabase: DatabaseReference
     ) = TeamBuildRepository(dataStore, dao, realtimeDatabase)
 
     @ViewModelScoped
@@ -36,6 +37,12 @@ object RepositoryModule {
     fun provideMatchRepository(
         dataStore: DataStore<Preferences>,
         dao: MatchDao,
-        realtimeDatabase: FirebaseDatabase
+        realtimeDatabase: DatabaseReference
     ) = MatchRepository(dataStore, dao, realtimeDatabase)
+
+    @ViewModelScoped
+    @Provides
+    fun provideMatchHistory(
+        dao: MatchDao
+    ) = MatchHistoryRepository(dao)
 }

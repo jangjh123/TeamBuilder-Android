@@ -15,7 +15,27 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val repository: HomeRepository) : ViewModel() {
     fun getMatchExist(onResult: (Boolean) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            repository.getDataStoreValue().run {
+            repository.getMatchExistFlow().run {
+                cancellable()
+                onResult(first())
+                cancel()
+            }
+        }
+    }
+
+    fun getTeamAScore(onResult: (Int) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.getTeamAScoreFlow().run {
+                cancellable()
+                onResult(first())
+                cancel()
+            }
+        }
+    }
+
+    fun getTeamBScore(onResult: (Int) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.getTeamBScoreFlow().run {
                 cancellable()
                 onResult(first())
                 cancel()

@@ -27,7 +27,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 if (it) {
                     tvScoreOrNoMatch.text = "현재 스코어"
                     tvScore.visibility = View.VISIBLE
-                    tvScore.text // 스코어 표시
+
+                    viewModel.getTeamAScore { teamAScore ->
+                        viewModel.getTeamBScore { teamBScore ->
+                            tvScore.text = "$teamAScore : $teamBScore"
+                        }
+                    }
 
                     btnCurrentMatch.setOnClickListener {
                         findNavController().navigate(R.id.action_frag_home_to_frag_match)
@@ -42,6 +47,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     }
                     btnCurrentMatch.alpha = 0.4f
                 }
+
+
             }
 
             btnStat.setOnClickListener {

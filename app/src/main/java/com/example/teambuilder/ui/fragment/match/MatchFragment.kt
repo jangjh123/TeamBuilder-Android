@@ -209,6 +209,7 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                         args.teamB
                     )
                 }
+                viewModel.resetScore()
                 findNavController().navigate(R.id.action_frag_match_to_frag_stat)
             }
         ).show(childFragmentManager, "quit_match")

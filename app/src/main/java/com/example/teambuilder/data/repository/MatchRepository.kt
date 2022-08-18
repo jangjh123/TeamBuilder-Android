@@ -5,10 +5,14 @@ import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.example.data_store.KEY_IS_EXIST
+import com.example.data_store.KEY_TEAM_A_SCORE
+import com.example.data_store.KEY_TEAM_B_SCORE
 import com.example.teambuilder.data.local.MatchDao
 import com.example.teambuilder.data.model.Match
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.getValue
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class MatchRepository @Inject constructor(
@@ -16,6 +20,16 @@ class MatchRepository @Inject constructor(
     private val dao: MatchDao,
     private val realtimeDatabase: FirebaseDatabase
 ) {
+    private val teamAScoreFlow: Flow<Int> = dataStore.data.map {
+        it[KEY_TEAM_A_SCORE] ?: 0
+    }
+    private val teamBScoreFlow: Flow<Int> = dataStore.data.map {
+        it[KEY_TEAM_B_SCORE] ?: 0
+    }
+
+    fun getTeamAScoreFlow() = teamAScoreFlow
+    fun getTeamBScoreFlow() = teamBScoreFlow
+
     suspend fun getMatchFromRoom() = dao.getCurrentMatch()
 
     suspend fun saveMatchResult(match: Match) {
@@ -38,6 +52,25 @@ class MatchRepository @Inject constructor(
             realtimeDatabase.getReference("PLAYER").child(name).child("personalScore").setValue(
                 personalScore + score
             )
+        }
+    }
+
+    suspend fun saveTeamAScoreIntoDataStore(score: Int) {
+        dataStore.edit {
+            it[KEY_TEAM_A_SCORE] = score
+        }
+    }
+
+    suspend fun saveTeamBScoreIntoDataStore(score: Int) {
+        dataStore.edit {
+            it[KEY_TEAM_B_SCORE] = score
+        }
+    }
+
+    suspend fun setScoreToZero() {
+        dataStore.edit {
+            it[KEY_TEAM_A_SCORE] = 0
+            it[KEY_TEAM_B_SCORE] = 0
         }
     }
 }

@@ -189,8 +189,8 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
 
     fun onClickQuitMatch(view: View) {
         DefaultDialog(
-            "경기 종료",
-            "경기를 종료합니다.",
+            "매치 종료",
+            "매치를 종료합니다.",
             "취소",
             "확인",
             null,
@@ -209,7 +209,8 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
                         args.teamB
                     )
                 }
-                findNavController().navigate(R.id.action_global_frag_match_history)
+                viewModel.resetScore()
+                findNavController().navigate(R.id.action_frag_match_to_frag_stat)
             }
         ).show(childFragmentManager, "quit_match")
     }

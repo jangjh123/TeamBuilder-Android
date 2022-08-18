@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,23 +36,45 @@ class MatchViewModel @Inject constructor(
     }
 
     init {
-        _teamAScore.postValue(0)
-        _teamBScore.postValue(0)
+        CoroutineScope(Dispatchers.IO).launch {
+            _teamAScore.postValue(repository.getTeamAScoreFlow().first())
+            _teamBScore.postValue(repository.getTeamBScoreFlow().first())
+        }
     }
 
     fun setTeamAScore(isPlus: Boolean) {
+        var score = teamAScore.value!!
         if (isPlus) {
-            _teamAScore.postValue(teamAScore.value!! + 1)
+            score += 1
+            _teamAScore.postValue(score)
         } else {
-            _teamAScore.postValue(teamAScore.value!! - 1)
+            score -= 1
+            _teamAScore.postValue(score)
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.saveTeamAScoreIntoDataStore(score)
         }
     }
 
     fun setTeamBScore(isPlus: Boolean) {
+        var score = teamBScore.value!!
         if (isPlus) {
-            _teamBScore.postValue(teamBScore.value!! + 1)
+            score += 1
+            _teamBScore.postValue(score)
         } else {
-            _teamBScore.postValue(teamBScore.value!! - 1)
+            score -= 1
+            _teamBScore.postValue(score)
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.saveTeamBScoreIntoDataStore(score)
+        }
+    }
+
+    fun resetScore() {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.setScoreToZero()
         }
     }
 

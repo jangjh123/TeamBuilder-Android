@@ -1,8 +1,10 @@
 package com.example.teambuilder.ui.fragment.match
 
+import android.view.KeyEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.teambuilder.R
@@ -54,6 +56,11 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
         binding.teamAAdapter = teamAAdapter
         binding.teamBAdapter = teamBAdapter
         setCurrentMatch()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setBackButtonPrevent()
     }
 
     private fun initAdapter() {
@@ -176,19 +183,21 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
     }
 
     fun onClickQuitMatch(view: View) {
-        DefaultDialog(
-            "매치 종료",
-            "매치를 종료합니다.",
-            "취소",
-            "확인",
-            null,
-            null,
-            onClickConfirm = {
-                viewModel.quitMatch()
-                viewModel.resetScore()
-                findNavController().navigate(R.id.action_frag_match_to_frag_stat)
-            }
-        ).show(childFragmentManager, "quit_match")
+        if (!isOnScoring) {
+            DefaultDialog(
+                "매치 종료",
+                "매치를 종료합니다.",
+                "취소",
+                "확인",
+                null,
+                null,
+                onClickConfirm = {
+                    viewModel.quitMatch()
+                    viewModel.resetScore()
+                    findNavController().navigate(R.id.action_frag_match_to_frag_stat)
+                }
+            ).show(childFragmentManager, "quit_match")
+        }
     }
 
     private fun showScoreSnackBar() {
@@ -201,5 +210,24 @@ class MatchFragment : BaseFragment<FragmentMatchBinding>(R.layout.fragment_match
             }, Snackbar.LENGTH_INDEFINITE
         )
         scoreSnackBar.show()
+    }
+
+    private fun setBackButtonPrevent() {
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+
+        requireView().setOnKeyListener(object : View.OnKeyListener {
+            override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
+                if (event.action == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        if (isOnScoring) {
+                            return true
+                        }
+                        return false
+                    }
+                }
+                return false
+            }
+        })
     }
 }

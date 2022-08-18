@@ -61,21 +61,21 @@ class MatchRepository @Inject constructor(
         players.forEach {
             realtimeDatabase.child(it.name).child(
                 if (isWin) {
-                    "victoryCount"
+                    "winCount"
                 } else {
                     "loseCount"
                 }
             ).get()
                 .addOnSuccessListener { snapshot ->
-                    val victoryCount = snapshot.getValue<Int>() ?: 0
+                    val winCount = snapshot.getValue<Int>() ?: 0
                     realtimeDatabase.child(it.name).child(
                         if (isWin) {
-                            "victoryCount"
+                            "winCount"
                         } else {
                             "loseCount"
                         }
                     ).setValue(
-                        victoryCount + 1
+                        winCount + 1
                     )
                 }
         }

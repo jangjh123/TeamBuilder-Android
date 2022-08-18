@@ -51,22 +51,34 @@ class MatchHistoryAdapter(
                 val stringBuilderTeamA = StringBuilder()
                 val stringBuilderTeamB = StringBuilder()
                 val gson = Gson()
+                val teamA: List<Player> = gson.fromJson(match.teamAPlayers, typePlayerList)
+                val teamB: List<Player> = gson.fromJson(match.teamBPlayers, typePlayerList)
 
-                (gson.fromJson(match.teamAPlayers, typePlayerList) as List<Player>).forEach {
+                teamA.forEach {
                     stringBuilderTeamA.append("${it.name} ")
                 }
-                (gson.fromJson(match.teamBPlayers, typePlayerList) as List<Player>).forEach {
+                teamB.forEach {
                     stringBuilderTeamB.append("${it.name} ")
                 }
 
                 when (match.winner) {
                     "A" -> {
-                        tvTeamWin.text = stringBuilderTeamA.toString()
-                        tvTeamLose.text = stringBuilderTeamB.toString()
+                        tvTeamWin.text = "${teamA.first().name} 팀"
+                        tvTeamLose.text = "${teamB.first().name} 팀"
+                        tvPlayersWin.text = stringBuilderTeamA.toString()
+                        tvPlayersLose.text = stringBuilderTeamB.toString()
                     }
                     "B" -> {
-                        tvTeamWin.text = stringBuilderTeamB.toString()
-                        tvTeamLose.text = stringBuilderTeamA.toString()
+                        tvTeamWin.text = "${teamB.first().name} 팀"
+                        tvTeamLose.text = "${teamA.first().name} 팀"
+                        tvPlayersWin.text = stringBuilderTeamB.toString()
+                        tvPlayersLose.text = stringBuilderTeamA.toString()
+                    }
+                    else -> {
+                        tvTeamWin.text = "${teamA.first().name} 팀"
+                        tvTeamLose.text = "${teamB.first().name} 팀"
+                        tvPlayersWin.text = ""
+                        tvPlayersLose.text = ""
                     }
                 }
 

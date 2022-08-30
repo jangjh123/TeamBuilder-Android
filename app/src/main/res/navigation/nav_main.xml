@@ -60,6 +60,10 @@
             app:popExitAnim="@anim/slide_to_right"
             app:popUpTo="@+id/frag_home"
             app:popUpToInclusive="false" />
+        <argument
+            android:name="team_number"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 
     <fragment

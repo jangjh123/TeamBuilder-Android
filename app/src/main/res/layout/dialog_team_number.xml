@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="dialog"
+            type="com.example.teambuilder.ui.component.dialog.TeamNumberDialog" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="200dp">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/TextViewDefault"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/main"
+                    android:gravity="center"
+                    android:paddingVertical="5dp"
+                    android:text="구성할 팀의 수를 선택해주세요."
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_2_team"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:onClick="@{dialog::setTwoTeamBuilder}"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView6"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title">
+
+                    <TextView
+                        style="@style/TextViewDefault"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="2 팀"
+                        android:textColor="@color/point_color"
+                        android:textSize="16dp" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView6"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="10dp"
+                    android:onClick="@{dialog::setThreeTeamBuilder}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/btn_2_team"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title">
+
+                    <TextView
+                        android:id="@+id/btn_3_team"
+                        style="@style/TextViewDefault"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="3 팀"
+                        android:textColor="@color/point_color"
+                        android:textSize="16dp" />
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

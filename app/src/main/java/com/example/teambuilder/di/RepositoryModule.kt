@@ -18,8 +18,9 @@ object RepositoryModule {
     @ViewModelScoped
     @Provides
     fun provideHomeRepository(
-        dataStore: DataStore<Preferences>
-    ) = HomeRepository(dataStore)
+        dataStore: DataStore<Preferences>,
+        realtimeDatabase: DatabaseReference
+    ) = HomeRepository(dataStore, realtimeDatabase)
 
     @ViewModelScoped
     @Provides

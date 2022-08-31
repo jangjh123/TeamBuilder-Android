@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.example.data_store.KEY_IS_EXIST
 import com.example.data_store.KEY_TEAM_A_SCORE
 import com.example.data_store.KEY_TEAM_B_SCORE
+import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -12,7 +13,8 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
-    dataStore: DataStore<Preferences>
+    dataStore: DataStore<Preferences>,
+    private val realtimeDatabase: DatabaseReference
 ) {
     private val matchExistFlow: Flow<Boolean> = dataStore.data.map {
         it[KEY_IS_EXIST] ?: false
@@ -27,4 +29,11 @@ class HomeRepository @Inject constructor(
     fun getMatchExistFlow() = matchExistFlow
     fun getTeamAScoreFlow() = teamAScoreFlow
     fun getTeamBScoreFlow() = teamBScoreFlow
+
+    fun setNewPlayer(playerInformation: Pair<String, String>) {
+        realtimeDatabase.child(playerInformation.first).run {
+            child("affiliation").setValue(playerInformation.second)
+            child("isSP").setValue(false)
+        }
+    }
 }

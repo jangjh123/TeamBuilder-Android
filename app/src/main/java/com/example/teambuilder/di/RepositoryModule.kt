@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.example.teambuilder.data.local.MatchDao
 import com.example.teambuilder.data.repository.*
-import com.google.firebase.database.DatabaseReference
+import com.example.teambuilder.util.RDBAccessHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,24 +19,28 @@ object RepositoryModule {
     @Provides
     fun provideHomeRepository(
         dataStore: DataStore<Preferences>,
-        realtimeDatabase: DatabaseReference
-    ) = HomeRepository(dataStore, realtimeDatabase)
+        databaseAccessHelper: RDBAccessHelper
+    ) = HomeRepository(dataStore, databaseAccessHelper)
 
     @ViewModelScoped
     @Provides
     fun provideTeamBuildRepository(
         dataStore: DataStore<Preferences>,
         dao: MatchDao,
-        realtimeDatabase: DatabaseReference
-    ) = TeamBuildRepository(dataStore, dao, realtimeDatabase)
+        databaseAccessHelper: RDBAccessHelper
+    ) = TeamBuildRepository(dataStore, dao, databaseAccessHelper)
+
+    @ViewModelScoped
+    @Provides
+    fun provideMultipleTeamBuildRepository() = MultipleTeamBuildRepository()
 
     @ViewModelScoped
     @Provides
     fun provideMatchRepository(
         dataStore: DataStore<Preferences>,
         dao: MatchDao,
-        realtimeDatabase: DatabaseReference
-    ) = MatchRepository(dataStore, dao, realtimeDatabase)
+        databaseAccessHelper: RDBAccessHelper
+    ) = MatchRepository(dataStore, dao, databaseAccessHelper)
 
     @ViewModelScoped
     @Provides
@@ -47,6 +51,6 @@ object RepositoryModule {
     @ViewModelScoped
     @Provides
     fun provideRankRepository(
-        realtimeDatabase: DatabaseReference
-    ) = RankRepository(realtimeDatabase)
+        databaseAccessHelper: RDBAccessHelper
+    ) = RankRepository(databaseAccessHelper)
 }

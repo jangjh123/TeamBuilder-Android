@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragment_team_build) {
     private val viewModel: TeamBuildViewModel by viewModels()
-    private val teamNumber: TeamBuildFragmentArgs by navArgs()
     private var isBuiltTeamsExist = false
 
     private val fadeIn1: Animation by lazy { loadAnimation(requireContext(), R.anim.fade_in_1) }
@@ -40,7 +39,6 @@ class TeamBuildFragment : BaseFragment<FragmentTeamBuildBinding>(R.layout.fragme
         binding.fragment = this@TeamBuildFragment
         startAnim()
         initTouchable()
-        Log.d("SAFEARGS", teamNumber.teamNumber.toString())
     }
 
     private fun startAnim() {

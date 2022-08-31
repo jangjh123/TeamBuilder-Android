@@ -41,9 +41,11 @@ class TeamNumberDialog(
 
     fun setTwoTeamBuilder(view: View) {
         onClickTwoTeam(2)
+        dismiss()
     }
 
     fun setThreeTeamBuilder(view: View) {
         onClickThreeTeam(3)
+        dismiss()
     }
 }

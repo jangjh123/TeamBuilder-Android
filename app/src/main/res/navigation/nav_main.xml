@@ -30,21 +30,13 @@
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
             app:popExitAnim="@anim/slide_to_right" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/frag_match"
-        android:name="com.example.teambuilder.ui.fragment.match.MatchFragment"
-        tools:layout="@layout/fragment_match">
         <action
-            android:id="@+id/action_frag_match_to_frag_stat"
-            app:destination="@id/frag_statistics"
+            android:id="@+id/action_frag_home_to_frag_multiple_team_build"
+            app:destination="@id/frag_multiple_team_build"
             app:enterAnim="@anim/slide_from_right"
             app:exitAnim="@anim/slide_to_left"
             app:popEnterAnim="@anim/slide_from_left"
-            app:popExitAnim="@anim/slide_to_right"
-            app:popUpTo="@+id/frag_home"
-            app:popUpToInclusive="false" />
+            app:popExitAnim="@anim/slide_to_right" />
     </fragment>
 
     <fragment
@@ -60,10 +52,28 @@
             app:popExitAnim="@anim/slide_to_right"
             app:popUpTo="@+id/frag_home"
             app:popUpToInclusive="false" />
-        <argument
-            android:name="team_number"
-            app:argType="integer"
-            android:defaultValue="0" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/frag_multiple_team_build"
+        android:name="com.example.teambuilder.ui.fragment.multiple_team_build.MultipleTeamBuildFragment"
+        tools:layout="@layout/fragment_multiple_team_build">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/frag_match"
+        android:name="com.example.teambuilder.ui.fragment.match.MatchFragment"
+        tools:layout="@layout/fragment_match">
+        <action
+            android:id="@+id/action_frag_match_to_frag_stat"
+            app:destination="@id/frag_statistics"
+            app:enterAnim="@anim/slide_from_right"
+            app:exitAnim="@anim/slide_to_left"
+            app:popEnterAnim="@anim/slide_from_left"
+            app:popExitAnim="@anim/slide_to_right"
+            app:popUpTo="@+id/frag_home"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment

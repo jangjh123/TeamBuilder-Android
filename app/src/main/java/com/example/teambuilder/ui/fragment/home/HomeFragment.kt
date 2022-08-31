@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.teambuilder.R
 import com.example.teambuilder.databinding.FragmentHomeBinding
 import com.example.teambuilder.ui.BaseFragment
+import com.example.teambuilder.ui.component.dialog.TeamNumberDialog
 import com.example.teambuilder.ui.component.dialog.AddPlayerDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,12 +41,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     tvScore.visibility = View.GONE
 
                     btnBuildTeam.setOnClickListener {
-                        findNavController().navigate(R.id.action_frag_home_to_frag_team_build)
+                        TeamNumberDialog(
+                            onClickTwoTeam = {
+                                val action = HomeFragmentDirections.actionFragHomeToFragTeamBuild(2)
+                                findNavController().navigate(action)
+                            },
+                            onClickThreeTeam = {
+                                val action = HomeFragmentDirections.actionFragHomeToFragTeamBuild(3)
+                                findNavController().navigate(action)
+                            }
+                        ).show(childFragmentManager, "team_number")
                     }
                     btnCurrentMatch.alpha = 0.4f
                 }
-
-
             }
 
             btnStatistics.setOnClickListener {

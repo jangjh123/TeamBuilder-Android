@@ -47,7 +47,7 @@ class MatchRepository @Inject constructor(
     fun setPersonalScore(name: String, score: Int) {
         realtimeDatabase.child(name).child("personalScore").get()
             .addOnSuccessListener {
-                val personalScore = it.getValue<Int>()!!
+                val personalScore = it.getValue<Int>() ?: 0
                 realtimeDatabase.child(name).child("personalScore").setValue(
                     personalScore + score
                 )

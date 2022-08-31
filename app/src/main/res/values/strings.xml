@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">TeamBuilder</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">팀빌더</string>
     <string name="register_player">선수 등록</string>
     <string name="current_player_list">현재 선수 리스트</string>
     <string name="super_player">고수</string>

@@ -42,4 +42,8 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository) 
             }
         }
     }
+
+    fun enrollPlayer(playerInformation: Pair<String, String>) {
+        repository.setNewPlayer(playerInformation)
+    }
 }

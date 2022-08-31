@@ -7,6 +7,7 @@ import com.example.teambuilder.R
 import com.example.teambuilder.databinding.FragmentHomeBinding
 import com.example.teambuilder.ui.BaseFragment
 import com.example.teambuilder.ui.component.dialog.TeamNumberDialog
+import com.example.teambuilder.ui.component.dialog.AddPlayerDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -60,7 +61,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             }
 
             btnAddPlayer.setOnClickListener {
-                // 다이얼로그
+                AddPlayerDialog {
+                    viewModel.enrollPlayer(it)
+                    showSnackBar("${it.first} 선수가 추가되었습니다.")
+                }.show(childFragmentManager, "add_player")
             }
         }
     }

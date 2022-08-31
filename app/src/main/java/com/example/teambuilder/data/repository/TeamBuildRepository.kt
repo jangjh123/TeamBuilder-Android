@@ -28,7 +28,6 @@ class TeamBuildRepository @Inject constructor(
             snapshot.children.forEach { player ->
                 list.add(
                     Player(
-                        index = player.child("index").getValue<Int>()!!,
                         name = player.key!!,
                         affiliation = player.child("affiliation").value.toString(),
                         isSuperPlayer = player.child("isSP").getValue<Boolean>()!!

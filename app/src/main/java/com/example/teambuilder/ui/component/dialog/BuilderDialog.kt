@@ -40,7 +40,7 @@ class BuilderDialog(
         removePlayer(it, false)
     }, teamBLeader)
 
-    private var currentPlayer = Player(0, "", "", false)
+    private var currentPlayer = Player("", "", false)
 
     private lateinit var teamA: ArrayList<Player>
     private lateinit var teamB: ArrayList<Player>
@@ -294,7 +294,7 @@ class BuilderDialog(
         if (isTeamAFull && isTeamBFull) {
             CoroutineScope(Dispatchers.Default).launch {
                 delay(200L)
-                DefaultDialog("팀 설정 완료", "팀이 모두 구성됐습니다.", "재확인", "완료",
+                DefaultDialog("팀 설정 완료", "팀이 모두 구성되었습니다.", "재확인", "완료",
                     Pair(teamA, teamB),
                     onClickCancel = {
 
